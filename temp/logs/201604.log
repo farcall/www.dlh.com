@@ -1,0 +1,9 @@
+Sat, 16 Apr 2016 00:42:21 +0800	[256]MySQL Error[1146]: Table 'dlh.ecm_ju_template' doesn't exist
+MySQL Query:SELECT COUNT(*) as c FROM ecm_ju_template jt WHERE 1=1
+Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\mysql.php[450]	\eccore\model\mysql.php	278
+Sat, 16 Apr 2016 00:42:44 +0800	[256]MySQL Error[1146]: Table 'dlh.ecm_integral_log' doesn't exist
+MySQL Query:SELECT COUNT(*) as c FROM ecm_integral_log integral_log WHERE 1=1 
+Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\mysql.php[450]	\eccore\model\mysql.php	278
+Sat, 16 Apr 2016 00:44:39 +0800	[256]MySQL Error[1146]: Table 'dlh.ecm_integral_log' doesn't exist
+MySQL Query:SELECT COUNT(*) as c FROM ecm_integral_log integral_log WHERE 1=1 
+Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\mysql.php[450]	\eccore\model\mysql.php	278
