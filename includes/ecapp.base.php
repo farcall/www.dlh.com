@@ -14,16 +14,16 @@ define('STORE_APPLYING', 0); // 申请中
 define('STORE_OPEN',     1); // 开启
 define('STORE_CLOSED',   2); // 关闭
 
-/* 白积分类型 */
-define('INTEGRAL_REG', 1);    // 注册赠送白积分
-define('INTEGRAL_LOGIN', 2);  // 登录赠送白积分
-define('INTEGRAL_RECOM', 3);  // 推荐赠送白积分
-define('INTEGRAL_BUY', 4);    // 购买赠送白积分
-define('INTEGRAL_SELLER', 5); // 抵扣删减白积分
-define('INTEGRAL_ADD', 6);    // 管理员增加白积分
-define('INTEGRAL_SUB', 7);    // 管理员减少白积分
-define('INTEGRAL_EGG', 8);    // 砸金蛋删减白积分
-define('INTEGRAL_GOODS', 9);  // 兑换礼品删减白积分
+/* 积分类型 */
+define('INTEGRAL_REG', 1);    // 注册赠送积分
+define('INTEGRAL_LOGIN', 2);  // 登录赠送积分
+define('INTEGRAL_RECOM', 3);  // 推荐赠送积分
+define('INTEGRAL_BUY', 4);    // 购买赠送积分
+define('INTEGRAL_SELLER', 5); // 抵扣删减积分
+define('INTEGRAL_ADD', 6);    // 管理员增加积分
+define('INTEGRAL_SUB', 7);    // 管理员减少积分
+define('INTEGRAL_EGG', 8);    // 砸金蛋删减积分
+define('INTEGRAL_GOODS', 9);  // 兑换礼品删减积分
 
 
 /* 资金管理类型 */

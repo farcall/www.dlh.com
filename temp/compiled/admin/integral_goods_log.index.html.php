@@ -7,7 +7,7 @@ $(function(){
 </script>
 
 <div id="rightTop">
-    <p>白积分产品兑换</p>
+    <p>积分产品兑换</p>
     <ul class="subnav">
         <li><span>管理</span></li>
     </ul>
@@ -20,7 +20,7 @@ $(function(){
                 <input type="hidden" name="act" value="index" />
                 用户名:
                 <input class="queryInput" type="text" name="user_name" value="<?php echo htmlspecialchars($_GET['user_name']); ?>" />
-                白积分产品名称:
+                积分产品名称:
                 <input class="queryInput" type="text" name="goods_name" value="<?php echo htmlspecialchars($_GET['goods_name']); ?>" />
                 
                 <select class="querySelect" name="state">
@@ -42,7 +42,7 @@ $(function(){
     <table width="100%" cellspacing="0" class="dataTable">
         <?php if ($this->_var['integral_goods_log_list']): ?>
         <tr class="tatr1">
-            <td>白积分产品名称</td>
+            <td>积分产品名称</td>
             <td>用户名</td>
             <td>收货人姓名</td>
             <td>收货人地址</td>

@@ -1,6 +1,6 @@
 <?php echo $this->fetch('header.html'); ?>
 <div id="rightTop">
-    <p>白积分产品</p>
+    <p>积分产品</p>
     <ul class="subnav">
         <li><?php if ($this->_var['wait_verify']): ?><a class="btn1" href="index.php?app=integral_goods">管理</a><?php else: ?><span>管理</span><?php endif; ?></li>
         <li><a class="btn1" href="index.php?app=integral_goods&amp;act=add">新增</a></li>
@@ -36,7 +36,7 @@
             <td align="left">产品库存</td>
             <td align="left">已兑换</td>
             <td align="left">产品价值</td>
-            <td align="left">兑换白积分</td>
+            <td align="left">兑换积分</td>
             <td align="left">添加时间</td>
             <td class="table-center">排序</td>
             <td class="handler">操作</td>

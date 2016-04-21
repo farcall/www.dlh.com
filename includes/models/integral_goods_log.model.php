@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 白积分产品兑换记录
+ * 积分产品兑换记录
  */
 class Integral_goods_logModel extends BaseModel {
 

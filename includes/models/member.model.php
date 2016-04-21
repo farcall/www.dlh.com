@@ -9,7 +9,7 @@ class MemberModel extends BaseModel
 
     /* 与其它模型之间的关系 */
     var $_relation = array(
-        // 一个会员拥有多个白积分记录
+        // 一个会员拥有多个积分记录
         'has_integral_log' => array(
             'model' => 'integral_log',
             'type' => HAS_MANY,

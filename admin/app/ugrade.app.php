@@ -194,7 +194,7 @@ class UgradeApp extends BackendApp
             $this->show_warning($this->_grade_mod->get_error());
             return;
         }
-		//全部删除后，会员白积分清零
+		//全部删除后，会员积分清零
 		$member_mod=&m('member');
 		$member_mod->edit('',array('ugrade'=>1,'growth'=>0));
 		//删掉商品的会员折扣

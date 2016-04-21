@@ -77,21 +77,21 @@ class OrderApp extends ShoppingbaseApp {
 
             import('init.lib');
             $this->assign('coupon_list', Init_OrderApp::get_available_coupon($goods_info['store_id']));
-            #获取系统是否开启白积分
+            #获取系统是否开启积分
             if ($goods_info['integral_enabled']) {
-                $total_integral_max_exchange = 0; #共可使用多少白积分进行抵扣
+                $total_integral_max_exchange = 0; #共可使用多少积分进行抵扣
                 $goods_mod = & m('goods');
                 foreach ($goods_info['items'] as $goods) {
-                    // 因为一个订单可能包含多个商品,一个商品可能购买了M件，那么可使用的白积分便是 N*M 之和
-                    $goods_integral = $goods_mod->get($goods['goods_id']); #当前产品设置的白积分抵扣额
+                    // 因为一个订单可能包含多个商品,一个商品可能购买了M件，那么可使用的积分便是 N*M 之和
+                    $goods_integral = $goods_mod->get($goods['goods_id']); #当前产品设置的积分抵扣额
                     $total_integral_max_exchange += $goods_integral['integral_max_exchange'] * $goods['quantity'];
                 }
-                //获取当前用户可用白积分
+                //获取当前用户可用积分
                 $member_mod = & m('member');
                 $member_info = $member_mod->get($this->visitor->get('user_id'));
                 $this->assign('member_integral', $member_info['integral']);
                 $this->assign('total_integral_max_exchange', $total_integral_max_exchange);
-                $this->assign('integral_seller',  Conf::get('integral_seller'));#白积分抵扣金额比例
+                $this->assign('integral_seller',  Conf::get('integral_seller'));#积分抵扣金额比例
             }
             
             $this->assign('goods_info', $goods_info);
@@ -141,31 +141,31 @@ class OrderApp extends ShoppingbaseApp {
             }
             
             if ($goods_info['integral_enabled'] && intval($_POST['use_integral'])) {
-                //用户提交使用的白积分额度
+                //用户提交使用的积分额度
                 $use_integral = intval($_POST['use_integral']);
 
-                $total_integral_max_exchange = 0; #共可使用多少白积分进行抵扣
+                $total_integral_max_exchange = 0; #共可使用多少积分进行抵扣
                 $goods_mod = & m('goods');
                 foreach ($goods_info['items'] as $goods) {
-                    // 因为一个订单可能包含多个商品,一个商品可能购买了M件，那么可使用的白积分便是 N*M 之和
-                    $goods_integral = $goods_mod->get($goods['goods_id']); #当前产品设置的白积分抵扣额
+                    // 因为一个订单可能包含多个商品,一个商品可能购买了M件，那么可使用的积分便是 N*M 之和
+                    $goods_integral = $goods_mod->get($goods['goods_id']); #当前产品设置的积分抵扣额
                     $total_integral_max_exchange += $goods_integral['integral_max_exchange'] * $goods['quantity'];
                 }
 
                 if ($use_integral > $total_integral_max_exchange) {
-                    $this->show_warning('此订单最多可以使用 ' . $total_integral_max_exchange . '白积分。');
+                    $this->show_warning('此订单最多可以使用 ' . $total_integral_max_exchange . '积分。');
                     exit;
                 }
-                //获取当前用户可用白积分
+                //获取当前用户可用积分
                 $member_mod = & m('member');
                 $member_info = $member_mod->get($this->visitor->get('user_id'));
                 if ($use_integral > $member_info['integral']) {
-                    $this->show_warning('对不起，你没有足够的白积分！你目前的白积分值为：' . $member_info['integral']);
+                    $this->show_warning('对不起，你没有足够的积分！你目前的积分值为：' . $member_info['integral']);
                     exit;
                 }
                 //获取抵扣金额
                 $goods_info['discount'] += $use_integral * Conf::get('integral_seller');
-                //扣除白积分记录,更新信息
+                //扣除积分记录,更新信息
                 import('integral.lib');
                 $integral = new Integral();
                 $integral->change_integral_seller($this->visitor->get('user_id'), $use_integral);
@@ -296,7 +296,7 @@ class OrderApp extends ShoppingbaseApp {
             'type' => null, //商品类型
             'otype' => 'normal', //订单类型
             'allow_coupon' => true, //是否允许使用优惠券
-            'integral_enabled'=> Conf::get('integral_enabled') ? true : false,    // 获取系统是否开启白积分
+            'integral_enabled'=> Conf::get('integral_enabled') ? true : false,    // 获取系统是否开启积分
         );
         switch ($_GET['goods']) {
             case 'groupbuy':

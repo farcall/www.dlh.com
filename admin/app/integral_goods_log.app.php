@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 白积分记录操作
+ * 积分记录操作
  */
 class Integral_goods_logApp extends BackendApp {
 

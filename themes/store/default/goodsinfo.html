@@ -136,7 +136,7 @@ var goodsspec = new goodsspec(specs, specQty, defSpec);
             <div style="width: 100%;color:#e4393c;">
             <!--{if $store.amount_for_free_fee}-->满{$store.amount_for_free_fee|price}元包邮<!--{/if}--><!--{if $store.acount_for_free_fee}-->,满{$store.acount_for_free_fee|escape}件包邮<!--{/if}-->
             </div>
-            {if $goods.integral_max_exchange}可使用白积分:<em style="color:red;font-weight: bold;padding-left:10px;">{$goods.integral_max_exchange|escape}</em><br />{/if}
+            {if $goods.integral_max_exchange}可使用积分:<em style="color:red;font-weight: bold;padding-left:10px;">{$goods.integral_max_exchange|escape}</em><br />{/if}
             <span class="letter1">{$lang.brand}: </span>{$goods.brand|escape}<br />
             {$lang.tags}:&nbsp;&nbsp;<!--{foreach from=$goods.tags item=tag}-->{$tag}&nbsp;&nbsp;&nbsp;<!--{/foreach}--><br />
             {$lang.sale_situation}: {$sales_info}{$comments}<br />

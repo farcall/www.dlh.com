@@ -854,7 +854,7 @@ DROP TABLE IF EXISTS ecm_egg;
 CREATE TABLE ecm_egg (
   id int(10) NOT NULL auto_increment,
   `name` varchar(50) default NULL,
-  noun int(10) default NULL COMMENT '所需白积分',
+  noun int(10) default NULL COMMENT '所需积分',
   rate int(10) default NULL COMMENT '中奖比例 为千分比',
   PRIMARY KEY  (id)
 ) ENGINE=MyISAM;
@@ -2022,23 +2022,23 @@ CREATE TABLE ecm_groupbuy_log (
 ) ENGINE=MyISAM;
 DROP TABLE IF EXISTS ecm_integral_goods;
 CREATE TABLE ecm_integral_goods (
-  goods_id int(10) unsigned NOT NULL auto_increment COMMENT '白积分产品ID',
-  goods_name varchar(255) NOT NULL default '' COMMENT '白积分产品名称',
-  goods_logo varchar(255) NOT NULL default '' COMMENT '白积分产品图片',
-  goods_stock int(10) unsigned NOT NULL default '0' COMMENT '白积分产品可兑换数量',
-  goods_stock_exchange int(10) NOT NULL default '0' COMMENT '白积分产品已兑换数量',
-  goods_price decimal(10,2) NOT NULL default '0.00' COMMENT '白积分产品价格',
-  goods_point int(10) NOT NULL default '0' COMMENT '抵扣白积分',
+  goods_id int(10) unsigned NOT NULL auto_increment COMMENT '积分产品ID',
+  goods_name varchar(255) NOT NULL default '' COMMENT '积分产品名称',
+  goods_logo varchar(255) NOT NULL default '' COMMENT '积分产品图片',
+  goods_stock int(10) unsigned NOT NULL default '0' COMMENT '积分产品可兑换数量',
+  goods_stock_exchange int(10) NOT NULL default '0' COMMENT '积分产品已兑换数量',
+  goods_price decimal(10,2) NOT NULL default '0.00' COMMENT '积分产品价格',
+  goods_point int(10) NOT NULL default '0' COMMENT '抵扣积分',
   add_time int(10) unsigned NOT NULL default '0' COMMENT '添加时间',
-  goods_state tinyint(3) unsigned NOT NULL default '1' COMMENT '白积分产品状态',
-  sort_order tinyint(3) unsigned NOT NULL default '255' COMMENT '白积分产品排序',
+  goods_state tinyint(3) unsigned NOT NULL default '1' COMMENT '积分产品状态',
+  sort_order tinyint(3) unsigned NOT NULL default '255' COMMENT '积分产品排序',
   PRIMARY KEY  (goods_id)
 ) ENGINE=MyISAM;
 DROP TABLE IF EXISTS ecm_integral_goods_log;
 CREATE TABLE ecm_integral_goods_log (
   id int(10) unsigned NOT NULL auto_increment,
-  goods_id int(10) NOT NULL default '0' COMMENT '白积分产品ID号',
-  goods_name varchar(255) NOT NULL default '' COMMENT '白积分产品的名称',
+  goods_id int(10) NOT NULL default '0' COMMENT '积分产品ID号',
+  goods_name varchar(255) NOT NULL default '' COMMENT '积分产品的名称',
   user_id int(10) unsigned NOT NULL default '0' COMMENT '用户ID',
   user_name varchar(60) NOT NULL default '' COMMENT '用户名',
   my_name varchar(60) NOT NULL default '' COMMENT '收货人姓名',
@@ -2057,19 +2057,19 @@ CREATE TABLE ecm_integral_log (
   integral_id int(10) unsigned NOT NULL auto_increment,
   user_id int(10) unsigned NOT NULL default '0' COMMENT '用户ID',
   user_name varchar(255) default '' COMMENT '用户名',
-  `point` int(10) unsigned NOT NULL default '0' COMMENT '涉及白积分',
+  `point` int(10) unsigned NOT NULL default '0' COMMENT '涉及积分',
   add_time int(10) unsigned NOT NULL default '0' COMMENT '添加时间',
   remark varchar(255) default NULL COMMENT '备注',
-  integral_type tinyint(3) unsigned NOT NULL default '0' COMMENT '白积分类型 购买',
+  integral_type tinyint(3) unsigned NOT NULL default '0' COMMENT '积分类型 购买',
   PRIMARY KEY  (integral_id)
 ) ENGINE=MyISAM;
-INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('1','2','seller','5','1424851835','登录赠送白积分5','2');
-INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('2','2','seller','5','1427964679','登录赠送白积分5','2');
-INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('3','4','test_1','10','1428027575','注册赠送白积分10','1');
-INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('4','5','test_2','10','1428027648','注册赠送白积分10','1');
-INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('5','3','buyer','5','1428224120','登录赠送白积分5','2');
-INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('6','2','seller','5','1432016257','登录赠送白积分5','2');
-INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('7','2','seller','5','1434282481','登录赠送白积分5','2');
+INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('1','2','seller','5','1424851835','登录赠送积分5','2');
+INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('2','2','seller','5','1427964679','登录赠送积分5','2');
+INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('3','4','test_1','10','1428027575','注册赠送积分10','1');
+INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('4','5','test_2','10','1428027648','注册赠送积分10','1');
+INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('5','3','buyer','5','1428224120','登录赠送积分5','2');
+INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('6','2','seller','5','1432016257','登录赠送积分5','2');
+INSERT INTO ecm_integral_log ( `integral_id`, `user_id`, `user_name`, `point`, `add_time`, `remark`, `integral_type` ) VALUES  ('7','2','seller','5','1434282481','登录赠送积分5','2');
 DROP TABLE IF EXISTS ecm_job;
 CREATE TABLE ecm_job (
   job_id int(10) unsigned NOT NULL auto_increment,
@@ -2302,8 +2302,8 @@ CREATE TABLE ecm_member (
   lng decimal(12,8) NOT NULL,
   lat decimal(12,8) NOT NULL,
   zoom int(3) NOT NULL,
-  integral int(10) NOT NULL default '0' COMMENT '可用白积分',
-  total_integral int(10) NOT NULL default '0' COMMENT '总白积分',
+  integral int(10) NOT NULL default '0' COMMENT '可用积分',
+  total_integral int(10) NOT NULL default '0' COMMENT '总积分',
   referid int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (user_id),
   KEY user_name (user_name),
@@ -2413,7 +2413,7 @@ INSERT INTO ecm_navigation ( `nav_id`, `type`, `title`, `link`, `sort_order`, `o
 INSERT INTO ecm_navigation ( `nav_id`, `type`, `title`, `link`, `sort_order`, `open_new`, `hot` ) VALUES  ('4','middle','砸金蛋','index.php?app=egg','4','0','0');
 INSERT INTO ecm_navigation ( `nav_id`, `type`, `title`, `link`, `sort_order`, `open_new`, `hot` ) VALUES  ('5','middle','医药馆','index.php?app=yao','255','0','0');
 INSERT INTO ecm_navigation ( `nav_id`, `type`, `title`, `link`, `sort_order`, `open_new`, `hot` ) VALUES  ('6','middle','招贤纳士','index.php?app=job','255','0','0');
-INSERT INTO ecm_navigation ( `nav_id`, `type`, `title`, `link`, `sort_order`, `open_new`, `hot` ) VALUES  ('7','middle','白积分抵扣','index.php?app=integral','2','1','0');
+INSERT INTO ecm_navigation ( `nav_id`, `type`, `title`, `link`, `sort_order`, `open_new`, `hot` ) VALUES  ('7','middle','积分抵扣','index.php?app=integral','2','1','0');
 INSERT INTO ecm_navigation ( `nav_id`, `type`, `title`, `link`, `sort_order`, `open_new`, `hot` ) VALUES  ('8','middle','店铺一览','index.php?app=mapstore&act=store','255','0','0');
 INSERT INTO ecm_navigation ( `nav_id`, `type`, `title`, `link`, `sort_order`, `open_new`, `hot` ) VALUES  ('9','middle','优惠卷','index.php?app=coupon','255','0','0');
 DROP TABLE IF EXISTS ecm_order;

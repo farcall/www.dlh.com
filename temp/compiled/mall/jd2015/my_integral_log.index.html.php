@@ -24,7 +24,7 @@
                                 <input type="text" class="text1 width2" name="add_time_from" id="add_time_from" value="<?php echo $this->_var['query']['add_time_from']; ?>"/> &#8211;
                                 <input type="text" class="text1 width2" name="add_time_to" id="add_time_to" value="<?php echo $this->_var['query']['add_time_to']; ?>"/>
                                 <select class="querySelect" name="integral_type">
-                                    <option value="">白积分类型</option>
+                                    <option value="">积分类型</option>
                                     <?php echo $this->html_options(array('options'=>$this->_var['integral_type_list'],'selected'=>$this->_var['query']['integral_type'])); ?>
                                 </select>
                                 <input type="hidden" name="app" value="my_integral_log" />
@@ -42,9 +42,9 @@
                     <?php if ($this->_var['integral_logs']): ?>
                     <tr class="gray">
                         <th align='center' width='10%'>用户名</th>
-                        <th align='center' width='10%'>白积分</th>
+                        <th align='center' width='10%'>积分</th>
                         <th align='center' width='20%'>添加时间</th>
-                        <th align='center' width='20%'>白积分类型</th>
+                        <th align='center' width='20%'>积分类型</th>
                         <th align='center' width='40%'>备注</th>
                     </tr>
                     <?php endif; ?>

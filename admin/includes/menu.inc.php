@@ -286,15 +286,15 @@ return array(
 //            ),
 //        ),
 //    ),
-    // 后台白积分相关
-    'integral_manage' => array(
-        'text'      => Lang::get('integral_manage'),
-        'default'   => 'integral_log',
-        'children'  => array(
-            'integral_log' => array(
-                'text'  => Lang::get('integral_log'),
-                'url'   => 'index.php?app=integral_log',
-            ),
+    // 后台积分相关
+//    'integral_manage' => array(
+//        'text'      => Lang::get('integral_manage'),
+//        'default'   => 'integral_log',
+//        'children'  => array(
+//            'integral_log' => array(
+//                'text'  => Lang::get('integral_log'),
+//                'url'   => 'index.php?app=integral_log',
+//            ),
 //            'egg_setting' => array(
 //                'text'  => Lang::get('egg_setting'),
 //                'url'   => 'index.php?app=egg',
@@ -315,8 +315,8 @@ return array(
 //                'text'  => Lang::get('integral_goods_log'),
 //                'url'   => 'index.php?app=integral_goods_log',
 //            ),
-        ),
-    ),
+//        ),
+//    ),
     // 扩展
     'extend' => array(
         'text' => Lang::get('extend'),

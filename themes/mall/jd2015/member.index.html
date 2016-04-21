@@ -15,8 +15,8 @@
                     <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">会员等级:<font color="red">&nbsp;&nbsp;{$user.ugrade.grade_name}</font></em>
                     <img height="" width="" src="{$user.ugrade.grade_icon}" /><br />
                     <span style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">会员成长值：<font color="red">{$user.ugrade.growth}</font>{if $user.ugrade.higher_grade_name}<b style="font-weight:normal;margin-left:10px;color:#666;">距升级到<font color="red" style="margin:0px 3px;">{$user.ugrade.higher_grade_name}</font>还需要<font color="red">{$user.ugrade.distant_growth}</font>个成长值</b>{/if}</span><a href="{url app=member&act=profile}">{$lang.edit_profile}>></a><br />
-                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">当前白积分:<font color="red">&nbsp;&nbsp;{$user.integral}</font></em><br/>
-                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">总白积分:<font color="red">&nbsp;&nbsp;{$user.total_integral}</font></em><br/>
+                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">当前积分:<font color="red">&nbsp;&nbsp;{$user.integral}</font></em><br/>
+                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">总积分:<font color="red">&nbsp;&nbsp;{$user.total_integral}</font></em><br/>
                     </dt>	
                     <dd>
                         <span>{$lang.last_login}{$lang.colon}{$user.last_login|date:complete}</span>

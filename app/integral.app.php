@@ -13,9 +13,9 @@ class integralApp extends MallbaseApp {
 
     function integralApp() {
         parent::__construct();
-        //判断白积分操作是否开启 未开启直接返回
+        //判断积分操作是否开启 未开启直接返回
         if (!Conf::get('integral_enabled')) {
-            $this->show_warning('未开启白积分');exit;
+            $this->show_warning('未开启积分');exit;
             return;
         }
         $this->_user_id = $this->visitor->get('user_id');
@@ -38,7 +38,7 @@ class integralApp extends MallbaseApp {
 
         $page = $this->_get_page(16);   //获取分页信息
 
-        //获取白积分产品 按照抵扣数额排列
+        //获取积分产品 按照抵扣数额排列
         $conditions = 'integral_max_exchange > 0';
         $goods_list = $this->_goods_mod->find(array(
             'conditions' => $conditions,

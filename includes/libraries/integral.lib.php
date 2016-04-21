@@ -1,5 +1,5 @@
 <?php
-//白积分管理
+//积分管理
 class Integral {
 
     var $_member_mod;
@@ -9,18 +9,18 @@ class Integral {
         $this->_member_mod = &m('member');
         $this->_integral_log_mod = & m('integral_log');
 
-        //判断白积分操作是否开启 未开启直接返回
+        //判断积分操作是否开启 未开启直接返回
         if (!Conf::get('integral_enabled')) {
             return;
         }
     }
 
-    //用户注册 白积分操作
+    //用户注册 积分操作
     function change_integral_reg($user_id) {
         if(!intval($user_id)){
             return;
         }
-        // 获取后台设置的  注册赠送白积分
+        // 获取后台设置的  注册赠送积分
         $integral_reg = Conf::get('integral_reg');
         //未设置 或者小于 0 不进行操作
         if ($integral_reg <= 0) {
@@ -32,29 +32,29 @@ class Integral {
         if (empty($member)) {
             return;
         }
-        $data['integral'] = $integral_reg + $member['integral']; #当前可用白积分
-        $data['total_integral'] = $integral_reg + $member['total_integral']; #当前总共白积分
+        $data['integral'] = $integral_reg + $member['integral']; #当前可用积分
+        $data['total_integral'] = $integral_reg + $member['total_integral']; #当前总共积分
         $this->_member_mod->edit($user_id, $data);
 
-        //操作记录入白积分记录
+        //操作记录入积分记录
         $integral_log = array(
             'user_id' => $user_id,
             'user_name' => $member['user_name'],
             'point' => $integral_reg,
             'add_time' => gmtime(),
-            'remark' => '注册赠送白积分' . $integral_reg,
+            'remark' => '注册赠送积分' . $integral_reg,
             'integral_type' => INTEGRAL_REG,
         );
         $this->_integral_log_mod->add($integral_log);
     }
 
-    //用户登录 白积分操作
+    //用户登录 积分操作
     function change_integral_login($user_id) {
         if(!intval($user_id)){
             return;
         }
         
-        // 获取后台设置的  注册赠送白积分
+        // 获取后台设置的  注册赠送积分
         $integral_login = Conf::get('integral_login');
         //未设置 或者小于 0 不进行操作
         if ($integral_login <= 0) {
@@ -68,7 +68,7 @@ class Integral {
         }
 
 
-        //判断今日是否登录过赠送白积分
+        //判断今日是否登录过赠送积分
         $begin_time = mktime(0, 0, 0, date('m'), date("d"), date('Y'));
         $end_time = mktime(0, 0, 0, date('m'), date("d") + 1, date('Y'));
         $info = $this->_integral_log_mod->get("integral_type=" . INTEGRAL_LOGIN . " AND user_id=" . $user_id . " AND add_time >" . $begin_time . " AND add_time <" . $end_time);
@@ -77,28 +77,28 @@ class Integral {
         }
 
 
-        $data['integral'] = $integral_login + $member['integral']; #当前可用白积分
-        $data['total_integral'] = $integral_login + $member['total_integral']; #当前总共白积分
+        $data['integral'] = $integral_login + $member['integral']; #当前可用积分
+        $data['total_integral'] = $integral_login + $member['total_integral']; #当前总共积分
         $this->_member_mod->edit($user_id, $data);
 
-        //操作记录入白积分记录
+        //操作记录入积分记录
         $integral_log = array(
             'user_id' => $user_id,
             'user_name' => $member['user_name'],
             'point' => $integral_login,
             'add_time' => gmtime(),
-            'remark' => '登录赠送白积分' . $integral_login,
+            'remark' => '登录赠送积分' . $integral_login,
             'integral_type' => INTEGRAL_LOGIN,
         );
         $this->_integral_log_mod->add($integral_log);
     }
 
-    //  推荐用户 获得白积分计算  $user_id 为推荐者的用户ID
+    //  推荐用户 获得积分计算  $user_id 为推荐者的用户ID
     function change_integral_recom($user_id) {
         if(!intval($user_id)){
             return;
         }
-        // 获取后台设置的  推荐赠送白积分
+        // 获取后台设置的  推荐赠送积分
         $integral_recom = Conf::get('integral_recom');
         //未设置 或者小于 0 不进行操作
         if ($integral_recom <= 0) {
@@ -110,34 +110,34 @@ class Integral {
         if (empty($member)) {
             return;
         }
-        $data['integral'] = $integral_recom + $member['integral']; #当前可用白积分
-        $data['total_integral'] = $integral_recom + $member['total_integral']; #当前总共白积分
+        $data['integral'] = $integral_recom + $member['integral']; #当前可用积分
+        $data['total_integral'] = $integral_recom + $member['total_integral']; #当前总共积分
         $this->_member_mod->edit($user_id, $data);
 
-        //操作记录入白积分记录
+        //操作记录入积分记录
         $integral_log = array(
             'user_id' => $user_id,
             'user_name' => $member['user_name'],
             'point' => $integral_recom,
             'add_time' => gmtime(),
-            'remark' => '推荐赠送白积分' . $integral_recom,
+            'remark' => '推荐赠送积分' . $integral_recom,
             'integral_type' => INTEGRAL_RECOM,
         );
         $this->_integral_log_mod->add($integral_log);
     }
 
-    // 用户确认收货  获得白积分计算
+    // 用户确认收货  获得积分计算
     function change_integral_buy($user_id, $amount) {
         if(!intval($user_id)||!$amount){
             return;
         }
-        // 获取后台设置的  购买获得白积分计算
+        // 获取后台设置的  购买获得积分计算
         $integral_buy = Conf::get('integral_buy');
         //未设置 或者小于 0 不进行操作
         if ($integral_buy <= 0) {
             return;
         }
-        //确认收货 获得的白积分为  比例×额度
+        //确认收货 获得的积分为  比例×额度
         $integral_buy = intval($integral_buy * $amount);
 
         //获取当前用户的信息
@@ -146,23 +146,23 @@ class Integral {
         if (empty($member)) {
             return;
         }
-        $data['integral'] = $integral_buy + $member['integral']; #当前可用白积分
-        $data['total_integral'] = $integral_buy + $member['total_integral']; #当前总共白积分
+        $data['integral'] = $integral_buy + $member['integral']; #当前可用积分
+        $data['total_integral'] = $integral_buy + $member['total_integral']; #当前总共积分
         $this->_member_mod->edit($user_id, $data);
 
-        //操作记录入白积分记录
+        //操作记录入积分记录
         $integral_log = array(
             'user_id' => $user_id,
             'user_name' => $member['user_name'],
             'point' => $integral_buy,
             'add_time' => gmtime(),
-            'remark' => '购买赠送白积分' . $integral_buy,
+            'remark' => '购买赠送积分' . $integral_buy,
             'integral_type' => INTEGRAL_BUY,
         );
         $this->_integral_log_mod->add($integral_log);
     }
 
-    //此处是  推荐成为卖家， 卖家卖出产品后，他的推荐者可以获得白积分
+    //此处是  推荐成为卖家， 卖家卖出产品后，他的推荐者可以获得积分
     function change_integral_tuijianseller($order){
         //todo
         $add_time = gmtime();
@@ -205,7 +205,7 @@ class Integral {
                 'integral' => round($order['goods_amount'] * $tuijian_seller_ratio1, 2)*100, #一级推荐人应该获取的佣金
                 'integral_flow' => 'income', #流入积分
                 'complete' => '1',
-                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio1, 2)*100 . '个白积分,订单金额为' . $order['goods_amount'] . ',1级佣金比例为' . $tuijian_seller_ratio1
+                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio1, 2)*100 . '个积分,订单金额为' . $order['goods_amount'] . ',1级佣金比例为' . $tuijian_seller_ratio1
                     . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'],
             )
         );
@@ -239,7 +239,7 @@ class Integral {
                 'money' => round($order['goods_amount'] * $tuijian_seller_ratio2, 2), #2级推荐人应该获取的佣金
                 'money_flow' => 'income', #流入佣金
                 'complete' => '1',
-                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio2, 2)*100 . '个白积分,2级佣金比例为' . $tuijian_seller_ratio2
+                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio2, 2)*100 . '个积分,2级佣金比例为' . $tuijian_seller_ratio2
                     . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
             )
         );
@@ -273,14 +273,14 @@ class Integral {
                 'money' => round($order['goods_amount'] * $tuijian_seller_ratio3, 2), #3级推荐人应该获取的佣金
                 'money_flow' => 'income', #流入佣金
                 'complete' => '1',
-                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio3, 2)*100 . '个白积分,订单金额为' . $order['goods_amount'] . ',3级佣金比例为' . $tuijian_seller_ratio3
+                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio3, 2)*100 . '个积分,订单金额为' . $order['goods_amount'] . ',3级佣金比例为' . $tuijian_seller_ratio3
                     . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
             )
         );
         /* 第3级 佣金操作  查看卖家是否有推荐人  END */
     }
 
-    //此处是  推荐成为买家， 买家购买产品后，他的推荐者可以获得白积分
+    //此处是  推荐成为买家， 买家购买产品后，他的推荐者可以获得积分
     function change_integral_tuijianbuyer($order){
         //todo
     }
@@ -294,28 +294,28 @@ class Integral {
         if (empty($member)) {
             return;
         }
-        $data['integral'] = $integral_reg + $member['integral']; #当前可用白积分
-        $data['total_integral'] = $integral_reg + $member['total_integral']; #当前总共白积分
+        $data['integral'] = $integral_reg + $member['integral']; #当前可用积分
+        $data['total_integral'] = $integral_reg + $member['total_integral']; #当前总共积分
         $this->_member_mod->edit($data['user_id'], $data);
 
-        //操作记录入白积分记录
+        //操作记录入积分记录
         $integral_log = array(
             'user_id' => $data['user_id'],
             'user_name' => $member['user_name'],
             'point' => $integral_reg,
             'add_time' => gmtime(),
-            'remark' => '注册赠送白积分' . $integral_reg,
+            'remark' => '注册赠送积分' . $integral_reg,
             'integral_type' => INTEGRAL_REG,
         );
         $this->_integral_log_mod->add($integral_log);
     }
 
     /**
-     * 用户购买产品  可以抵扣的白积分
+     * 用户购买产品  可以抵扣的积分
      * @param type $user_id
      * @param type $point
      * 
-     * 注意 此处预留    新增 首先需 新增   抵扣 比例   同时判断当前白积分是否大于抵扣的数额
+     * 注意 此处预留    新增 首先需 新增   抵扣 比例   同时判断当前积分是否大于抵扣的数额
      * 
      */
     function change_integral_seller($user_id, $point) {
@@ -323,7 +323,7 @@ class Integral {
         if(!intval($user_id)||!$point){
             return;
         }
-        // 获取后台设置的  购买抵扣白积分计算
+        // 获取后台设置的  购买抵扣积分计算
         $integral_seller = Conf::get('integral_seller');
         //未设置 或者小于 0 不进行操作
         if ($integral_seller <= 0) {
@@ -336,19 +336,19 @@ class Integral {
         if (empty($member)) {
             return;
         }
-        $data['integral'] = $member['integral'] - $point ; #当前可用白积分
+        $data['integral'] = $member['integral'] - $point ; #当前可用积分
         if($data['integral']<0){
             return;
         }
         $this->_member_mod->edit($user_id, $data);
         
-        //操作记录入白积分记录
+        //操作记录入积分记录
         $integral_log = array(
             'user_id' => $user_id,
             'user_name' => $member['user_name'],
             'point' => $point,
             'add_time' => gmtime(),
-            'remark' => '购买抵扣白积分'.$point.',减免金额为:'.$integral_seller* $point,
+            'remark' => '购买抵扣积分'.$point.',减免金额为:'.$integral_seller* $point,
             'integral_type' => INTEGRAL_SELLER,
         );
         $this->_integral_log_mod->add($integral_log);
@@ -364,7 +364,7 @@ class Integral {
     }
 
     /**
-     * 用户兑换产品扣除白积分
+     * 用户兑换产品扣除积分
      */
     function change_integral_goods($user_id, $point, $goods_id) {
         

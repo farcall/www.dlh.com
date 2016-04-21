@@ -25,7 +25,7 @@
                         <div class="block_2">
                             <span>产品名称：<?php echo htmlspecialchars($this->_var['integral_goods']['goods_name']); ?></span>
                             <span>可兑换：<?php echo htmlspecialchars($this->_var['integral_goods']['goods_stock']); ?></span>
-                            <span>兑换白积分：<?php echo htmlspecialchars($this->_var['integral_goods']['goods_point']); ?></span>
+                            <span>兑换积分：<?php echo htmlspecialchars($this->_var['integral_goods']['goods_point']); ?></span>
                             <span>已兑换：<?php echo htmlspecialchars($this->_var['integral_goods']['goods_stock_exchange']); ?></span>
                             <span>产品价值：<?php echo price_format($this->_var['integral_goods']['goods_price']); ?></span>
                             <span><a href="<?php echo url('app=my_integral_goods&act=add&id=' . $this->_var['integral_goods']['goods_id']. ''); ?>">我要兑换</a></span>

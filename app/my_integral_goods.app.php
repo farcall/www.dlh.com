@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 白积分产品兑换
+ * 积分产品兑换
  */
 class My_integral_goodsApp extends MemberbaseApp {
 
@@ -16,9 +16,9 @@ class My_integral_goodsApp extends MemberbaseApp {
     function My_integral_goodsApp() {
         parent::__construct();
         
-        //判断白积分操作是否开启 未开启直接返回
+        //判断积分操作是否开启 未开启直接返回
         if (!Conf::get('integral_enabled')) {
-            $this->show_warning('未开启白积分');exit;
+            $this->show_warning('未开启积分');exit;
             return;
         }
         
@@ -28,7 +28,7 @@ class My_integral_goodsApp extends MemberbaseApp {
     }
 
     /**
-     * 显示所有白积分产品
+     * 显示所有积分产品
      */
     function index() {
         $page = $this->_get_page(10);   //获取分页信息
@@ -54,7 +54,7 @@ class My_integral_goodsApp extends MemberbaseApp {
     }
 
     /**
-     * 添加兑换申请  此处并不扣除白积分，当管理员审核通过之后 才扣除白积分
+     * 添加兑换申请  此处并不扣除积分，当管理员审核通过之后 才扣除积分
      */
     function add() {
         $goods_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -94,7 +94,7 @@ class My_integral_goodsApp extends MemberbaseApp {
             $member_mod = &m('member');
             $member = $member_mod->get($this->_user_id);
 
-            //判断当前用户的可用白积分  是否可以兑换这么多产品
+            //判断当前用户的可用积分  是否可以兑换这么多产品
             $point = $integral_goods['goods_point'] * $my_num;
             if ($point > $member['integral']) {
                 $this->show_warning('no_such_point');
@@ -121,18 +121,18 @@ class My_integral_goodsApp extends MemberbaseApp {
             $this->_integral_goods_mod->edit($goods_id,array('goods_stock'=>$integral_goods['goods_stock']-$my_num,'goods_stock_exchange'=>$integral_goods['goods_stock_exchange']+$my_num));
             
 
-            //写入记录 扣除白积分
+            //写入记录 扣除积分
             $member_mod->edit($this->_user_id, array('integral' => $member['integral'] - $point));
 
 
-            //操作记录入白积分记录
+            //操作记录入积分记录
             $integral_log_mod = &m('integral_log');
             $integral_log = array(
                 'user_id' => $this->_user_id,
                 'user_name' => $member['user_name'],
                 'point' => $point,
                 'add_time' => gmtime(),
-                'remark' => '兑换白积分产品扣除白积分' . $point,
+                'remark' => '兑换积分产品扣除积分' . $point,
                 'integral_type' => INTEGRAL_GOODS,
             );
             $integral_log_mod->add($integral_log);

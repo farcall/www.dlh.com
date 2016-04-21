@@ -59,10 +59,10 @@
             <!--{/if}-->
             
             <!--{if $goods_info.integral_enabled}-->
-            <li>当前用户可用白积分<em style="font-weight:bold;color:red;padding: 0 5px;">{$member_integral}</em>,</li>
-            <li>本次订单最多可使用白积分<em style="font-weight:bold;color:red;padding: 0 5px;">{$total_integral_max_exchange}</em></li>
-            <li>白积分比例为<em style="font-weight:bold;color:red;padding: 0 5px;">{$integral_seller|default:0}</em></li>
-            <li>使用白积分：<input type="text" name="use_integral" id="use_integral" onkeyup="set_order_amount_total();" class="text" /></li>
+            <li>当前用户可用积分<em style="font-weight:bold;color:red;padding: 0 5px;">{$member_integral}</em>,</li>
+            <li>本次订单最多可使用积分<em style="font-weight:bold;color:red;padding: 0 5px;">{$total_integral_max_exchange}</em></li>
+            <li>积分比例为<em style="font-weight:bold;color:red;padding: 0 5px;">{$integral_seller|default:0}</em></li>
+            <li>使用积分：<input type="text" name="use_integral" id="use_integral" onkeyup="set_order_amount_total();" class="text" /></li>
             <!--{/if}-->
             <li>
                 {if $goods_info.allow_coupon}

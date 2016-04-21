@@ -11,9 +11,9 @@ class EggApp extends MallbaseApp {
     function EggApp() {
         parent::__construct();
         
-        //判断白积分操作是否开启 未开启直接返回
+        //判断积分操作是否开启 未开启直接返回
         if (!Conf::get('integral_enabled')) {
-            $this->show_warning('未开启白积分');exit;
+            $this->show_warning('未开启积分');exit;
             return;
         }
     }
@@ -77,19 +77,19 @@ class EggApp extends MallbaseApp {
                 return;
             }
 
-            if ($member['integral'] >= $egg['noun']) {//活动白积分是否够砸此蛋
-                #扣除白积分  由当前的白积分 - 减去使用砸金蛋扣除的白积分
+            if ($member['integral'] >= $egg['noun']) {//活动积分是否够砸此蛋
+                #扣除积分  由当前的积分 - 减去使用砸金蛋扣除的积分
                 $data['integral'] = $member['integral'] - $egg['noun'];
                 $member_mod->edit($user_id, $data);
 
                 $integral_log_mod = & m('integral_log');
-                //操作记录入白积分记录
+                //操作记录入积分记录
                 $integral_log = array(
                     'user_id' => $user_id,
                     'user_name' => $member['user_name'],
                     'point' => $egg['noun'],
                     'add_time' => gmtime(),
-                    'remark' => '砸金蛋扣除白积分' . $egg['noun'],
+                    'remark' => '砸金蛋扣除积分' . $egg['noun'],
                     'integral_type' => INTEGRAL_EGG,
                 );
                 $integral_log_mod->add($integral_log);
@@ -104,7 +104,7 @@ class EggApp extends MallbaseApp {
                     $msg = "很遗憾 ！什么也没有砸中，再接再厉吧 ！";
                 }
             } else {
-                $msg = "很遗憾 ！你剩余的活动白积分不够砸此蛋 ！";
+                $msg = "很遗憾 ！你剩余的活动积分不够砸此蛋 ！";
             }
         } else {
             $msg = "请先登录";

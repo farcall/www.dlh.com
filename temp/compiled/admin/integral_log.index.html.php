@@ -7,10 +7,10 @@ $(function(){
 </script>
 
 <div id="rightTop">
-    <p>白积分记录</p>
+    <p>积分记录</p>
     <ul class="subnav">
         <li><span>管理</span></li>
-        <li><a class="btn1" href="index.php?app=integral_log&amp;act=set">白积分设置</a></li>
+        <li><a class="btn1" href="index.php?app=integral_log&amp;act=set">积分设置</a></li>
     </ul>
 </div>
 <div class="mrightTop">
@@ -22,7 +22,7 @@ $(function(){
                 用户名:
                 <input class="queryInput" type="text" name="user_name" value="<?php echo htmlspecialchars($_GET['user_name']); ?>" />
                 <select class="querySelect" name="integral_type">
-                    <option value="">白积分类型</option>
+                    <option value="">积分类型</option>
                     <?php echo $this->html_options(array('options'=>$this->_var['integral_type_list'],'selected'=>$this->_var['query']['integral_type'])); ?>
                 </select>
                 时间从:<input class="queryInput2" type="text" value="<?php echo $this->_var['query']['add_time_from']; ?>" id="add_time_from" name="add_time_from" class="pick_date" />
@@ -41,8 +41,8 @@ $(function(){
         <?php if ($this->_var['integral_logs']): ?>
         <tr class="tatr1">
             <td>用户名</td>
-            <td>白积分</td>
-            <td>白积分类型</td>
+            <td>积分</td>
+            <td>积分类型</td>
             <td>备注</td>
             <td>添加时间</td>
         </tr>

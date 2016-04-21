@@ -38,7 +38,7 @@ return array(
     'after_register' => '注册之后你就可以',
     'save_profile' => '保存您的个人资料',
     'collect_goods' => '收藏您关注的商品',
-    'member_point' => '享受会员白积分制度',
+    'member_point' => '享受会员积分制度',
     'subscription_goods' => '订阅本店商品信息',
     'register_now' => '立即注册',
     'password_confirm' => '确认密码',

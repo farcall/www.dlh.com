@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 白积分产品
+ * 积分产品
  */
 class Integral_goodsModel extends BaseModel {
 
@@ -9,7 +9,7 @@ class Integral_goodsModel extends BaseModel {
     var $prikey = 'goods_id';
     var $_name = 'integral_goods';
     var $_relation = array(
-        // 一个白积分产品 有 多个兑换记录
+        // 一个积分产品 有 多个兑换记录
         'has_integral_goods_log' => array(
             'model' => 'integral_goods_log',
             'type' => HAS_MANY,

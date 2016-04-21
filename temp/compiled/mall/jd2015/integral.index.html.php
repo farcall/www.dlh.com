@@ -13,7 +13,7 @@
 
     <div class="integral_floor w clearfix">
         <div class="mt">
-            <h3>白积分抵扣</h3>
+            <h3>积分抵扣</h3>
         </div>
         <div class="mc clearfix" style="padding: 20px 0">
             <ul class="clearfix">
@@ -35,7 +35,7 @@ if ($this->_foreach['fe_goods']['total'] > 0):
                         <?php echo price_format($this->_var['goods']['price']); ?>
                     </div>
                     <div class="goods_integral">
-                        可使用<span class="red"><?php echo $this->_var['goods']['integral_max_exchange']; ?>白积分</span>
+                        可使用<span class="red"><?php echo $this->_var['goods']['integral_max_exchange']; ?>积分</span>
                     </div>
                     <div class="btn">
                         <a href="<?php echo url('app=goods&id=' . $this->_var['goods']['goods_id']. ''); ?>" target="_blank" >立即购买</a>

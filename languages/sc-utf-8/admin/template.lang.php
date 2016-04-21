@@ -18,7 +18,7 @@ return array(
     'groupbuy' => '团购页',
     'login' => '登录页',
     'find_password' => '找回密码页',
-    'integral' => '白积分商城',
+    'integral' => '积分商城',
     'ju' => '聚划算首页',
     'ju_brand' => '品牌团',
     'ju_mingpin' => '聚名品',

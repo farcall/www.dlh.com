@@ -1,8 +1,8 @@
 <?php
 
 return array(
-    'integral_max_exchange'=>'抵扣白积分',
-    'integral_max_exchange_note'=>'设置允许买家最多可使用多少白积分抵扣价款,抵扣金额为:白积分×比例,设置为0时,不使用白积分抵扣,当前系统设置白积分抵扣比例为:',
+    'integral_max_exchange'=>'抵扣积分',
+    'integral_max_exchange_note'=>'设置允许买家最多可使用多少积分抵扣价款,抵扣金额为:积分×比例,设置为0时,不使用积分抵扣,当前系统设置积分抵扣比例为:',
     'ugrade_desc' => '会员的价格以原价的折扣来体现,如填写0.85代表原价的8.5折',
     'if_open' => '是否开启',
     'goods_list' => '商品列表',

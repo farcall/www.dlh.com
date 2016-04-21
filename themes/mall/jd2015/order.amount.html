@@ -8,13 +8,13 @@
 </script>
 <div class="w price-promotion mt10 mb10 f60">
     <p class="mb10 mt10">
-        <input id="use_integral_button" type="button" class="btn-allow-coupon center" value="使用白积分" />
+        <input id="use_integral_button" type="button" class="btn-allow-coupon center" value="使用积分" />
     </p>
     <p class="allow-coupon border padding10 mb10 hidden clearfix">
         <span class="note">
-            当前用户可用白积分<em style="font-weight:bold;color:red;padding: 0 5px;">{$member_integral}</em>,
-            本次订单最多可使用白积分<em style="font-weight:bold;color:red;padding: 0 5px;">{$total_integral_max_exchange}</em>
-            白积分比例为<em style="font-weight:bold;color:red;padding: 0 5px;">{$integral_seller|default:0}</em>
+            当前用户可用积分<em style="font-weight:bold;color:red;padding: 0 5px;">{$member_integral}</em>,
+            本次订单最多可使用积分<em style="font-weight:bold;color:red;padding: 0 5px;">{$total_integral_max_exchange}</em>
+            积分比例为<em style="font-weight:bold;color:red;padding: 0 5px;">{$integral_seller|default:0}</em>
         </span>
         <input type="text" name="use_integral" id="use_integral" onkeyup="set_order_amount_total();" class="text" />
     </p>

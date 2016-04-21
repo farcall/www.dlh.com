@@ -165,7 +165,7 @@ if ($this->_foreach['fe_goods_image']['total'] > 0):
             <div style="width: 100%;color:#e4393c;">
             <?php if ($this->_var['store']['amount_for_free_fee']): ?>满<?php echo price_format($this->_var['store']['amount_for_free_fee']); ?>元包邮<?php endif; ?><?php if ($this->_var['store']['acount_for_free_fee']): ?>,满<?php echo htmlspecialchars($this->_var['store']['acount_for_free_fee']); ?>件包邮<?php endif; ?>
             </div>
-            <?php if ($this->_var['goods']['integral_max_exchange']): ?>可使用白积分:<em style="color:red;font-weight: bold;padding-left:10px;"><?php echo htmlspecialchars($this->_var['goods']['integral_max_exchange']); ?></em><br /><?php endif; ?>
+            <?php if ($this->_var['goods']['integral_max_exchange']): ?>可使用积分:<em style="color:red;font-weight: bold;padding-left:10px;"><?php echo htmlspecialchars($this->_var['goods']['integral_max_exchange']); ?></em><br /><?php endif; ?>
             <?php if ($this->_var['goods']['brand']): ?><span class="letter1">品牌: </span><?php echo htmlspecialchars($this->_var['goods']['brand']); ?><br /><?php endif; ?>
             <?php if ($this->_var['goods']['tags']): ?>标签(TAG):&nbsp;&nbsp;<?php $_from = $this->_var['goods']['tags']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'tag');if (count($_from)):
     foreach ($_from AS $this->_var['tag']):

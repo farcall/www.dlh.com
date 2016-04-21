@@ -59,7 +59,7 @@
   <?php if ($this->_var['ugrade']): ?>
   <div id="dataFuncs">
     <div id="batchAction" class="left paddingT15"> &nbsp;&nbsp;
-      <input class="formbtn batchButton" type="button" value="全部删除" name="id" uri="index.php?app=ugrade&act=drop" presubmit="confirm('删除全部的会员等级会使会员的白积分清零，你确定要删除吗？');" />
+      <input class="formbtn batchButton" type="button" value="全部删除" name="id" uri="index.php?app=ugrade&act=drop" presubmit="confirm('删除全部的会员等级会使会员的积分清零，你确定要删除吗？');" />
     </div>
     <div class="pageLinks"><?php echo $this->fetch('page.bottom.html'); ?></div>
   </div>

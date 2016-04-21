@@ -100,19 +100,19 @@
                     //运费选择模板ID
                     var shipping_id = $('input[name="shipping_id"]:checked').val();
                     var _shipping_fee = get_shipping_fee(shipping_id);
-                    //当前设置白积分数
+                    //当前设置积分数
                     var use_integral  = $('#use_integral').val();
-                    //当前设置白积分数 大于用户白积分数 则设置所有白积分抵扣
+                    //当前设置积分数 大于用户积分数 则设置所有积分抵扣
                     if(use_integral>{$member_integral|default:0}){
                         $('#use_integral').val('{$member_integral|default:0}');
                         use_integral = {$member_integral|default:0};
                     }
-                    //当设置白积分数 大于可用白积分数
+                    //当设置积分数 大于可用积分数
                     if(use_integral>{$total_integral_max_exchange|default:0}){
                         $('#use_integral').val('{$total_integral_max_exchange|default:0}');
                         use_integral = {$total_integral_max_exchange|default:0};
                     }
-                    //白积分兑换比例 得出具体抵扣数值
+                    //积分兑换比例 得出具体抵扣数值
                     var _integral_fee = use_integral*{$integral_seller|default:0};
                     var _amount  = goods_amount + _shipping_fee - _integral_fee;
                     $('#order_amount').html(price_format(_amount));

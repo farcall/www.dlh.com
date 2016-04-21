@@ -1,13 +1,13 @@
 <?php
 
-/* 白积分记录  */
+/* 积分记录  */
 class integral_logModel extends BaseModel
 {
     var $table  = 'integral_log';
     var $prikey = 'integral_id';
     var $_name  = 'integral_log';
     var $_relation = array(
-        // 一个白积分记录只能属于一个用户
+        // 一个积分记录只能属于一个用户
         'belongs_to_member' => array(
             'model'         => 'member',
             'type'          => BELONGS_TO,

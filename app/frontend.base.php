@@ -376,7 +376,7 @@ class FrontendApp extends ECBaseApp {
                 $synlogin = $ms->user->synlogin($user_id);
             }
 
-            /*用户登录后 获得白积分*/
+            /*用户登录后 获得积分*/
             import('integral.lib');
             $integral=new Integral();
             $integral->change_integral_login($user_id);

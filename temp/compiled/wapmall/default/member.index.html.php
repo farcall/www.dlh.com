@@ -26,11 +26,11 @@
             <dt><?php echo $this->_var['user']['ugrade']['growth']; ?></dt>
         </dl>
         <dl>
-            <dd>当前白积分</dd>
+            <dd>当前积分</dd>
             <dt><?php echo $this->_var['user']['integral']; ?></dt>
         </dl>
         <dl>
-            <dd>总白积分</dd>
+            <dd>总积分</dd>
             <dt><?php echo $this->_var['user']['total_integral']; ?></dt>
         </dl>
         <?php $_from = $this->_var['epay']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'val');if (count($_from)):
@@ -113,7 +113,7 @@
         <li>
             <a href="<?php echo url('app=my_integral_log'); ?>">
                 <span class="ico" style="background:#663366"><em class="iconfont">&#xf0126;</em></span>
-                <span class="title">白积分明细</span>
+                <span class="title">积分明细</span>
             </a>
         </li>
         <li>

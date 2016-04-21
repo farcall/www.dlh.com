@@ -252,11 +252,11 @@ class MemberApp extends MemberbaseApp {
                 return;
             }
             
-            /*用户注册功能后 白积分操作*/
+            /*用户注册功能后 积分操作*/
             import('integral.lib');
             $integral=new Integral();
             $integral->change_integral_reg($user_id);
-            /*用户注册如果有推荐人，则推荐人增加白积分*/
+            /*用户注册如果有推荐人，则推荐人增加积分*/
             if(intval($_SESSION['referid'])){
                 $integral->change_integral_recom(intval($_SESSION['referid']));
             }

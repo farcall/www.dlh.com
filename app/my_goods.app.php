@@ -1743,8 +1743,8 @@ class My_goodsApp extends StoreadminbaseApp {
 
         //读取会员等级及对应的会员折扣 by qufood
         $goods_info['ugrades'] = $this->_gradegoods_mod->get_grade_goods_info($id);
-        $goods_info['integral_enabled'] = Conf::get('integral_enabled');#获取系统是否开启白积分
-        $goods_info['integral_seller'] = Conf::get('integral_seller');#获取系统白积分抵扣的比例
+        $goods_info['integral_enabled'] = Conf::get('integral_enabled');#获取系统是否开启积分
+        $goods_info['integral_seller'] = Conf::get('integral_seller');#获取系统积分抵扣的比例
 
         $goods_info['spec_json'] = ecm_json_encode(array(
             'spec_qty' => $goods_info['spec_qty'],
@@ -1783,7 +1783,7 @@ class My_goodsApp extends StoreadminbaseApp {
             'description' => html_script($_POST['description']),
             'recommended' => $_POST['recommended'],
             'tags' => html_script(trim($_POST['tags'])),
-            'integral_max_exchange' => $_POST['integral_max_exchange'],#产品允许兑换的白积分额度 ， 具体金额通过 后台设置比例*白积分数量
+            'integral_max_exchange' => $_POST['integral_max_exchange'],#产品允许兑换的积分额度 ， 具体金额通过 后台设置比例*积分数量
         );
         $spec_name_1 = !empty($_POST['spec_name_1']) ? $_POST['spec_name_1'] : '';
         $spec_name_2 = !empty($_POST['spec_name_2']) ? $_POST['spec_name_2'] : '';

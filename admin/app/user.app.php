@@ -247,44 +247,44 @@ class UserApp extends BackendApp {
 //                'im_aliww'  => $_POST['im_aliww'],
             );
             
-            //当输入白积分大于 0
+            //当输入积分大于 0
             $point = intval($_POST['point']);
             if ($point > 0) {
                 $user = $this->_user_mod->get_info($id);
-                //选项为 增加白积分
+                //选项为 增加积分
                 if ($_POST['point_change'] == 'inc_by') {
                     $data['integral'] = $user['integral'] + $point;
                     $data['total_integral'] = $user['total_integral'] + $point;
 
-                    //操作记录入白积分记录
+                    //操作记录入积分记录
                     $integral_log_mod = &m('integral_log');
                     $integral_log = array(
                         'user_id' => $user['user_id'],
                         'user_name' => $user['user_name'],
                         'point' => $point,
                         'add_time' => gmtime(),
-                        'remark' => '管理员新增白积分' . $point,
+                        'remark' => '管理员新增积分' . $point,
                         'integral_type' => INTEGRAL_ADD,
                     );
                     $integral_log_mod->add($integral_log);
                 }
                 
-                //选项为 减少白积分
+                //选项为 减少积分
                 if ($_POST['point_change'] == 'dec_by') {
-                    //如果当前的可用白积分小于扣除的白积分  则不做操作
+                    //如果当前的可用积分小于扣除的积分  则不做操作
                     if ($user['integral'] >= $point) {
                         
                         $data['integral'] = $user['integral'] - $point;
                         //$data['total_integral'] = $user['total_integral'] - $point;
 
-                        //操作记录入白积分记录
+                        //操作记录入积分记录
                         $integral_log_mod = &m('integral_log');
                         $integral_log = array(
                             'user_id' => $user['user_id'],
                             'user_name' => $user['user_name'],
                             'point' => $point,
                             'add_time' => gmtime(),
-                            'remark' => '管理员扣除白积分' . $point,
+                            'remark' => '管理员扣除积分' . $point,
                             'integral_type' => INTEGRAL_SUB,
                         );
                         $integral_log_mod->add($integral_log);
@@ -292,7 +292,7 @@ class UserApp extends BackendApp {
                 }
             }
             
-            //管理员编辑会员等级后，也把该会员的会员白积分修改为该会员等级所需要的最低白积分 by qufood
+            //管理员编辑会员等级后，也把该会员的会员积分修改为该会员等级所需要的最低积分 by qufood
             $ugrade_info = $ugrade_mod->get($_POST['grade_id']);
             $data['ugrade'] = $ugrade_info['grade'];
             $data['growth'] = $ugrade_info['floor_growth'];

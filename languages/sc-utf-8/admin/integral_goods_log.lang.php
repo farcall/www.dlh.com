@@ -1,8 +1,8 @@
 <?php
 return array(
-    'integral_goods_log'=>'白积分产品兑换',
+    'integral_goods_log'=>'积分产品兑换',
     'user_name'=>'用户名',
-    'goods_name'=>'白积分产品名称',
+    'goods_name'=>'积分产品名称',
     'state'=>'状态',
     'states'=>'状态',
     'add_time_from'=>'时间由',

@@ -13,10 +13,10 @@ define('API_UPDATEBADWORDS', 0);        //note 更新关键字列表 开关
 define('API_UPDATEHOSTS', 0);           //note 更新域名解析缓存 开关
 define('API_UPDATEAPPS', 1);            //note 更新应用列表 开关
 define('API_UPDATECLIENT', 1);          //note 更新客户端缓存 开关
-define('API_UPDATECREDIT', 0);          //note 更新用户白积分 开关
-define('API_GETCREDITSETTINGS', 0);     //note 向 UCenter 提供白积分设置 开关
-define('API_GETCREDIT', 0);             //note 获取用户的某项白积分 开关
-define('API_UPDATECREDITSETTINGS', 0);  //note 更新应用白积分设置 开关
+define('API_UPDATECREDIT', 0);          //note 更新用户积分 开关
+define('API_GETCREDITSETTINGS', 0);     //note 向 UCenter 提供积分设置 开关
+define('API_GETCREDIT', 0);             //note 获取用户的某项积分 开关
+define('API_UPDATECREDITSETTINGS', 0);  //note 更新应用积分设置 开关
 
 define('API_RETURN_SUCCEED', '1');
 define('API_RETURN_FAILED', '-1');

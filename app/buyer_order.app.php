@@ -319,7 +319,7 @@ class Buyer_orderApp extends MemberbaseApp {
                 $model_goodsstatistics->edit($goods['goods_id'], "sales=sales+{$goods['quantity']}");
             }
 
-            /*用户确认收货后 获得白积分*/
+            /*用户确认收货后 获得积分*/
             import('integral.lib');
             $integral=new Integral();
             $integral->change_integral_buy($order_info['buyer_id'],$order_info['goods_amount']);

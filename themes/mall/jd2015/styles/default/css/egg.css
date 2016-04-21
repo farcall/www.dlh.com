@@ -65,7 +65,7 @@ a:hover{ color:#ffffff; text-decoration:underline;}
 
 
 
-/*白积分砸蛋*/
+/*积分砸蛋*/
 #content .integral{width:855px;height:425px;background:url(../images/egg/index_04.jpg) no-repeat;float:left;}
 #content .integral .zd{margin-left:38px;margin-top:114px;width:781px;height:277px;color:#000000;font-size:14px;}
 #content .integral .zd .m{border:0px solid #ff0000;margin:0 auto;width:700px;height:220px;padding-left:70px;}

@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  白积分产品
+ *  积分产品
  */
 class Integral_goodsApp extends BackendApp {
 

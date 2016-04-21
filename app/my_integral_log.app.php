@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 白积分记录
+ * 积分记录
  */
 class my_integral_logApp extends MemberbaseApp {
 
@@ -12,9 +12,9 @@ class my_integral_logApp extends MemberbaseApp {
     function my_integral_logApp() {
         parent::__construct();
         
-        //判断白积分操作是否开启 未开启直接返回
+        //判断积分操作是否开启 未开启直接返回
         if (!Conf::get('integral_enabled')) {
-            $this->show_warning('未开启白积分');exit;
+            $this->show_warning('未开启积分');exit;
             return;
         }
     }
@@ -55,17 +55,17 @@ class my_integral_logApp extends MemberbaseApp {
         $this->_format_page($page);
         $this->assign('page_info', $page);
 
-        //获取白积分类型
+        //获取积分类型
         $this->assign('integral_type_list', array(
-            INTEGRAL_REG => Lang::get('integral_reg'), #注册赠送白积分类型
-            INTEGRAL_LOGIN => Lang::get('integral_login'), #登录赠送白积分类型
-            INTEGRAL_RECOM => Lang::get('integral_recom'), #推荐赠送白积分类型
-            INTEGRAL_BUY => Lang::get('integral_buy'), #购买赠送白积分类型
-            INTEGRAL_SELLER => Lang::get('integral_seller'), #抵扣扣除白积分类型
-            INTEGRAL_ADD => Lang::get('integral_add'), #管理员增加白积分
-            INTEGRAL_SUB => Lang::get('integral_sub'), #管理员减少白积分
-            INTEGRAL_EGG => Lang::get('integral_egg'), #砸金蛋扣除白积分类型
-            INTEGRAL_GOODS => Lang::get('integral_goods'), #兑换礼品扣除白积分类型
+            INTEGRAL_REG => Lang::get('integral_reg'), #注册赠送积分类型
+            INTEGRAL_LOGIN => Lang::get('integral_login'), #登录赠送积分类型
+            INTEGRAL_RECOM => Lang::get('integral_recom'), #推荐赠送积分类型
+            INTEGRAL_BUY => Lang::get('integral_buy'), #购买赠送积分类型
+            INTEGRAL_SELLER => Lang::get('integral_seller'), #抵扣扣除积分类型
+            INTEGRAL_ADD => Lang::get('integral_add'), #管理员增加积分
+            INTEGRAL_SUB => Lang::get('integral_sub'), #管理员减少积分
+            INTEGRAL_EGG => Lang::get('integral_egg'), #砸金蛋扣除积分类型
+            INTEGRAL_GOODS => Lang::get('integral_goods'), #兑换礼品扣除积分类型
         ));
         
         $this->assign('filtered', $conditions ? 1 : 0); //是否有查询条件

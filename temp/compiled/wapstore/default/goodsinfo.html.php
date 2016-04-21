@@ -157,7 +157,7 @@ if ($this->_foreach['fe_goods_image']['total'] > 0):
     <div style="width: 100%;color:#e4393c;">
         <?php if ($this->_var['store']['amount_for_free_fee']): ?>满<?php echo price_format($this->_var['store']['amount_for_free_fee']); ?>元包邮<?php endif; ?><?php if ($this->_var['store']['acount_for_free_fee']): ?>,满<?php echo htmlspecialchars($this->_var['store']['acount_for_free_fee']); ?>件包邮<?php endif; ?>
     </div>
-    <?php if ($this->_var['goods']['integral_max_exchange']): ?><p>可使用白积分:<strong style="color:red;font-weight: bold;padding-left:10px;"><?php echo htmlspecialchars($this->_var['goods']['integral_max_exchange']); ?></strong></p><?php endif; ?>
+    <?php if ($this->_var['goods']['integral_max_exchange']): ?><p>可使用积分:<strong style="color:red;font-weight: bold;padding-left:10px;"><?php echo htmlspecialchars($this->_var['goods']['integral_max_exchange']); ?></strong></p><?php endif; ?>
     <p>销量：<?php echo $this->_var['sales_info']; ?><?php echo $this->_var['comments']; ?></p>
     <p><span>所在地区：<?php echo htmlspecialchars($this->_var['store']['region_name']); ?></span><!--<span>快递：10.00</span>--></p>
     <?php if ($this->_var['shipping']): ?>

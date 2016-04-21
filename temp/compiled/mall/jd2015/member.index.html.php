@@ -15,8 +15,8 @@
                     <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">会员等级:<font color="red">&nbsp;&nbsp;<?php echo $this->_var['user']['ugrade']['grade_name']; ?></font></em>
                     <img height="" width="" src="<?php echo $this->_var['user']['ugrade']['grade_icon']; ?>" /><br />
                     <span style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">会员成长值：<font color="red"><?php echo $this->_var['user']['ugrade']['growth']; ?></font><?php if ($this->_var['user']['ugrade']['higher_grade_name']): ?><b style="font-weight:normal;margin-left:10px;color:#666;">距升级到<font color="red" style="margin:0px 3px;"><?php echo $this->_var['user']['ugrade']['higher_grade_name']; ?></font>还需要<font color="red"><?php echo $this->_var['user']['ugrade']['distant_growth']; ?></font>个成长值</b><?php endif; ?></span><a href="<?php echo url('app=member&act=profile'); ?>">编辑个人资料>></a><br />
-                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">当前白积分:<font color="red">&nbsp;&nbsp;<?php echo $this->_var['user']['integral']; ?></font></em><br/>
-                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">总白积分:<font color="red">&nbsp;&nbsp;<?php echo $this->_var['user']['total_integral']; ?></font></em><br/>
+                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">当前积分:<font color="red">&nbsp;&nbsp;<?php echo $this->_var['user']['integral']; ?></font></em><br/>
+                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">总积分:<font color="red">&nbsp;&nbsp;<?php echo $this->_var['user']['total_integral']; ?></font></em><br/>
                     </dt>	
                     <dd>
                         <span>上次登录时间：<?php echo local_date("Y-m-d H:i:s",$this->_var['user']['last_login']); ?></span>
