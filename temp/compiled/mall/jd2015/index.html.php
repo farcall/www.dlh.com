@@ -1,41 +1,130 @@
-<?php echo $this->fetch('header.html'); ?>
-<div  id="main" class="w-full">
-    <div id="page-home" class="w-full mb20">
-        <div class="col-1 relative w">
-            <div class="left" area="col-1-left" widget_type="area">
-                <?php $this->display_widgets(array('page'=>'index','area'=>'col-1-left')); ?>
-            </div>
-            <div class="right" area="col-1-right" widget_type="area">
-                <?php $this->display_widgets(array('page'=>'index','area'=>'col-1-right')); ?>
-                <div class="jd2015_register_login">
-                    <dl>
-                        <dt><img src="<?php echo $this->res_base . "/" . 'images/index_member_logo.png'; ?>" width="60" height="60"/></dt>
-                        <dd>
-                            <p>Hi! 你好</p>
-                            <p>去<em>会员俱乐</em>部看看</p>
-                        </dd>
-                    </dl>
-                    <?php if (! $this->_var['visitor']['user_id']): ?>
-                    <a href="<?php echo url('app=member&act=login&ret_url=' . $this->_var['ret_url']. ''); ?>">登录</a>
-                    <a href="<?php echo url('app=member&act=register&ret_url=' . $this->_var['ret_url']. ''); ?>" class="register">注册</a>
-                    <a href="<?php echo url('app=apply'); ?>">用户开店</a>
-                    <?php else: ?>
-                    <a href="<?php echo url('app=member'); ?>"><?php echo htmlspecialchars($this->_var['visitor']['user_name']); ?></a>
-                    <a href="<?php echo url('app=member&act=logout'); ?>"  class="register">退出</a>
-                    <?php endif; ?>
+<?php echo $this->fetch('paycenter/header.html'); ?>
+
+<?php echo $this->fetch('paycenter/left.html'); ?>
+
+
+<div class="content-wrapper">
+            <section class="content-header">
+                <h1>
+                    账户预览
+                    <small>Version 1.0</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="active">账户预览</li>
+                </ol>
+            </section>
+
+
+            <section class="content">
+                <h2>现金账户</h2>
+
+                
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-aqua"><i class="ion ion-social-yen-outline"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">现金余额</span>
+                                <span class="info-box-number"><?php echo $this->_var['member']['money']; ?></span>
+                                <a href="/index.php?app=epay&act=czlist" target="_blank"><button type="button" class="btn btn-success">充值</button></a>
+                                <a href="/index.php?app=epay&act=withdraw" target="_blank"><button type="button" class="btn btn-danger">提现</button></a>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-maroon-active"><i class="fa ion-social-chrome-outline"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">冻结资金</span>
+                                <span class="info-box-number"><?php echo $this->_var['member']['money_dj']; ?></span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+
+                    
+                    <div class="clearfix visible-sm-block"></div>
+
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">税费资金</span>
+                                <span class="info-box-number"><?php echo $this->_var['member']['money_tax']; ?></span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
                 </div>
-            </div>
-        </div>
-        <div class="col-2" area="col-2" widget_type="area">
-            <?php $this->display_widgets(array('page'=>'index','area'=>'col-2')); ?>
-        </div>
-        <div class="col-3 w" area="col-3" widget_type="area">
-            <?php $this->display_widgets(array('page'=>'index','area'=>'col-3')); ?>
-        </div>
-        <div class="col-4 w" area="col-4" widget_type="area">
-            <?php $this->display_widgets(array('page'=>'index','area'=>'col-4')); ?>
-        </div>
-    </div>
+                
+
+                <h2>积分账户</h2>
+
+                
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-fuchsia"><i class="ion ion-social-github-outline"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">积分赠送权</span>
+                                <span class="info-box-number"><?php echo $this->_var['member']['integral_power']; ?></span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-yellow-active"><i class="fa ion-social-twitter"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">白积分</span>
+                                <span class="info-box-number"><?php echo $this->_var['member']['integral_white']; ?></span>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+
+                    
+                    <div class="clearfix visible-sm-block"></div>
+
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-red"><i class="ion ion-social-reddit-outline"></i></span>
+
+                            <div class="info-box-content">
+                                <span class="info-box-text">红积分</span>
+                                <span class="info-box-number"><?php echo $this->_var['member']['integral_red']; ?></span>
+                                <a href="/index.php?app=epay&act=withdraw" target="_blank"><button type="button" class="btn btn-danger">转换</button></a>
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+            </section>
+
+
 </div>
 
-<?php echo $this->fetch('footer.html'); ?>
+
+
+
+<?php echo $this->fetch('paycenter/footer.html'); ?>

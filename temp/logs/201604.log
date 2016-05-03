@@ -7,3 +7,42 @@ Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\mysql.php[450]	\eccore\mod
 Sat, 16 Apr 2016 00:44:39 +0800	[256]MySQL Error[1146]: Table 'dlh.ecm_integral_log' doesn't exist
 MySQL Query:SELECT COUNT(*) as c FROM ecm_integral_log integral_log WHERE 1=1 
 Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\mysql.php[450]	\eccore\model\mysql.php	278
+Fri, 22 Apr 2016 02:12:29 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Fri, 22 Apr 2016 10:08:33 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Fri, 22 Apr 2016 11:46:01 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Fri, 22 Apr 2016 14:29:05 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Fri, 22 Apr 2016 15:25:56 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Fri, 22 Apr 2016 16:28:50 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Fri, 22 Apr 2016 19:51:44 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Fri, 22 Apr 2016 20:56:24 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Fri, 22 Apr 2016 21:53:41 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 00:14:05 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 00:31:25 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 01:49:41 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 02:17:54 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 02:53:41 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 04:34:47 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 05:50:23 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 07:28:25 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 07:29:00 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 08:03:49 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 08:18:23 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 09:42:42 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 10:05:03 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sat, 23 Apr 2016 14:32:04 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132
+Sun, 24 Apr 2016 20:38:51 +0800	[2]mt_rand() [<a href='function.mt-rand'>function.mt-rand</a>]: max(0) is smaller than min(1)	\includes\libraries\captcha.lib.php	266
+Mon, 25 Apr 2016 03:40:24 +0800	[2]include(D:\phpStudy\WWW\www.dlh.com/includes/arrayfiles/paycenter.arrayfile.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory	\includes\global.lib.php	79
+Mon, 25 Apr 2016 03:41:35 +0800	[2]include(D:\phpStudy\WWW\www.dlh.com/includes/arrayfiles/paycenter.arrayfile.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory	\includes\global.lib.php	79
+Sat, 30 Apr 2016 04:41:15 +0800	[256]MySQL Error[1054]: Unknown column 'integral_power' in 'field list'
+MySQL Query:UPDATE ecm_member SET integral_power='10' WHERE user_id = 3
+Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\model.base.php[523]	\eccore\model\mysql.php	278
+Sat, 30 Apr 2016 05:04:47 +0800	[256]MySQL Error[1054]: Unknown column 'integral_white' in 'field list'
+MySQL Query:UPDATE ecm_member SET integral_white='100000' WHERE user_id = 3
+Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\model.base.php[523]	\eccore\model\mysql.php	278
+Sat, 30 Apr 2016 05:11:10 +0800	[256]MySQL Error[1054]: Unknown column 'integral_white' in 'field list'
+MySQL Query:UPDATE ecm_member SET integral_white='100000' WHERE user_id = 3
+Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\model.base.php[523]	\eccore\model\mysql.php	278
+Sat, 30 Apr 2016 05:11:22 +0800	[256]MySQL Error[1064]: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '3' at line 1
+MySQL Query:3
+Wrong File:  D:\phpStudy\WWW\www.dlh.com\eccore\model\mysql.php[450]	\eccore\model\mysql.php	278
+Sat, 30 Apr 2016 05:26:11 +0800	[2]filemtime() [<a href='function.filemtime'>function.filemtime</a>]: stat failed for D:\phpStudy\WWW\www.dlh.com/data/crond.lock	\includes\libraries\cron.lib.php	132

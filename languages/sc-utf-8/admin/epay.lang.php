@@ -96,5 +96,10 @@ return array(
     'epay_tuijian_buyer' => '推荐购买佣金',
     'epay_tuijian_seller' => '推荐销售佣金',
     'epay_trade_charges' => '交易佣金',
+
+    'money_tax'=>'税费资金',
+    'integral_power'=>'积分赠送权',
+    'integral_white'=>'白积分',
+    'integral_red'=>'红积分',
 );
 ?>

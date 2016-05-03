@@ -857,6 +857,12 @@ class MemberbaseApp extends MallbaseApp {
                     'name' => 'overview',
                     'icon' => 'ico1',
                 ),
+                'paycenter' => array(
+                    'text' => Lang::get('paycenter'),
+                    'url' => 'index.php?app=paycenter',
+                    'name' => 'paycenter',
+                    'icon' => 'ico1',
+                ),
                 'refer'  => array(
                     'text'  => Lang::get('refer'),
                     'url'   => 'index.php?app=refer',

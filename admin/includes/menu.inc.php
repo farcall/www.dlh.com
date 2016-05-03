@@ -207,7 +207,48 @@ return array(
         ),
         
     ),
-    
+
+    'epay_manage' => array(
+        'text' =>'资金管理',
+        'default' => 'epay',
+        'children' => array(
+            'epay' => array(
+             'text'=>'资金用户',
+            'url'=> 'index.php?app=epay',),
+
+        ),
+    ),
+    // 后台积分相关
+    'integral_manage' => array(
+        'text'      => Lang::get('integral_manage'),
+        'default'   => 'integral_log',
+        'children'  => array(
+            'integral_log' => array(
+                'text'  => Lang::get('integral_log'),
+                'url'   => 'index.php?app=integral_log',
+            ),
+//            'egg_setting' => array(
+//                'text'  => Lang::get('egg_setting'),
+//                'url'   => 'index.php?app=egg',
+//            ),
+//            'eggpresent_setting' => array(
+//                'text'  => Lang::get('eggpresent_setting'),
+//                'url'   => 'index.php?app=eggpresent',
+//            ),
+//            'eggpresentrec_setting' => array(
+//                'text'  => Lang::get('eggpresentrec_setting'),
+//                'url'   => 'index.php?app=eggpresentrec',
+//            ),
+//            'integral_goods' => array(
+//                'text'  => Lang::get('integral_goods'),
+//                'url'   => 'index.php?app=integral_goods',
+//            ),
+//            'integral_goods_log' => array(
+//                'text'  => Lang::get('integral_goods_log'),
+//                'url'   => 'index.php?app=integral_goods_log',
+//            ),
+        ),
+    ),
     // 网站
     'website' => array(
         'text' => Lang::get('website'),
@@ -286,37 +327,7 @@ return array(
 //            ),
 //        ),
 //    ),
-    // 后台积分相关
-//    'integral_manage' => array(
-//        'text'      => Lang::get('integral_manage'),
-//        'default'   => 'integral_log',
-//        'children'  => array(
-//            'integral_log' => array(
-//                'text'  => Lang::get('integral_log'),
-//                'url'   => 'index.php?app=integral_log',
-//            ),
-//            'egg_setting' => array(
-//                'text'  => Lang::get('egg_setting'),
-//                'url'   => 'index.php?app=egg',
-//            ),
-//            'eggpresent_setting' => array(
-//                'text'  => Lang::get('eggpresent_setting'),
-//                'url'   => 'index.php?app=eggpresent',
-//            ),
-//            'eggpresentrec_setting' => array(
-//                'text'  => Lang::get('eggpresentrec_setting'),
-//                'url'   => 'index.php?app=eggpresentrec',
-//            ),
-//            'integral_goods' => array(
-//                'text'  => Lang::get('integral_goods'),
-//                'url'   => 'index.php?app=integral_goods',
-//            ),
-//            'integral_goods_log' => array(
-//                'text'  => Lang::get('integral_goods_log'),
-//                'url'   => 'index.php?app=integral_goods_log',
-//            ),
-//        ),
-//    ),
+
     // 扩展
     'extend' => array(
         'text' => Lang::get('extend'),
