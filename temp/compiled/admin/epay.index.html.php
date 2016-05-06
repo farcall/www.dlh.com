@@ -44,10 +44,12 @@
     <table width="100%" cellspacing="0">
 
         <tr class="tatr1" align="center">
-            <td width="19" class="firstCell"></td>
+            <td width="15" class="firstCell"></td>
             <td align="left">会员名称</td>
             <td align="center">金额</td>
             <td align="center">冻结金额</td>
+            <td align="center">税费资金</td>
+            <td align="center">红积分</td>
             <td align="center">开通时间</td>
             <td  class="handler">管理操作</td>
         </tr>
@@ -56,10 +58,12 @@
     foreach ($_from AS $this->_var['key'] => $this->_var['val']):
 ?>
         <tr class="tatr2">
-            <td width="19" class="firstCell">&nbsp;</td>
+            <td width="15" class="firstCell">&nbsp;</td>
             <td align="left"><b><?php echo $this->_var['val']['user_name']; ?></b></td>
             <td align="center"><font color="#FF0000"><?php echo $this->_var['val']['money']; ?></font></td>
             <td align="center"><font color="#FF0000"><?php echo $this->_var['val']['money_dj']; ?></font></td>
+            <td align="center"><font color="#FF0000"><?php echo $this->_var['val']['money_tax']; ?></font></td>
+            <td align="center"><font color="#FF0000"><?php echo $this->_var['val']['integral_red']; ?></font></td>
             <td align="center"><?php echo local_date("y-m-d H:i",$this->_var['val']['add_time']); ?></td>
 
             <td class="handler">

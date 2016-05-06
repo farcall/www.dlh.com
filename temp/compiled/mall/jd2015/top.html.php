@@ -39,7 +39,7 @@ var PRICE_FORMAT = '<?php echo $this->_var['price_format']; ?>';
 <div id="site-nav" class="w-full">
    <div class="shoptop w clearfix">
       <div class="login_info">
-         喵，欢迎来天猫
+          喵，欢迎来得来惠
          <?php if (! $this->_var['visitor']['user_id']): ?>
          <a href="<?php echo url('app=member&act=login&ret_url=' . $this->_var['ret_url']. ''); ?>">请登录</a>
          <a href="<?php echo url('app=member&act=register&ret_url=' . $this->_var['ret_url']. ''); ?>">注册</a>

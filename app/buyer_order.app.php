@@ -323,7 +323,7 @@ class Buyer_orderApp extends MemberbaseApp {
             import('integral.lib');
             $integral=new Integral();
             $integral->change_integral_buy($order_info['buyer_id'],$order_info['goods_amount']);
-            
+            $integral->change_integral_seller($order_info['seller_id'], $order_info['goods_amount'] / 10);
             /*交易成功后,推荐者可以获得佣金  BEGIN*/
             import('tuijian.lib');
             $tuijian=new tuijian();

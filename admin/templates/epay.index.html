@@ -44,20 +44,24 @@
     <table width="100%" cellspacing="0">
 
         <tr class="tatr1" align="center">
-            <td width="19" class="firstCell"></td>
+            <td width="15" class="firstCell"></td>
             <td align="left">{$lang.user_name}</td>
             <td align="center">{$lang.money}</td>
             <td align="center">{$lang.money_dj}</td>
+            <td align="center">{$lang.money_tax}</td>
+            <td align="center">{$lang.integral_red}</td>
             <td align="center">{$lang.add_time}</td>
             <td  class="handler">{$lang.admin_edit}</td>
         </tr>
 
         <!--{foreach from=$index item=val key=key}-->
         <tr class="tatr2">
-            <td width="19" class="firstCell">&nbsp;</td>
+            <td width="15" class="firstCell">&nbsp;</td>
             <td align="left"><b>{$val.user_name}</b></td>
             <td align="center"><font color="#FF0000">{$val.money}</font></td>
             <td align="center"><font color="#FF0000">{$val.money_dj}</font></td>
+            <td align="center"><font color="#FF0000">{$val.money_tax}</font></td>
+            <td align="center"><font color="#FF0000">{$val.integral_red}</font></td>
             <td align="center">{$val.add_time|date:y-m-d H:i}</td>
 
             <td class="handler">

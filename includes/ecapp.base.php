@@ -24,7 +24,19 @@ define('INTEGRAL_ADD', 6);    // 管理员增加积分
 define('INTEGRAL_SUB', 7);    // 管理员减少积分
 define('INTEGRAL_EGG', 8);    // 砸金蛋删减积分
 define('INTEGRAL_GOODS', 9);  // 兑换礼品删减积分
+define('INTEGRAL_FANLI', 10);  // 兑换礼品删减积分
 
+
+/*现金 白积分 红积分 积分赠送权*/
+define('EPAY_INTEGRAL_WHITE_BUY', 11);      //购买赠送白积分
+define('EPAY_INTEGRAL_WHITE_SELLER', 12);   //销售赠送白积分
+define('EPAY_INTEGRAL_WHITE_ADD', 13);      //管理员增加白积分
+define('EPAY_INTEGRAL_WHITE_SUB', 14);      //管理员减少白积分
+define('EPAY_INTEGRAL_WHITE_RECOM', 15);    //下级购物，作为一级推荐人获得白积分奖励
+
+define('EPAY_INTEGRAL_RED', 33);  // 红积分
+
+define('EPAY_INTEGRAL_POWER', 55);    // 积分赠送权
 
 /* 资金管理类型 */
 define('EPAY_ADMIN', 10);    // 管理员手工操作
@@ -39,6 +51,13 @@ define('EPAY_REFUND_OUT',90); // 账户退款收入,通常为卖家退款成功 
 define('EPAY_TUIJIAN_BUYER',100); // 用户推荐注册,注册者购买产品，推荐人会获得佣金，店铺会损失佣金。
 define('EPAY_TUIJIAN_SELLER',110); // 用户推荐注册,注册者成为店主，卖出产品推荐人会获得佣金，店主会损失佣金。
 define('EPAY_TRADE_CHARGES',120); // 交易成功扣除佣金
+define('EPAY_TRADE_REFUSE', 130); // 线下做单审核拒绝
+
+
+define('EPAY_INTEGRAL_RED_EXCHANGE_RED', 130); // 红积分兑换—红积分
+define('EPAY_INTEGRAL_RED_EXCHANGE_MONEYTAX', 140); // 红积分兑换-税费
+define('EPAY_INTEGRAL_RED_EXCHANGE_MONEY', 150); // 红积分兑换-现金余额
+
 
 
 
@@ -56,6 +75,10 @@ define('ORDER_ACCEPTED', 20);                  // 买家已付款，等待卖家
 define('ORDER_SHIPPED', 30);                   // 卖家已发货
 define('ORDER_FINISHED', 40);                  // 交易成功
 define('ORDER_CANCELED', 0);                   // 交易已取消
+
+define('ORDER_SHENHE_ING', 31);                       // 线下做单审核中  买家已付款,卖家已发货，等待管理员审核
+define('ORDER_SHENHE_FINISHED', 40);                 // 线下做单管理员通过
+define('ORDER_SHENHE_CANCELED', 0);                  // 线下做单管理员拒绝(订单取消)
 
 /* 特殊文章分类ID */
 define('STORE_NAV',    -1); // 店铺导航

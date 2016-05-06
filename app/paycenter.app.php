@@ -21,7 +21,6 @@ class PaycenterApp extends PaycenterbaseApp{
      * Created by QQ:710932
      */
     function index(){
-        //todo 账户预览
         //会员名称
         $user = $this->visitor->get();
         $member_mod = & m('member');
@@ -29,7 +28,7 @@ class PaycenterApp extends PaycenterbaseApp{
 
         $epay_mod = &m('epay');
         $epay_data = $epay_mod->get(array(
-            "user_id"=>$user['user_id'],
+            'conditions' => "user_id=" . $this->member['user_id'],
         ));
 
         $data['user_name'] = $member_data['user_name'];
@@ -42,9 +41,9 @@ class PaycenterApp extends PaycenterbaseApp{
         //税费资金:  0.00
         $data['money_tax'] = $epay_data['money_tax'];
         //积分赠送全:  0
-        $data['integral_power'] = $epay_data['integral_power'];
+        $data['integral_power'] = intval($epay_data['integral_power'] / 100000);
         //白积分:  0
-        $data['integral_white'] = $epay_data['integral_white'];
+        $data['integral_white'] = $member_data['integral'];
         //红积分:  0
         $data['integral_red'] = $epay_data['integral_red'];
 

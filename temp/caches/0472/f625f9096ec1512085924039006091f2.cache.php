@@ -1,20 +1,20 @@
 <?php
 /**
  *  @Created By  PhpCacheServer
- *  @Time:2016-05-02 11:58:23
+ * @Time:2016-05-05 22:01:47
  */
 
 if(filemtime(__FILE__) + 86400 < time())return false;
 
 return array (
-  'model_id' => 123600195,
+    'model_id' => 1253584067,
   'model_name' => '得来惠快报',
   'articles' => 
   array (
     18 => 
     array (
       'article_id' => '18',
-      'title' => '帅康疯狂底价专场！限时抢购',
+        'title' => '家电狂降五折起！',
     ),
     17 => 
     array (

@@ -479,7 +479,7 @@ class Seller_orderApp extends StoreadminbaseApp {
         if (!$order_id) {
             echo Lang::get('no_such_order');
         }
-        $status = array(ORDER_SUBMITTED, ORDER_PENDING, ORDER_ACCEPTED, ORDER_SHIPPED);
+        $status = array(ORDER_SUBMITTED, ORDER_PENDING, ORDER_ACCEPTED, ORDER_SHIPPED, ORDER_SHENHE_ING);
         $order_ids = explode(',', $order_id);
         if ($ext) {
             $ext = ' AND ' . $ext;

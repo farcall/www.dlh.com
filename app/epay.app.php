@@ -148,6 +148,28 @@ class EpayApp extends MemberbaseApp {
             $this->display('epay.withdraw.html');
         } else {
             $tx_money = trim($_POST['tx_money']);
+
+            //只能返100的整数倍
+            if ($tx_money % 100 != 0) {
+                $this->show_warning('提现只能为100的整数');
+                return;
+            }
+
+            //7天之内只能提现一次
+            $epaylog_data = $this->mod_epaylog->get(array(
+                'conditions' => "type=" . EPAY_TX . " and user_id=" . $this->visitor->get('user_id'),
+                'order' => 'add_time DESC',
+            ));
+
+            if (!empty($epaylog_data)) {
+                if ((gmtime() - $epaylog_data['add_time']) < 7 * 24 * 60 * 60) {
+                    date_default_timezone_set('Asia/Chongqing');
+                    $this->show_warning('7天内只能提现一次，您上次提现时间是' . date("Y-m-d H:i:s", $epaylog_data['add_time'] + 8 * 3600));
+                    return;
+                }
+            }
+
+
             $money_row = $this->mod_epay->getrow("select * from " . DB_PREFIX . "epay where user_id='$user_id'");
             
             $post_zf_pass = trim($_POST['post_zf_pass']);
@@ -204,7 +226,7 @@ class EpayApp extends MemberbaseApp {
                 'money' => $newmoney,
             );
             $this->mod_epay->edit('user_id=' . $user_id, $edit_mymoney);
-            $this->show_message('tixian_chenggong');
+            $this->show_message('提现成功');
             return;
         }
     }

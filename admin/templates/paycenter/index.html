@@ -1,0 +1,149 @@
+{include file="paycenter/header.html"}
+
+{include file="paycenter/left.html"}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Main row -->
+        <div class="row">
+            <!--left col-->
+            <section class="col-md-6 connectedSortable">
+
+                <div class="row">
+                    <div id="fenpeiliebiao" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="col-md-12">
+                            <div class="box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">今日分配预览</h3>
+                                </div>
+
+                                <div class="box-body  table-responsive no-padding">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 80px">用户ID</th>
+                                            <th>用户名</th>
+                                            <th>积分赠送权</th>
+                                            <th>红积分</th>
+                                            <th>现金余额</th>
+                                            <th>状态</th>
+                                        </tr>
+                                        {foreach from=$members item=member}
+                                        <tr>
+                                            <td>{$member.user_id}</td>
+                                            <th>{$member.user_name}</th>
+                                            <th>{$member.integral_power}</th>
+                                            <td>
+                                                {$member.integral_red}
+                                            </td>
+                                            <td>
+                                                {$member.money}
+                                            </td>
+                                            <td>
+                                                <span class="label label-warning">待分配</span>
+                                            </td>
+
+                                        </tr>
+                                        {/foreach}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {include file="paycenter/page.bottom.html"}
+            </section>
+            <!--/.left col-->
+
+            <section class="col-md-6 connectedSortable">
+                <div class="row info">
+                    <div class="col-md-6 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>{$allmoney}元</h3>
+
+                                <p>今日平台流水</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-card"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-md-6 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3>{$yongjins}元</h3>
+
+                                <p>今日平台佣金</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-social-yen"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+
+                    <div class="col-md-6 col-xs-6">
+                        <!-- small box -->
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3>{$integral_power_count}个</h3>
+
+                                <p>平台积分赠送权之和</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-social-yen"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="querenfenpei">
+                        <div class="box box-info">
+                            <div class="box-content">
+                                <form method="get">
+                                    <div class="box-body">
+                                        <input type="hidden" name="app" value="paycenter"/>
+                                        <input type="hidden" name="act" value="fanli"/>
+
+                                        <div class="form-group has-success">
+                                            <br/>
+
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="fanli_money"
+                                                       name="fanli_money" value="" style="font-size: x-large;">
+                                                <label class="input-group-addon">确认分配金额(元) </label>
+                                            </div>
+                                        </div>
+                                        <button type="submit" name="method" value="submit"
+                                                class="btn  btn-warning btn-lg pull-right"> 立即提交 <span
+                                                class="ion-paper-airplane"></span></button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+        </div>
+        <!-- /.row (main row) -->
+
+
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+
+
+{include file="paycenter/footer.html"}

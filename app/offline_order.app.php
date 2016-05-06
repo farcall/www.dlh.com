@@ -6,12 +6,17 @@
  * Time: 4:23
  */
 
-class Offline_orderApp extends StoreadminbaseApp{
+require(ROOT_PATH . '/app/paycenterbase.app.php');
+
+class Offline_orderApp extends PaycenterbaseApp
+{
     var $_msg_mod;
     var $_store_mod;
     var $_epay_mod;
     var $_msglog_mod;
     var $_member_mod;
+    var $_order_offline_mod;
+    var $_integral_log_mod;
     function __construct() {
         $this->Offline_order();
     }
@@ -23,11 +28,22 @@ class Offline_orderApp extends StoreadminbaseApp{
         $this->_member_mod = &m('member');
         $this->_epay_mod = &m('epay');
         $this->_store_mod = &m('store');
+        $this->_order_offline_mod = &m('order_offline');
+        $this->_integral_log_mod = &m('integral_log');
     }
 
 
     function index(){
         if(IS_POST){
+            if (empty($_POST['goods_name'])) {
+                $this->show_warning('商品名称不能为空');
+                returnl;
+            }
+
+            if (empty($_POST['money'])) {
+                $this->show_warning('商品价格不能为空');
+                return;
+            }
             //检查是否存在凭证
             $offline_image = $_POST['offline_image'];
             if(empty($offline_image)){
@@ -61,10 +77,10 @@ class Offline_orderApp extends StoreadminbaseApp{
                 'conditions' => "user_id = '{$this->visitor->get('user_id')}'",
             ));
 
-//            if($store_epay['money'] < $yongjin){
-//                $this->show_warning('资金不足：当前交易需要佣金'.$yongjin.',账户余额为'.$store_epay['money'],'立即充值','index.php?app=epay&act=czlist');
-//                return;
-//            }
+            if ($store_epay['money'] < $yongjin) {
+                $this->show_warning('资金不足：当前交易需要佣金' . $yongjin . ',账户余额为' . $store_epay['money'], '立即充值', 'index.php?app=epay&act=czlist');
+                return;
+            }
 
             $buyer_id = $this->visitor->get('user_id');
             $seller_id = intval($this->visitor->get('manage_store'));
@@ -72,7 +88,7 @@ class Offline_orderApp extends StoreadminbaseApp{
             $seller_member = $this->_member_mod->get($seller_id);
             $store = $this->_store_mod->get($store_id);
             //构造订单数据
-            $offline_order_data = array(
+            $order = array(
                 'buyer_id'=>$buyer_member['user_id'],
                 'buyer_name'=>$buyer_member['user_name'],
                 'buyer_mobile'=>$buyer_member['phone_mob'],
@@ -87,16 +103,49 @@ class Offline_orderApp extends StoreadminbaseApp{
             );
 
 
-
             $goods_type = & gt('offline');
             $order_type = & ot('offline');
-            $order_id = $order_type->submit_order($offline_order_data);
+            $order_id = $order_type->submit_order($order);
             if(empty($order_id)){
                 $this->show_warning('订单创建失败');
             }
 
+            //线下订单备份表——交易凭证在此表
+            $offline_order_data = array(
+                'order_id' => $order_id,
+                'buyer_userid' => $buyer_member['user_id'],
+                'buyer_username' => $buyer_member['user_name'],
+                'buyer_mobile' => $buyer_member['phone_mob'],
+                'seller_userid' => $this->visitor->get('user_id'),
+                'seller_username' => $seller_member['user_name'],
+                'seller_storeid' => $store['store_id'],
+                'seller_storename' => $store['store_name'],
+                'seller_mobile' => $seller_member['phone_mob'],
+                'money' => $money,
+                'yongjin' => $yongjin,
+                'goods_name' => $_POST['googs_name'],
+                'offline_image' => $offline_image,
+                'status' => ORDER_SHENHE_ING,
+                'add_time' => gmtime(),
+            );
 
 
+            $this->_order_offline_mod->add($offline_order_data);
+
+
+            /* 记录订单操作日志 */
+            $order_log =& m('orderlog');
+            $order_log->add(array(
+                'order_id' => $order_id,
+                'operator' => addslashes($this->visitor->get('user_name')),
+                'order_status' => '',
+                'changed_status' => '下订单，审核中',
+                'remark' => '买家提货，卖家做单',
+                'log_time' => gmtime(),
+                'operator_type' => 'buyer'
+            ));
+
+            $this->show_message("做单成功");
             return;
         }
         else{
@@ -104,6 +153,49 @@ class Offline_orderApp extends StoreadminbaseApp{
         }
     }
 
+    /**
+     * 作用:线下做单明细
+     * Created by QQ:710932
+     */
+    function log()
+    {
+
+        $id = $_GET['id'];
+
+        if (empty($id)) {
+            $page = $this->_get_page(20);
+
+            $orders = $this->_order_offline_mod->findAll(array(
+                'conditions' => "seller_userid=" . $this->visitor->get('manage_store'),
+                'count' => true,
+                'limit' => $page['limit'],
+                'order' => 'add_time DESC',
+            ));
+
+            if (empty($orders)) {
+                $this->show_warning('请不要非法提交');
+                return;
+            }
+            $page['item_count'] = $this->_order_offline_mod->getOne("select count(*) from ecm_order_offline where seller_userid=" . $this->visitor->get('manage_store'));
+            $this->_format_page($page);
+            $this->assign('page_info', $page);
+
+
+            $this->assign('orders', $orders);
+            $this->display('paycenter/offline_order_log.html');
+            return;
+        }
+
+
+        $order = $this->_order_offline_mod->get(array(
+            'conditions' => "order_id=" . $id,
+        ));
+
+
+        $this->assign('order', $order);
+        $this->display('paycenter/offline_order_detail.html');
+
+    }
     function uploader(){
         $file = $_FILES['file'];
         if ($file['error'] == UPLOAD_ERR_NO_FILE) { // 没有文件被上传

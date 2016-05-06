@@ -6,6 +6,10 @@ return array(
         'subtext' => Lang::get('offen_used'),
         'default' => 'welcome',
         'children' => array(
+            'paycenter' => array(
+                'text' => ' 核心管理',
+                'url' => 'index.php?app=paycenter',
+            ),
             'welcome' => array(
                 'text' => Lang::get('welcome_page'),
                 'url' => 'index.php?act=welcome',
