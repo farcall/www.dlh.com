@@ -4,10 +4,11 @@ class Integral {
 
     var $_member_mod;
     var $_integral_log_mod;
-
+    var $_epay_mod;
     function __construct() {
         $this->_member_mod = &m('member');
         $this->_integral_log_mod = & m('integral_log');
+        $this->_epay_mod = &m('epay');
 
         //判断积分操作是否开启 未开启直接返回
         if (!Conf::get('integral_enabled')) {
@@ -43,7 +44,7 @@ class Integral {
             'point' => $integral_reg,
             'add_time' => gmtime(),
             'remark' => '注册赠送积分' . $integral_reg,
-            'integral_type' => INTEGRAL_REG,
+            'integral_type' => EPAY_INTEGRAL_WHITE_BUY,
         );
         $this->_integral_log_mod->add($integral_log);
     }
@@ -132,13 +133,13 @@ class Integral {
             return;
         }
         // 获取后台设置的  购买获得积分计算
-        $integral_buy = Conf::get('integral_buy');
-        //未设置 或者小于 0 不进行操作
-        if ($integral_buy <= 0) {
-            return;
-        }
+//        $integral_buy = Conf::get('integral_buy');
+//        //未设置 或者小于 0 不进行操作
+//        if ($integral_buy <= 0) {
+//            return;
+//        }
         //确认收货 获得的积分为  比例×额度
-        $integral_buy = intval($integral_buy * $amount);
+        $integral_buy = intval(100 * $amount);
 
         //获取当前用户的信息
         $member = $this->_member_mod->get(intval($user_id));
@@ -160,6 +161,18 @@ class Integral {
             'integral_type' => INTEGRAL_BUY,
         );
         $this->_integral_log_mod->add($integral_log);
+
+
+        //积分赠送权
+        $epay_data = $this->_epay_mod->get(array(
+            'conditions' => 'user_id=' . $user_id,
+        ));
+
+        $epay_data['integral_power'] = $epay_data['integral_power'] + $integral_buy;
+        $this->_epay_mod->edit('user_id=' . $user_id, $epay_data);
+
+        //todo 积分赠送权日志
+
     }
 
     //此处是  推荐成为卖家， 卖家卖出产品后，他的推荐者可以获得积分
@@ -176,7 +189,7 @@ class Integral {
         if (!Conf::get('tuijian_seller_ratio1')) {
             return;
         }
-        $tuijian_seller_ratio1 = round(Conf::get('tuijian_seller_ratio1') / 100, 2);
+        $tuijian_seller_ratio1 = round(Conf::get('tuijian_seller_ratio1') / 100, 3);
 
         //卖家相关信息
         $seller_id = $order['seller_id'];
@@ -195,17 +208,17 @@ class Integral {
         }
 
         //1级推荐人获得佣金
-        $this->change_epay(
+        $this->change_integral(
             array(
                 'user_id' => $referinfo_1['user_id'],
                 'add_time'=>$add_time,
                 'user_name' => $referinfo_1['user_name'],
                 'order_sn' => $order['order_sn'],
                 'type' => EPAY_TUIJIAN_SELLER,
-                'integral' => round($order['goods_amount'] * $tuijian_seller_ratio1, 2)*100, #一级推荐人应该获取的佣金
+                'integral' => round($order['goods_amount'] * $tuijian_seller_ratio1, 3) * 100, #一级推荐人应该获取的佣金
                 'integral_flow' => 'income', #流入积分
                 'complete' => '1',
-                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio1, 2)*100 . '个积分,订单金额为' . $order['goods_amount'] . ',1级佣金比例为' . $tuijian_seller_ratio1
+                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio1, 3) * 100 . '个积分,订单金额为' . $order['goods_amount'] . ',1级佣金比例为' . $tuijian_seller_ratio1
                     . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'],
             )
         );
@@ -217,7 +230,7 @@ class Integral {
         if (!Conf::get('tuijian_seller_ratio2')) {
             return;
         }
-        $tuijian_seller_ratio2 = round(Conf::get('tuijian_seller_ratio2') / 100, 2);
+        $tuijian_seller_ratio2 = round(Conf::get('tuijian_seller_ratio2') / 100, 3);
         //2级推荐人 不存在卖家的推荐人则返回
         if (!$referinfo_1['referid']) {
             return;
@@ -236,10 +249,10 @@ class Integral {
                 'user_name' => $referinfo_2['user_name'],
                 'order_sn' => $order['order_sn'],
                 'type' => EPAY_TUIJIAN_SELLER,
-                'money' => round($order['goods_amount'] * $tuijian_seller_ratio2, 2), #2级推荐人应该获取的佣金
+                'money' => round($order['goods_amount'] * $tuijian_seller_ratio2, 3), #2级推荐人应该获取的佣金
                 'money_flow' => 'income', #流入佣金
                 'complete' => '1',
-                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio2, 2)*100 . '个积分,2级佣金比例为' . $tuijian_seller_ratio2
+                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio2, 3) * 100 . '个积分,2级佣金比例为' . $tuijian_seller_ratio2
                     . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
             )
         );
@@ -250,7 +263,7 @@ class Integral {
         if (!Conf::get('tuijian_seller_ratio3')) {
             return;
         }
-        $tuijian_seller_ratio3 = round(Conf::get('tuijian_seller_ratio3') / 100, 2);
+        $tuijian_seller_ratio3 = round(Conf::get('tuijian_seller_ratio3') / 100, 3);
         //2级推荐人 不存在卖家的推荐人则返回
         if (!$referinfo_2['referid']) {
             return;
@@ -273,85 +286,64 @@ class Integral {
                 'money' => round($order['goods_amount'] * $tuijian_seller_ratio3, 2), #3级推荐人应该获取的佣金
                 'money_flow' => 'income', #流入佣金
                 'complete' => '1',
-                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio3, 2)*100 . '个积分,订单金额为' . $order['goods_amount'] . ',3级佣金比例为' . $tuijian_seller_ratio3
+                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio3, 3) * 100 . '个积分,订单金额为' . $order['goods_amount'] . ',3级佣金比例为' . $tuijian_seller_ratio3
                     . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
             )
         );
         /* 第3级 佣金操作  查看卖家是否有推荐人  END */
     }
 
-    //此处是  推荐成为买家， 买家购买产品后，他的推荐者可以获得积分
-    function change_integral_tuijianbuyer($order){
-        //todo
-    }
 
-    //修改积分——qq435795
-    function change_integra($data){
-        //$user_id,$order_sn,$type,$money,$money_flow,$complete,$log_text
-        //获取当前用户的信息
-        $member = $this->_member_mod->get($data['user_id']);
-        //用户未存在 则返回
-        if (empty($member)) {
+    function change_integral_seller($user_id, $yongjin)
+    {
+
+        if (!intval($user_id) || !$yongjin) {
             return;
         }
-        $data['integral'] = $integral_reg + $member['integral']; #当前可用积分
-        $data['total_integral'] = $integral_reg + $member['total_integral']; #当前总共积分
-        $this->_member_mod->edit($data['user_id'], $data);
+        // 获取后台设置的  购买获得积分计算
+//        $integral_seller = Conf::get('integral_seller');
+//        //未设置 或者小于 0 不进行操作
+//        if ($integral_seller <= 0) {
+//            return;
+//        }
+        //确认收货 获得的积分为  比例×额度
+        $integral_seller = intval(100 * $yongjin);
 
-        //操作记录入积分记录
-        $integral_log = array(
-            'user_id' => $data['user_id'],
-            'user_name' => $member['user_name'],
-            'point' => $integral_reg,
-            'add_time' => gmtime(),
-            'remark' => '注册赠送积分' . $integral_reg,
-            'integral_type' => INTEGRAL_REG,
-        );
-        $this->_integral_log_mod->add($integral_log);
-    }
-
-    /**
-     * 用户购买产品  可以抵扣的积分
-     * @param type $user_id
-     * @param type $point
-     * 
-     * 注意 此处预留    新增 首先需 新增   抵扣 比例   同时判断当前积分是否大于抵扣的数额
-     * 
-     */
-    function change_integral_seller($user_id, $point) {
-        
-        if(!intval($user_id)||!$point){
-            return;
-        }
-        // 获取后台设置的  购买抵扣积分计算
-        $integral_seller = Conf::get('integral_seller');
-        //未设置 或者小于 0 不进行操作
-        if ($integral_seller <= 0) {
-            return;
-        }
-        
         //获取当前用户的信息
         $member = $this->_member_mod->get(intval($user_id));
         //用户未存在 则返回
         if (empty($member)) {
             return;
         }
-        $data['integral'] = $member['integral'] - $point ; #当前可用积分
-        if($data['integral']<0){
+
+        if (!$member['vip']) {
             return;
         }
+
+        $data['integral'] = $integral_seller + $member['integral']; #当前可用积分
+        $data['total_integral'] = $integral_seller + $member['total_integral']; #当前总共积分
         $this->_member_mod->edit($user_id, $data);
-        
+
         //操作记录入积分记录
         $integral_log = array(
             'user_id' => $user_id,
             'user_name' => $member['user_name'],
-            'point' => $point,
+            'point' => $integral_seller,
             'add_time' => gmtime(),
-            'remark' => '购买抵扣积分'.$point.',减免金额为:'.$integral_seller* $point,
+            'remark' => '销售赠送积分' . $integral_seller,
             'integral_type' => INTEGRAL_SELLER,
         );
         $this->_integral_log_mod->add($integral_log);
+
+
+        //积分赠送权
+        $epay_data = $this->_epay_mod->get(array(
+            'conditions' => 'user_id=' . $user_id,
+        ));
+
+        $epay_data['integral_power'] = $epay_data['integral_power'] + $integral_seller;
+        $this->_epay_mod->edit('user_id=' . $user_id, $epay_data);
+        //todo 积分赠送权日志
     }
 
     /**
@@ -367,7 +359,37 @@ class Integral {
      * 用户兑换产品扣除积分
      */
     function change_integral_goods($user_id, $point, $goods_id) {
-        
+
+    }
+
+
+    /**
+     * @param $data
+     * 作用:白积分
+     * Created by QQ:710932
+     */
+    function change_integral($data)
+    {
+        $member = $this->_member_mod->get('user_id=' . $data['user_id']);
+        if ($data['money_flow'] == 'income') {
+            $new_member = array(
+                'integral' => $member['integral'] + $data['integral'],
+            );
+        } else {
+            $new_member = array(
+                'money' => $member['integral'] - $data['integral'],
+            );
+        }
+        $this->_member_mod->edit('user_id=' . $data['user_id'], $new_member);
+
+        $this->_integral_log_mod->add(array(
+            'user_id' => $data['user_id'],
+            'user_name' => $data['user_name'],
+            'point' => $data['integral'],
+            'add_time' => gmtime(),
+            'remark' => $data['log_text'],
+            'integral_type' => $data['type'],
+        ));
     }
 
 }

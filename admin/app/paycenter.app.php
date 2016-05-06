@@ -173,11 +173,11 @@ class PaycenterApp extends BackendApp
         $operate_change_log_mod->add($operate_change_log);
 
         //todo 短信提醒
-//        $msgtext = '董先生';
-//        $to_mobile = trim($member['phone_mob']);
-//        if($this->mobile_msg->isMobile($to_mobile)){
-//            $this->mobile_msg->send_msg(0,'admin',$to_mobile,$msgtext);
-//        }
+        $msgtext = '今日赠送的红积分数量为：' . $red . '，请登录平台查看！';
+        $to_mobile = trim($member['phone_mob']);
+        if ($this->mobile_msg->isMobile($to_mobile)) {
+            $this->mobile_msg->send_msg(0, 'admin', $to_mobile, $msgtext);
+        }
     }
 
     /**

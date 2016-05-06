@@ -7,18 +7,19 @@
 </footer>
 
 
+
 <!-- Add the sidebar's background. This div must be placed
      immediately after the control sidebar -->
 <div class="control-sidebar-bg"></div>
 </div>
 
 
+
 <script src="<?php echo $this->res_base . "/" . 'style/AdminLTE/plugins/jQuery/jQuery-2.2.0.min.js'; ?>"></script>
 
 <script src="<?php echo $this->res_base . "/" . 'style/AdminLTE/bootstrap/js/bootstrap.min.js'; ?>"></script>
 
-<script
-    src="<?php echo $this->res_base . "/" . 'style/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js'; ?>"></script>
+<script src="<?php echo $this->res_base . "/" . 'style/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js'; ?>"></script>
 
 <script src="<?php echo $this->res_base . "/" . 'style/AdminLTE/plugins/fastclick/fastclick.js'; ?>"></script>
 

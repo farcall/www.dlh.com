@@ -10,36 +10,22 @@
             </div>
             <div class="info clearfix">
                 <dl class="col-1 fleft">
+
                     <dt>
-                    <span>欢迎您，</span><strong><?php echo htmlspecialchars($this->_var['user']['user_name']); ?></strong>
-                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">会员等级:<font color="red">&nbsp;&nbsp;<?php echo $this->_var['user']['ugrade']['grade_name']; ?></font></em>
-                    <img height="" width="" src="<?php echo $this->_var['user']['ugrade']['grade_icon']; ?>" /><br />
-                    <span style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">会员成长值：<font color="red"><?php echo $this->_var['user']['ugrade']['growth']; ?></font><?php if ($this->_var['user']['ugrade']['higher_grade_name']): ?><b style="font-weight:normal;margin-left:10px;color:#666;">距升级到<font color="red" style="margin:0px 3px;"><?php echo $this->_var['user']['ugrade']['higher_grade_name']; ?></font>还需要<font color="red"><?php echo $this->_var['user']['ugrade']['distant_growth']; ?></font>个成长值</b><?php endif; ?></span><a href="<?php echo url('app=member&act=profile'); ?>">编辑个人资料>></a><br />
-                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">当前积分:<font color="red">&nbsp;&nbsp;<?php echo $this->_var['user']['integral']; ?></font></em><br/>
-                    <em style="font-style:normal;font-size:12px;margin-right:5px;color:#666;">总积分:<font color="red">&nbsp;&nbsp;<?php echo $this->_var['user']['total_integral']; ?></font></em><br/>
-                    </dt>	
+                        <span>欢迎您，</span><strong><?php echo htmlspecialchars($this->_var['user']['user_name']); ?></strong><br/>
+                    </dt>
                     <dd>
                         <span>上次登录时间：<?php echo local_date("Y-m-d H:i:s",$this->_var['user']['last_login']); ?></span>
                         <span>上次登录 IP：<?php echo $this->_var['user']['last_ip']; ?></span>
                     </dd>
-                    <dd><?php echo sprintf('您有 <em class="red">%s</em> 条短消息，<a href="index.php?app=message&act=newpm">点击查看</a>', $this->_var['new_message']); ?></dd>
+
                     <dd style="line-height:25px;">
-                        <?php $_from = $this->_var['epay']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('', 'val');if (count($_from)):
-    foreach ($_from AS $this->_var['val']):
-?>
-                        账户总金额：<span style="font-size:16px;font-weight:bold; color:#FE5400;"><?php echo $this->_var['val']['money']; ?></span>&nbsp;元&nbsp;&nbsp;冻结金额：<span style="color:blue;"><?php echo $this->_var['val']['money_dj']; ?></span>&nbsp;元
-                        <br/><span class="epay_btn"><a href="<?php echo url('app=epay&act=withdraw'); ?>">提现</a></span><span class="epay_btn epay_btn_white"><a href="<?php echo url('app=epay&act=czlist'); ?>">充值</a></span>
-                        <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
+                        <br/><span class="epay_btn"><a href="<?php echo url('app=epay&act=withdraw'); ?>">提现</a></span><span
+                            class="epay_btn epay_btn_white"><a
+                            href="<?php echo url('app=epay&act=czlist'); ?>">充值</a></span>
                     </dd>
                 </dl>
-                <?php if ($this->_var['store'] && $this->_var['member_role'] == 'seller_admin'): ?>
-                <dl class="col-2 fleft">
-                    <dt><strong>店铺动态评分</strong></dt>
-                    <dd>卖家信用：<a href="<?php echo url('app=store&act=credit&id=' . $this->_var['store']['store_id']. ''); ?>" target="_blank"><?php echo $this->_var['store']['credit_value']; ?></a><?php if ($this->_var['store']['credit_value'] >= 0): ?> <img src="<?php echo $this->_var['store']['credit_image']; ?>" align="absmiddle" /> <?php endif; ?>
-                    </dd>
-                    <dd>卖家好评率：<?php echo $this->_var['store']['praise_rate']; ?>%</dd>
-                </dl>
-                <?php endif; ?>
+
             </div>
         </div>
 
@@ -56,13 +42,6 @@
                                     <span><?php echo sprintf('<a href="index.php?app=buyer_order&type=pending">待付款订单(<em>%s</em>)</a>', $this->_var['buyer_stat']['pending']); ?></span>
                                     <span><?php echo sprintf('<a href="index.php?app=buyer_order&type=shipped">待确认的订单(<em>%s</em>)</a>', $this->_var['buyer_stat']['shipped']); ?></span>
                                     <span><?php echo sprintf('<a href="index.php?app=buyer_order&type=finished">待评价的订单(<em>%s</em>)</a>', $this->_var['buyer_stat']['finished']); ?></span>
-                                </dd>
-                            </dl>
-                            <dl class="clearfix">
-                                <dt>团购提醒：</dt>
-                                <dd>
-                                    <span><?php echo sprintf('<a href="index.php?app=buyer_groupbuy&state=finished">待付款的团购(<em>%s</em>)</a>', $this->_var['buyer_stat']['groupbuy_finished']); ?></span>
-                                    <span><?php echo sprintf('<a href="index.php?app=buyer_groupbuy&state=canceled">已取消的团购(<em>%s</em>)</a>', $this->_var['buyer_stat']['groupbuy_canceled']); ?></span>
                                 </dd>
                             </dl>
                         </div>
@@ -84,19 +63,8 @@
                                     <span><?php echo sprintf('<a href="index.php?app=seller_order&type=accepted">待发货的订单(<em>%s</em>)</a>', $this->_var['seller_stat']['accepted']); ?></span>
                                 </dd>
                             </dl>
-                            <dl class="clearfix">
-                                <dt>团购提醒：</dt>
-                                <dd>
-                                    <span><?php echo sprintf('<a href="index.php?app=seller_groupbuy&state=end">待确认的团购(<em>%s</em>)</a>', $this->_var['seller_stat']['groupbuy_end']); ?></span>
-                                </dd>
-                            </dl>
                         </div>
-                        <div class="extra">
-                            <span>店铺等级：<?php echo $this->_var['sgrade']['grade_name']; ?></span>
-                            <span>有效期：<?php if ($this->_var['sgrade']['add_time']): ?><?php echo sprintf('剩余 %s 天', $this->_var['sgrade']['add_time']); ?><?php else: ?>不限制<?php endif; ?></span>
-                            <span>商品发布：<?php echo $this->_var['sgrade']['goods']['used']; ?>/<?php if ($this->_var['sgrade']['goods']['total']): ?><?php echo $this->_var['sgrade']['goods']['total']; ?><?php else: ?>不限制<?php endif; ?></span>
-                            <span>空间使用：<?php echo $this->_var['sgrade']['space']['used']; ?>M/<?php if ($this->_var['sgrade']['space']['total']): ?><?php echo $this->_var['sgrade']['space']['total']; ?>M<?php else: ?>不限制<?php endif; ?></span>
-                        </div>
+
                     </div>
                 </div>
                 <?php endif; ?>
