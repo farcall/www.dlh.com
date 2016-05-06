@@ -76,6 +76,7 @@ class EpayApp extends MemberbaseApp {
             EPAY_OUT => Lang::get('epay_out'), //账户转出
             EPAY_CZ => Lang::get('epay_cz'), //账户充值
             EPAY_TX => Lang::get('epay_tx'), //账户提现
+            EPAY_TX_REFUSE=>'账户提现被驳回',//提现被驳回
             EPAY_REFUND_IN => Lang::get('epay_refund_in'), //账户退款收入,通常为买家退款成功 得到退款
             EPAY_REFUND_OUT => Lang::get('epay_refund_out'), //账户退款收入,通常为卖家退款成功 扣除退款
             EPAY_TUIJIAN_BUYER => Lang::get('epay_tuijian_buyer'),  // 用户推荐注册,注册者购买产品，推荐人会获得佣金，店铺会损失佣金。
@@ -101,12 +102,10 @@ class EpayApp extends MemberbaseApp {
         $this->display('epay.logall.html');
     }
 
-
-
     //在线充值
     function czlist() {
         $user_id = $this->visitor->get('user_id');
-        $this->_curitem('epay');
+        $this->_curitem('czlist');
         $this->_curmenu('epay_czlist');
 
         $this->assign('epay_alipay_enabled', Conf::get('epay_alipay_enabled'));
@@ -123,6 +122,30 @@ class EpayApp extends MemberbaseApp {
         $this->display('epay.czlist.html');
     }
 
+    /**
+     * 提现发送验证码
+     */
+    function send_code() {
+        if (!Conf::get('msg_enabled')) {
+            return;
+        }
+        $mobile = empty($_GET['mobile']) ? '' : trim($_GET['mobile']);
+        if (!$mobile) {
+            echo ecm_json_encode(false);
+            return;
+        }
+        //发送短信的格式
+        $type = $_GET['type'];
+        if (!in_array($type, array('register', 'find', 'change','tixian'))) {
+            echo ecm_json_encode(false);
+            return;
+        }
+        //发送验证码
+        import('mobile_msg.lib');
+        $mobile_msg = new Mobile_msg();
+        $result = $mobile_msg->send_msg_system($type, $mobile);
+        echo ecm_json_encode($result);
+    }
 
     //提现申请
     function withdraw() {
@@ -138,40 +161,56 @@ class EpayApp extends MemberbaseApp {
                 $this->show_message('epay_editpassword', 'epay_editpassword', 'index.php?app=epay&act=editpassword');
                 return;
             }
-            
+
             $this->assign('epay', $epay);
             
             //获取当前用户设置的银行卡信息
             $bank_list = $this->mod_epay_bank->find(array('conditions'=>'user_id='.$this->visitor->get('user_id')));
             $this->assign('bank_list', $bank_list);
-            
+
+            /* 导入jQuery的表单验证插件   */
+            $this->import_resource(array(
+                'script' => array(
+                    array(
+                        'path' => 'jquery.plugins/jquery.validate.js',
+                        'attr' => '',
+                    ),
+                )
+            ));
+
+            $this->assign('phone_mob',$this->visitor->get('user_name'));
             $this->display('epay.withdraw.html');
         } else {
-            $tx_money = trim($_POST['tx_money']);
-
-            //只能返100的整数倍
-            if ($tx_money % 100 != 0) {
-                $this->show_warning('提现只能为100的整数');
+            if (Conf::get('msg_enabled') && $_SESSION['MobileConfirmCode'] != $_POST['confirm_code']) {
+                $this->show_warning('验证码错误');
                 return;
             }
 
-            //7天之内只能提现一次
+            $tx_money = trim($_POST['tx_money']);
+
+
+            //只能返100的整数倍
+            if($tx_money < 100){
+                $this->show_warning('对不起，您的申请被系统拒绝，提现额度不能低于100元');
+                return;
+            }
+
+            //24小时之内只能提现一次
             $epaylog_data = $this->mod_epaylog->get(array(
-                'conditions' => "type=" . EPAY_TX . " and user_id=" . $this->visitor->get('user_id'),
+                'conditions' => "type=".EPAY_TX." and user_id=".$this->visitor->get('user_id'),
                 'order' => 'add_time DESC',
             ));
 
-            if (!empty($epaylog_data)) {
-                if ((gmtime() - $epaylog_data['add_time']) < 7 * 24 * 60 * 60) {
+            if(!empty($epaylog_data)){
+                if((gmtime()-$epaylog_data['add_time']) < 1*24*60*60 ){
                     date_default_timezone_set('Asia/Chongqing');
-                    $this->show_warning('7天内只能提现一次，您上次提现时间是' . date("Y-m-d H:i:s", $epaylog_data['add_time'] + 8 * 3600));
+                    $this->show_warning('24小时内只能提现一次，您上次提现时间是'.date("Y-m-d H:i:s", $epaylog_data['add_time']+8*3600));
                     return;
                 }
             }
 
-
             $money_row = $this->mod_epay->getrow("select * from " . DB_PREFIX . "epay where user_id='$user_id'");
-            
+
             $post_zf_pass = trim($_POST['post_zf_pass']);
             if (empty($post_zf_pass)) {
                 $this->show_warning('cuowu_zhifumimabunengweikong');
@@ -226,11 +265,151 @@ class EpayApp extends MemberbaseApp {
                 'money' => $newmoney,
             );
             $this->mod_epay->edit('user_id=' . $user_id, $edit_mymoney);
-            $this->show_message('提现成功');
+            $this->show_message('tixian_chenggong');
             return;
         }
     }
-//余额转帐
+
+    /**
+     * 作用:金币提现为虚拟账户中的钱
+     * Created by QQ:710932
+     */
+    function jinbi2money(){
+        $to_money = trim($_POST['to_money']);
+        $user_id = $this->visitor->get('user_id');
+        $user_name = $this->visitor->get('user_name');
+
+        /*dong-持有金币开始*/
+        $fanli_jindou_mod = &m('fanli_jindou');
+        $fanli_jindou_data = $fanli_jindou_mod->get('user_id='.$user_id);
+        if(!isset($fanli_jindou_data)){
+            $jinbi = 0;
+        }else{
+            $jinbi = $fanli_jindou_data['jinbi'];
+        }
+        /*dong-持有金币结束*/
+
+        session_start();
+        if(IS_POST){
+            if(!is_numeric($to_money)){
+                $this->show_warning('非法输入');
+                return;
+            }
+            if($to_money > $jinbi){
+                $this->show_warning('请正确输入金币数量');
+                return;
+            }
+
+            //todo 硬编码 兑换比例1:1
+            $jinbi = $to_money;
+            /*fanli_jinbi_log表*/
+            $fanli_jinbi_log_mod = &m('fanli_jinbi_log');
+            $fanli_jinbi_log_mod->add(array(
+               // user_id	user_name	jinbi	add_time	status
+                'user_id'=>$user_id,
+                'user_name'=>$user_name,
+                'jinbi'=>$to_money,
+                'total'=>$fanli_jindou_data['jinbi']-$to_money,
+                'flow'=>'out',
+                'add_time'=>gmtime(),
+                'status'=>1,
+            ));
+
+            //金币减少
+            $fanli_jindou_data['jinbi'] = $fanli_jindou_data['jinbi']-$to_money;
+            $fanli_jindou_mod->edit('user_id='.$user_id,$fanli_jindou_data);
+
+            /*epay表*/
+            $epady_mod = &m('epay');
+            $epay_data = $epady_mod->get(array(
+                'conditions'    => "user_id = '{$user_id}'",
+            ));
+            $epay_data['money'] = $epay_data['money']+$to_money;
+            $epady_mod->edit($epay_data['id'],$epay_data);
+
+            /*epaylog*/
+            $epaylog_mod = &m('epaylog');
+            $epaylog_data = $epaylog_mod->add(array(
+             //   user_id user_name type(EPAY_DX) states(40) money money_flow(income) complete(1) log_text addtime
+                'user_id'=>$user_id,
+                'user_name'=>$user_name,
+                'type'=>EPAY_DX,
+                'states'=>40,
+                'money'=>$to_money,
+                'money_flow'=>'income',
+                'complete'=>1,
+                'log_text'=>$jinbi.'金币兑换'.$to_money.'元',
+                'add_time'=>gmtime(),
+            ));
+
+            $this->show_message('兑换成功完成');
+            return;
+        }
+        else{
+            /* 当前用户中心菜单 */
+            $this->_curitem('epay');
+            $this->_curmenu('金币兑换为可用资金(钱)');
+            $this->assign('jinbi', $jinbi);
+            $this->display('epay.jinbi2money.html');
+        }
+    }
+
+    /**
+     * 作用:金币兑换日志记录
+     * Created by QQ:710932
+     */
+    function duihuanlogall(){
+        $user_id = $this->visitor->get('user_id');
+
+        $page = $this->_get_page(50);
+        $jinbi_log_mod = &m('fanli_jinbi_log');
+        $logs = $jinbi_log_mod->find(array(
+            'conditions' => "status=1 and flow= 'out' and user_id=".$user_id,
+            'order'      => 'id desc',
+            'fields'     => '',
+            'limit'      => $page['limit'],
+            'count'      => true,
+        ));
+        $page['item_count'] = $jinbi_log_mod->getCount();
+        $this->_format_page($page);
+        $this->assign('page_info', $page);
+
+        /* 当前用户中心菜单 */
+        $this->_curitem('epay');
+        $this->_curmenu('金币兑换记录');
+        $this->assign('logs', $logs);
+        $this->display('epay.duihuanlogall.html');
+    }
+
+    /**
+     * 作用:金币明细
+     * 系统赠送或兑换转出
+     * Created by QQ:710932
+     */
+    function jinbimingxi(){
+        $user_id = $this->visitor->get('user_id');
+
+        $page = $this->_get_page(50);
+        $jinbi_log_mod = &m('fanli_jinbi_log');
+        $logs = $jinbi_log_mod->find(array(
+            'conditions' => "status=1 and user_id=".$user_id,
+            'order'      => 'id desc',
+            'fields'     => '',
+            'limit'      => $page['limit'],
+            'count'      => true,
+        ));
+        $page['item_count'] = $jinbi_log_mod->getCount();
+        $this->_format_page($page);
+        $this->assign('page_info', $page);
+
+        /* 当前用户中心菜单 */
+        $this->_curitem('epay');
+        $this->_curmenu('金币明细');
+        $this->assign('logs', $logs);
+        $this->display('epay.jinbimingxi.html');
+    }
+
+    //余额转帐
     function out() {
         $to_user = trim($_POST['to_user']);
         $to_money = trim($_POST['to_money']);
@@ -329,7 +508,6 @@ class EpayApp extends MemberbaseApp {
         }
     }
 
-
     //修改支付密码
     function editpassword() {
         $user_id = $this->visitor->get('user_id');
@@ -337,7 +515,7 @@ class EpayApp extends MemberbaseApp {
         if (!$_POST) {//检测是否提交
             $this->assign('epay', $epay);
             /* 当前用户中心菜单 */
-            $this->_curitem('epay');
+            $this->_curitem('editpassword');
             $this->_curmenu('epay_editpassword');
             $this->display('epay.editpassword.html');
             return;
@@ -375,11 +553,89 @@ class EpayApp extends MemberbaseApp {
         }
     }
 
+    function bank_edit(){
+        if(!IS_POST){
+            $bank_id = isset($_GET['bank_id'])?$_GET['bank_id']:0;
+
+            $card = $this->mod_epay_bank->get($bank_id);
+            if(!isset($card)){
+                $this->show_warning('该卡不存在');
+                return;
+            }
+            if($card['user_id'] != $this->visitor->get('user_id')){
+                $this->show_warning('请不要非法操作');
+                return;
+            }
+
+
+            $this->_curitem('epay');
+            $this->_curmenu('编辑银卡信息');
+            $this->assign('bank_inc', $this->_get_bank_inc('alipaybank'));
+            $this->assign('card', $card);
+            $this->display('epay.bank_edit.html');
+        }else{
+            $bank_id = isset($_GET['bank_id'])?$_GET['bank_id']:0;
+
+            $card = $this->mod_epay_bank->get($bank_id);
+            if(!isset($card)){
+                $this->show_warning('该卡不存在');
+                return;
+            }
+            if($card['user_id'] != $this->visitor->get('user_id')){
+                $this->show_warning('请不要非法操作');
+                return;
+            }
+
+            $short_name = trim($_POST['short_name']);
+            $account_name = trim($_POST['account_name']);
+            $bank_type = trim($_POST['bank_type']);
+            $bank_num = trim($_POST['bank_num']);
+
+            if (empty($short_name)) {
+                $this->show_warning('short_name_error');
+                return;
+            }
+            if (empty($bank_num)) {
+                $this->show_warning('num_empty');
+                return;
+            }
+            if (empty($account_name) || strlen($account_name) < 6 || strlen($account_name) > 30) {
+                $this->show_warning('account_name_error');
+                return;
+            }
+            if (!in_array($bank_type, array('debit', 'credit'))) {
+                $this->show_warning('type_error');
+                return;
+            }
+            $bank_name = $this->_get_bank_name($short_name);
+            if (empty($bank_name)) {
+                $this->show_warning('bank_name_error');
+                return;
+            }
+
+            $data = array(
+                'user_id' => $this->visitor->get('user_id'),
+                'bank_name' => $bank_name,
+                'short_name' => strtoupper($short_name),
+                'account_name' => $account_name,
+                'open_bank' => trim($_POST['open_bank']),
+                'bank_type' => $bank_type,
+                'bank_num' => $bank_num,
+            );
+
+            if (!$this->mod_epay_bank->edit($card['bank_id'],$data)) {
+                $this->show_warning('add_error');
+                return;
+            }
+            $this->show_message('修改成功', 'back_list', 'index.php?app=epay&act=withdraw');
+        }
+    }
+
     function bank_add() {
         if (!IS_POST) {
             $this->_curitem('epay');
             $this->_curmenu('epay_add_bank');
-            $this->assign('bank_inc', $this->_get_bank_inc());
+            $this->assign('bank_inc', $this->_get_bank_inc('alipaybank'));
             $this->display('epay.bank_form.html');
         } else {
             $short_name = trim($_POST['short_name']);
@@ -494,21 +750,27 @@ class EpayApp extends MemberbaseApp {
                 'url'   => 'index.php?app=epay&act=logall',
             ),
             array(
-                'name'  => 'epay_czlist',
-                'url'   => 'index.php?app=epay&act=czlist',
+                'name' =>'金币明细',
+                'url' =>'index.php?app=epay&act=jinbimingxi',
             ),
             array(
-                'name'  => 'epay_out',
-                'url'   => 'index.php?app=epay&act=out',
-            ),
-            array(
-                'name'  => 'epay_editpassword',
-                'url'   => 'index.php?app=epay&act=editpassword',
+                'name'  => '金币兑换人民币',
+                'url'   => 'index.php?app=epay&act=jinbi2money',
             ),
             array(
                 'name'  => 'epay_withdraw',
                 'url'   => 'index.php?app=epay&act=withdraw',
             ),
+            array(
+                'name'  => 'epay_out',
+                'url'   => 'index.php?app=epay&act=out',
+            ),
+
+//            array(
+//                'name'  => '金币兑换记录',
+//                'url'   => 'index.php?app=epay&act=duihuanlogall',
+//            ),
+
         );
         return $menus;
     }
@@ -534,6 +796,10 @@ class EpayApp extends MemberbaseApp {
             return;
         }
         if ($_POST) {//检测是否提交
+            import('file_lock.lib');
+            $lock = new file_lock(dirname(dirname(__FILE__)) . "/FileLock.lock");
+            $lock->writeLock();
+
             $buyer_name = $epay['user_name']; //用户名
             $buyer_zf_pass = $epay['zf_pass']; //支付密码
             $buyer_old_money = $epay['money']; //当前用户的原始金钱
@@ -549,23 +815,27 @@ class EpayApp extends MemberbaseApp {
             $seller_money_dj = $seller_row['money_dj']; //卖家的原始冻结金钱
             //检测支付密码
             if (empty($zf_pass)) {
+                $lock->unlock();
                 $this->show_warning('cuowu_zhifumimabunengweikong');
                 return;
             }
             $md5zf_pass = md5($zf_pass);
             if ($epay['zf_pass'] != $md5zf_pass) {
+                $lock->unlock();
                 $this->show_warning('cuowu_zhifumimayanzhengshibai');
                 return;
             }
 
             //检测余额是否足够
             if ($buyer_old_money < $order_money) {   //检测余额是否足够 开始
+                $lock->unlock();
                 $this->show_warning('cuowu_zhanghuyuebuzu', 'lijichongzhi', 'index.php?app=epay&act=czlist'
                 );
                 return;
             } //检测余额是否足够 结束
             //金额是否相同
             if ($post_money != $order_money) {   //检测密保相符 开始
+                $lock->unlock();
                 $this->show_warning('fashengcuowu_jineshujukeyi');
                 return;
             } //金额是否相同 结束
@@ -581,7 +851,9 @@ class EpayApp extends MemberbaseApp {
                 $seller_array = array(
                     'money_dj' => $seller_money_dj + $order_money,
                 );
+
                 $seller_edit = $this->mod_epay->edit('user_id=' . $seller_id, $seller_array);
+
                 //买家添加日志
                 $buyer_log_text = Lang::get('goumaishangpin_dianzhu') . $seller_name;
                 $buyer_add_array = array(
@@ -624,22 +896,32 @@ class EpayApp extends MemberbaseApp {
                     'payment_name' => Lang::get('epay_name'),
                     'payment_code' => $payment_code,
                     'pay_time' => gmtime(),
-                    'out_trade_sn' => $order_sn,
+                    'out_trade_sn' => $order_order_sn,
                     'status' => 20, //20就是 待发货了
                 );
                 $this->mod_order->edit($order_id, $order_edit_array);
                 //$edit_data['status']    =   ORDER_ACCEPTED;//定义 为 20 待发货
                 //$mod_orderel->edit($order_id, $edit_data);//直接更改为 20 待发货
                 //支付成功
-                $this->show_message('zhifu_chenggong', 'sanmiaohouzidongtiaozhuandaodingdanliebiao', 'index.php?app=buyer_order', 'chankandingdan', 'index.php?app=buyer_order', 'guanbiyemian', 'index.php?app=epay&act=exits'
-                );
+                $this->show_message('zhifu_chenggong', 'sanmiaohouzidongtiaozhuandaodingdanliebiao', 'index.php?app=buyer_order', 'chankandingdan', 'index.php?app=buyer_order', 'guanbiyemian', 'index.php?app=epay&act=exits');
                 //定义SESSION值
                 $_SESSION['session_order_sn'] = $order_order_sn;
+                $lock->unlock();
+
+                //买家已付款成功,短信通知卖家发货
+                import('mobile_msg.lib');
+                $mobile_msg = new Mobile_msg();
+                $mobile_msg->send_msg_order($row_order,'buy');
+
             }//检测SESSION为空 执行完毕
             else {//检测SESSION为空 否则//检测SESSION为空 否则 开始
                 $this->show_warning('jinggao_qingbuyaochongfushuaxinyemian');
                 return;
             }//检测SESSION为空 否则 结束
+
+
+
+
         } else {
             /* 外部提供订单号 */
             $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
@@ -773,9 +1055,11 @@ class EpayApp extends MemberbaseApp {
                     $v_moneytype = "CNY"; #币种
                     $text = $cz_money . $v_moneytype . $v_oid . $v_mid . $v_url . $key; #md5加密拼凑串,注意顺序不能变
                     $v_md5info = strtoupper(md5($text));
+                    $remark1 = "";
+                    $remark2 = '[url:='.SITE_URL.'/index.php?app=epay_chinabank&act=chinabank_return_notify_url]';
                     ?>
                     <body onLoad="javascript:document.CHINABLANK_FORM.submit()">
-                        <form method="post" name="CHINABLANK_FORM" action="https://pay3.chinabank.com.cn/PayGate">
+                        <form method="post" name="CHINABLANK_FORM" action="https://tmapi.jdpay.com/PayGate">
                             <input type="hidden" name="v_mid"         value="<?php echo $v_mid; ?>"/>
                             <input type="hidden" name="v_oid"         value="<?php echo $v_oid; ?>"/>
                             <input type="hidden" name="v_amount"      value="<?php echo $cz_money; ?>"/>
@@ -837,6 +1121,8 @@ class EpayApp extends MemberbaseApp {
         }
     }
 
+
+
     function chinabank_return_url() {
         $user_id = $this->visitor->get('user_id');
         $user_name = $this->visitor->get('user_name');
@@ -845,8 +1131,8 @@ class EpayApp extends MemberbaseApp {
             $key = Conf::get('epay_chinabank_key');
 
 
-            $v_oid = trim($_POST['v_oid']);       // 商户发送的v_oid定单编号   
-            $v_pmode = trim($_POST['v_pmode']);    // 支付方式（字符串）   
+            $v_oid = trim($_POST['v_oid']);       // 商户发送的v_oid定单编号
+            $v_pmode = trim($_POST['v_pmode']);    // 支付方式（字符串）
             $v_pstatus = trim($_POST['v_pstatus']);   //  支付状态 ：20（支付成功）；30（支付失败）
             $v_pstring = trim($_POST['v_pstring']);   //提示中文"支付成功"字符串
 
@@ -855,21 +1141,19 @@ class EpayApp extends MemberbaseApp {
             $remark1 = trim($_POST['remark1']);      //备注字段1
             $remark2 = trim($_POST['remark2']);     //备注字段2
             $v_md5str = trim($_POST['v_md5str']);   //拼凑后的MD5校验值
-            //重新计算md5的值                         
+            //重新计算md5的值
             $md5string = strtoupper(md5($v_oid . $v_pstatus . $v_amount . $v_moneytype . $key));
 
             //校验MD5 开始//校验MD5 IF括号
             if ($v_md5str == $md5string) {
                 if ($v_pstatus == "20") {
 
-
-
-
 //根据用户订单号，获取充值者的ID
                     $row_epay_log = $this->mod_epaylog->get("order_sn='$v_oid'");
 
                     if (empty($row_epay_log) || $row_epay_log['complete'] == '1' || $row_epay_log['user_id'] != $user_id) {
                         $this->show_message('jinggao_qingbuyaochongfushuaxinyemian', 'guanbiyemian', 'index.php?app=epay&act=exits');
+                        return;
                     }
 
                     //获取用户的余额
@@ -890,19 +1174,19 @@ class EpayApp extends MemberbaseApp {
                         'states' => 61,
                     );
                     $this->mod_epaylog->edit('order_sn=' . '"' . $v_oid . '"', $edit_epaylog);
-                    
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
+
                     //根据用户返回的 order_sn 判断是否为订单
                     $order_info = $this->mod_order->get('order_sn='.$v_oid);
-                    
+
                     if (!empty($order_info)) {
                         //如果存在订单号  则自动付款
                         $order_id = $order_info['order_id'];
-                        
+
 
                         $row_epay = $this->mod_epay->get("user_id='$user_id'");
                         $buyer_name = $row_epay['user_name']; //用户名
@@ -914,7 +1198,7 @@ class EpayApp extends MemberbaseApp {
                         $order_money = $row_order['order_amount']; //定单里的 最后定单总价格
 //读取卖家SQL
                         $seller_row = $this->mod_epay->get("user_id='$order_seller_id'");
-                        $seller_id = $seller_row['user_id']; //卖家ID 
+                        $seller_id = $seller_row['user_id']; //卖家ID
                         $seller_name = $seller_row['user_name']; //卖家用户名
                         $seller_money_dj = $seller_row['money_dj']; //卖家的原始冻结金钱
 //检测余额是否足够
@@ -929,14 +1213,14 @@ class EpayApp extends MemberbaseApp {
                         );
                         $this->mod_epay->edit('user_id=' . $user_id, $buyer_array);
 
-//更新卖家的冻结金钱	
+//更新卖家的冻结金钱
                         $seller_array = array(
                             'money_dj' => $seller_money_dj + $order_money,
                         );
                         $seller_edit = $this->mod_epay->edit('user_id=' . $seller_id, $seller_array);
-                        
-                        
-                        
+
+
+
 //买家添加日志
                         $buyer_log_text = '购买商品店铺' . $seller_name;
                         $buyer_add_array = array(
@@ -1011,6 +1295,60 @@ class EpayApp extends MemberbaseApp {
         }else{
             $this->show_message('chongzhi_chenggong_jineyiruzhang', 'guanbiyemian', 'index.php?app=epay&act=logall');
         }
+    }
+
+    //找回支付密码
+    function findpass(){
+        if(!IS_POST) {
+            $user_id = $this->visitor->get('user_id');
+
+            $mod_member = &m('member');
+            $member_info = $mod_member->get_info($user_id);
+            $this->assign('phone_mob', $member_info['phone_mob']);
+
+            $this->import_resource(array(
+                'script' => 'jquery.plugins/jquery.validate.js',
+            ));
+
+            $this->display('find_zhifupassword.html');
+            return;
+        }else{
+            $phone_mob = trim($_POST['phone_mob']);
+            $user_id = $this->visitor->get('user_id');
+            $mod_member = &m('member');
+            $member_info = $mod_member->get_info($user_id);
+
+            if($phone_mob != $member_info['phone_mob']){
+                $this->show_warning('请勿非法提交!');
+                return;
+            }
+
+            if(trim($_POST['zf_pass']) != trim($_POST['zf_pass2'])){
+                $this->show_warning('密码与确认密码请保持一致');
+                return;
+            }
+
+            if (Conf::get('msg_enabled') && $_SESSION['MobileConfirmCode'] != $_POST['confirm_code']) {
+                $this->show_warning('验证码错误');
+                return;
+            }
+
+
+            //修改支付密码
+            if($this->mod_epay->edit('user_id='.$user_id,array(
+                'zf_pass'=>md5($_POST['zf_pass']),
+            )) ==false)
+            {
+                //如果新密码与老密码相同时也会失败
+                $this->show_warning('新支付密码设置失败,请重新设置');
+                return;
+            }
+
+            $this->show_message('恭喜,新支付密码设置成功');
+            return;
+
+        }
+
     }
 }
 ?>

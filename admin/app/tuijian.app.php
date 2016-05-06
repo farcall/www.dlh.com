@@ -18,17 +18,15 @@ class TuijianApp extends BackendApp {
             $this->assign('setting', $setting);
             $this->display('tuijian.setting.html');
         } else {
-            
-            
             $data['tuijian_seller_status'] = $_POST['tuijian_seller_status']; #是否开启
-            $data['tuijian_seller_ratio1'] = empty($_POST['tuijian_seller_ratio1']) ? 0 : intval($_POST['tuijian_seller_ratio1']);
-            $data['tuijian_seller_ratio2'] = empty($_POST['tuijian_seller_ratio1']) ? 0 : intval($_POST['tuijian_seller_ratio2']);
-            $data['tuijian_seller_ratio3'] = empty($_POST['tuijian_seller_ratio1']) ? 0 : intval($_POST['tuijian_seller_ratio3']);
+            $data['tuijian_seller_ratio1'] = empty($_POST['tuijian_seller_ratio1']) ? 0 : floatval($_POST['tuijian_seller_ratio1']);
+            $data['tuijian_seller_ratio2'] = empty($_POST['tuijian_seller_ratio1']) ? 0 : floatval($_POST['tuijian_seller_ratio2']);
+            $data['tuijian_seller_ratio3'] = empty($_POST['tuijian_seller_ratio1']) ? 0 : floatval($_POST['tuijian_seller_ratio3']);
             
             $data['tuijian_buyer_status'] = $_POST['tuijian_buyer_status']; #是否开启
-            $data['tuijian_buyer_ratio1'] = empty($_POST['tuijian_buyer_ratio1']) ? 0 : intval($_POST['tuijian_buyer_ratio1']);
-            $data['tuijian_buyer_ratio2'] = empty($_POST['tuijian_buyer_ratio2']) ? 0 : intval($_POST['tuijian_buyer_ratio2']);
-            $data['tuijian_buyer_ratio3'] = empty($_POST['tuijian_buyer_ratio3']) ? 0 : intval($_POST['tuijian_buyer_ratio3']);
+            $data['tuijian_buyer_ratio1'] = empty($_POST['tuijian_buyer_ratio1']) ? 0 : $_POST['tuijian_buyer_ratio1'];
+            $data['tuijian_buyer_ratio2'] = empty($_POST['tuijian_buyer_ratio2']) ? 0 : $_POST['tuijian_buyer_ratio2'];
+            $data['tuijian_buyer_ratio3'] = empty($_POST['tuijian_buyer_ratio3']) ? 0 : $_POST['tuijian_buyer_ratio3'];
             
             $total_ratio = $data['tuijian_seller_ratio1']+$data['tuijian_seller_ratio2']+$data['tuijian_seller_ratio3']+$data['tuijian_buyer_ratio1']+$data['tuijian_buyer_ratio2']+$data['tuijian_buyer_ratio13'];
             if($total_ratio>100){
@@ -40,8 +38,6 @@ class TuijianApp extends BackendApp {
             $model_setting->setAll($data);
             $this->show_message('edit_ok');
         }
-        
-        
     }
     
     
