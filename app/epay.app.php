@@ -178,7 +178,8 @@ class EpayApp extends MemberbaseApp {
                 )
             ));
 
-            $this->assign('phone_mob',$this->visitor->get('user_name'));
+            $member = &m('member')->get_info($user_id);
+            $this->assign('phone_mob',$member['phone_mob']);
             $this->display('epay.withdraw.html');
         } else {
             if (Conf::get('msg_enabled') && $_SESSION['MobileConfirmCode'] != $_POST['confirm_code']) {
@@ -186,12 +187,23 @@ class EpayApp extends MemberbaseApp {
                 return;
             }
 
+            $member = &m('member')->get_info($user_id);
+
+            if($_POST['phone_mob'] != $member['phone_mob']){
+                $this->show_warning('请不要非法提交 ');
+                return;
+            }
             $tx_money = trim($_POST['tx_money']);
 
 
             //只能返100的整数倍
             if($tx_money < 100){
                 $this->show_warning('对不起，您的申请被系统拒绝，提现额度不能低于100元');
+                return;
+            }
+
+            if($tx_money%100){
+                $this->show_warning("对不起，您的申请被系统拒绝，提现额度只能为100的整数倍");
                 return;
             }
 
@@ -202,9 +214,9 @@ class EpayApp extends MemberbaseApp {
             ));
 
             if(!empty($epaylog_data)){
-                if((gmtime()-$epaylog_data['add_time']) < 1*24*60*60 ){
+                if((gmtime()-$epaylog_data['add_time']) < 7*24*60*60 ){
                     date_default_timezone_set('Asia/Chongqing');
-                    $this->show_warning('24小时内只能提现一次，您上次提现时间是'.date("Y-m-d H:i:s", $epaylog_data['add_time']+8*3600));
+                    $this->show_warning('7天内只能提现一次，您上次提现时间是'.date("Y-m-d H:i:s", $epaylog_data['add_time']+8*3600));
                     return;
                 }
             }

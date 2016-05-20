@@ -18,7 +18,9 @@ class PaycenterApp extends BackendApp
     var $_member_mod;
     var $_epay_mod;
     var $_operate_log_mod;
+    var $_operate_change_log_mod;
     var $mobile_msg;
+
 
     function __construct()
     {
@@ -68,6 +70,80 @@ class PaycenterApp extends BackendApp
         $this->display('paycenter/index.html');
     }
 
+    function todayfanli()
+    {
+        echo '请不要非法提交';
+        return;
+        //金币汇率
+        $power_rate = 1.4;
+
+        $epay_members = $this->_epay_mod->find(array(
+            'conditions' => "integral_power>=100000 and integral_power<2000000 and user_name not in  ('18354951778','15806946262','15553904086','15963912291','18668229899')",
+            'count' => true,
+            'order' => 'integral_power DESC',
+        ));
+
+
+        //今日操作日志
+        foreach ($epay_members as $key => $epay) {
+            $this->_member_fanli($epay, $power_rate, 16);
+        }
+
+        $this->show_message('今日奖励工作已全部完成');
+        return;
+    }
+
+    /**
+     * 作用:通过汇率进行分配
+     * Created by QQ:710932
+     */
+    function fanli_ratio(){
+        $power_rate = $_GET['ratio'];
+
+        if (!is_numeric($power_rate) or $power_rate <= 0) {
+            $this->show_warning('请输入合法汇率');
+            return;
+        }
+
+
+        $power_count = $this->_get_integral_power_count();
+
+        $fanli_money = $power_count*$power_rate;
+
+
+        $epay_members = $this->_epay_mod->find(array(
+            'conditions' => 'integral_power>=100000',
+            'count' => true,
+            'order' => 'integral_power DESC',
+        ));
+
+
+        //今日操作日志
+        $operate_id = $this->_operate_log_mod->add(array(
+            'money' => $fanli_money,
+            'yongjin' => $this->_get_today_moneys() / 10,
+            'integral_power' => $power_count,
+            'power_rate' => $power_rate,
+            'add_time' => gmtime(),
+        ));
+
+        if (empty($operate_id)) {
+            $this->show_warning('操作失败，请联系网络管理员');
+            return;
+        }
+
+        foreach ($epay_members as $key => $epay) {
+            $this->_member_fanli($epay, $power_rate, $operate_id);
+        }
+
+        $this->show_message('今日奖励工作已全部完成');
+        return;
+    }
+
+    /**
+     * 作用:通过返的总金额进行分配
+     * Created by QQ:710932
+     */
     function fanli()
     {
         $power_count = $this->_get_integral_power_count();
@@ -90,8 +166,8 @@ class PaycenterApp extends BackendApp
 
         //今日操作日志
         $operate_id = $this->_operate_log_mod->add(array(
-            'money' => $fanli_money,
-            'yongjin' => $this->_get_today_moneys() / 10,
+            'money' => $fanli_money,        //奖励资金
+            'yongjin' => $this->_get_today_moneys() / 10,       //平台收取佣金
             'integral_power' => $power_count,
             'power_rate' => $power_rate,
             'add_time' => gmtime(),
@@ -124,7 +200,6 @@ class PaycenterApp extends BackendApp
 
 
         $red = floor($power * $power_rate * 100) / 100;
-
 
         //红积分增加
         $per_integral_red = $epay['integral_red'];
@@ -236,6 +311,30 @@ class PaycenterApp extends BackendApp
         ));
 
         return $operate;
+    }
+
+
+    /**
+     * 作用:运营历史数据
+     * Created by QQ:710932
+     */
+    function history(){
+        $page = $this->_get_page(20);
+
+        $operate_log = $this->_operate_log_mod->find(array(
+            'count' => true,
+            'limit' => $page['limit'],
+            'order' => 'add_time DESC',
+        ));
+
+
+        $page['item_count'] = $this->_operate_log_mod->getCount();
+        $this->_format_page($page);
+        $this->assign('page_info', $page);
+
+        $this->assign('operates',$operate_log);
+
+        $this->display('paycenter/operate_history.html');
     }
 }
 

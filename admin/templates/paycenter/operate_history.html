@@ -1,0 +1,70 @@
+{include file="paycenter/header.html"}
+
+{include file="paycenter/left.html"}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+
+    <!-- Main content -->
+    <section class="content">
+        <!-- Main row -->
+        <div class="row">
+            <!--left col-->
+            <section class="col-md-8 connectedSortable">
+
+                <div class="row">
+                    <div id="fenpeiliebiao" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="col-md-12">
+                            <div class="box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">运营历史数据</h3>
+                                </div>
+
+                                <div class="box-body  table-responsive no-padding">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th style="width: 80px">ID</th>
+                                            <th>奖励分配资金</th>
+                                            <th>佣金</th>
+                                            <th>积分赠送权集合</th>
+                                            <th>当日汇率</th>
+                                            <th>时间</th>
+                                        </tr>
+                                        {foreach from=$operates item=operate}
+                                        <tr>
+                                            <td>{$operate.id}</td>
+                                            <th>{$operate.money}</th>
+                                            <th>{$operate.yongjin}</th>
+                                            <td>
+                                                {$operate.integral_power}
+                                            </td>
+                                            <td>
+                                                {$operate.power_rate}
+                                            </td>
+                                            <td>
+                                                {$operate.add_time|date:complete}
+                                            </td>
+
+                                        </tr>
+                                        {/foreach}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {include file="paycenter/page.bottom.html"}
+            </section>
+            <!--/.left col-->
+        </div>
+        <!-- /.row (main row) -->
+
+
+    </section>
+    <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+
+
+{include file="paycenter/footer.html"}

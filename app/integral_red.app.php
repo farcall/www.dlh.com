@@ -54,8 +54,8 @@ class Integral_redApp extends MallbaseApp
             //现金余额增加=红积分*90%
             $data = array(
                 'integral_red' => $epay_data['integral_red'] - $red,
-                'money_tax' => $epay_data['money_tax'] + $red * 0.1,
-                'money' => $epay_data['money'] + $red * 0.9,
+                'money_tax' => $epay_data['money_tax'] + $red * 0.05,
+                'money' => $epay_data['money'] + $red * 0.95,
             );
 
             $this->_epay_mod->edit($epay_data['id'], $data);
@@ -63,7 +63,7 @@ class Integral_redApp extends MallbaseApp
 
             $this->_integral_log_mod->add(array(
                 'user_id' => $this->visitor->get('user_id'),
-                'user_name' => $this->visitor->get('user_id'),
+                'user_name' => $this->visitor->get('user_name'),
                 'point' => $data['money_tax'],
                 'add_time' => gmtime(),
                 'remark' => '红积分兑换支出' . $data['integral_red'],
@@ -72,7 +72,7 @@ class Integral_redApp extends MallbaseApp
 
             $this->_integral_log_mod->add(array(
                 'user_id' => $this->visitor->get('user_id'),
-                'user_name' => $this->visitor->get('user_id'),
+                'user_name' => $this->visitor->get('user_name'),
                 'point' => $data['integral_red'],
                 'add_time' => gmtime(),
                 'remark' => '红积分兑换缴纳' . $data['money_tax'] . '元税费',
@@ -81,7 +81,7 @@ class Integral_redApp extends MallbaseApp
 
             $this->_integral_log_mod->add(array(
                 'user_id' => $this->visitor->get('user_id'),
-                'user_name' => $this->visitor->get('user_id'),
+                'user_name' => $this->visitor->get('user_name'),
                 'point' => $data['money'],
                 'add_time' => gmtime(),
                 'remark' => '红积分兑换得到' . $data['money'] . '元',

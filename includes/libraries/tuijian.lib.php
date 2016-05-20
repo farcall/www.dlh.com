@@ -177,7 +177,7 @@ class Tuijian {
         if (!Conf::get('tuijian_buyer_ratio1')) {
             return;
         }
-        $tuijian_buyer_ratio1 = round(Conf::get('tuijian_buyer_ratio1') / 100, 3);
+        $tuijian_buyer_ratio1 = round(Conf::get('tuijian_buyer_ratio1') / 100, 4);
 
         //卖家相关信息
         $seller_id = $order['seller_id'];
@@ -233,7 +233,7 @@ class Tuijian {
         if (!Conf::get('tuijian_buyer_ratio2')) {
             return;
         }
-        $tuijian_buyer_ratio2 = round(Conf::get('tuijian_buyer_ratio2') / 100, 2);
+        $tuijian_buyer_ratio2 = round(Conf::get('tuijian_buyer_ratio2') / 100, 4);
         //2级推荐人 不存在买家的推荐人则返回
         //查看推荐人是否存在 不存在则不操作
         $referinfo_2 = $this->get_referid_member($referinfo_1);
@@ -278,7 +278,7 @@ class Tuijian {
         if (!Conf::get('tuijian_buyer_ratio3')) {
             return;
         }
-        $tuijian_buyer_ratio3 = round(Conf::get('tuijian_buyer_ratio3') / 100, 2);
+        $tuijian_buyer_ratio3 = round(Conf::get('tuijian_buyer_ratio3') / 100, 4);
         //2级推荐人 不存在卖家的推荐人则返回
         if (!$referinfo_2['referid']) {
             return;

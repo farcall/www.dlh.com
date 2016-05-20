@@ -9,6 +9,142 @@
         });
     })
 </script>
+
+
+<script type="text/javascript">
+    $(function(){
+        $('#epay-withdraw').validate({
+            errorPlacement: function(error, element) {
+                var error_td = element.parent('dd');
+                error_td.find('label').hide();
+                error_td.append(error);
+            },
+            success: function(label) {
+                label.addClass('validate_right').text('OK!');
+            },
+            onkeyup: false,
+            rules: {
+                tx_money:{
+                    required: true,
+                    digits:true
+                },
+                post_zf_pass:{
+                    required: true
+                },
+                phone_mob:{
+                    required: true,
+                    digits:true,
+                    byteRange: [11,11]
+                },
+                confirm_code: {
+                    required: true,
+                    number: true,
+                    byteRange: [6, 6, '{$charset}'],
+                    remote: {
+                        url: 'index.php?app=member&act=cmc&ajax=1',
+                        type: 'get',
+                        data: {
+                            confirm_code: function() {
+                                return $('#confirm_code').val();
+                            }
+                        },
+                        beforeSend: function() {
+                            var _checking = $('#checking_confirm_code');
+                            _checking.next('label').hide();
+                            $(_checking).show();
+
+                        },
+                        complete: function() {
+                            $('#checking_confirm_code').hide();
+                        }
+                    }
+                }
+
+            },
+            messages: {
+                tx_money:{
+                    required:'必填',
+                    digits:'必须是整数'
+                },
+                post_zf_pass:{
+                    required: '必填'
+                },
+                phone_mob:{
+                    required: '必填',
+                    digits:'请输入11位数字',
+                    byteRange:'请输入11位数字'
+                },
+                confirm_code:{
+                    required:'必填',
+                    number:'请输入数字',
+                    byteRange:'请输入六位数字',
+                    remote:'验证码错误'
+                }
+            }
+
+        });
+
+
+
+        var canSend = true;
+        var time = 60;
+        var dtime = 60;
+        $("#sendsms").bind('click', function() {
+            $("#sendsms").css('background','#FF008A');
+            $("#sendsms").css('color','#FFFFFF');
+            var btn = $(this);
+            if (!canSend)
+                return;
+            var sendaddress = $('#phone_mob').val();
+            var fhm = $("[for='phone_mob']").text();
+            if (fhm != '' && fhm != "OK!") {
+                alert("请输入正确的手机号码！");
+                return;
+            }
+            if (fhm == '' && $('#phone_mob').val() == "") {
+                alert("请输入正确的手机号码！");
+                return;
+            }
+            $.ajax({
+                type: "get",
+                url: "index.php?app=epay&act=send_code&type=tixian",
+                data: {
+                    mobile: function() {
+                        return sendaddress;
+                    }
+                },
+                success: function(msg) {
+                    var hander = setInterval(function() {
+                                if (time <= 0) {
+                                    canSend = true;
+                                    clearInterval(hander);
+                                    $("#sendsms").css('background','#f4f4f4');
+                                    $("#sendsms").css('color','#333');
+                                    btn.val("重新发送验证码");
+                                    btn.removeAttr("disabled");
+                                    time = dtime;
+                                } else {
+                                    canSend = false;
+                                    btn.attr({
+                                        "disabled": "disabled"
+                                    });
+                                    btn.val(time + "秒后可重新发送");
+                                    time--;
+                                }
+                            },
+                            1000);
+                    if (msg) {
+                        alert("短信已发送至:" + sendaddress + " 请注意查收！");
+                    } else {
+                        alert("短信发送失败，请检查手机号码是否正确！");
+                    }
+                }
+            });
+        });
+
+
+    });
+</script>
 <div class="content">
     {include file=member.menu.html}
     <div id="right">
@@ -53,6 +189,24 @@
                             <dt>支付密码：</dt>
                             <dd><input type="password" name="post_zf_pass" class="text" value="" /></dd>
                         </dl>
+                        <dl class="clearfix">
+                            <dt>手机号码：</dt>
+                            <dd><input class="text width_normal" type="text" id="phone_mob" name="phone_mob" value={$phone_mob} readonly="readonly"></dd>
+                        </dl>
+                        <dl class="clearfix">
+                            <dt>:</dt>
+                            <dd><input type="button" id="sendsms" value="发送验证码"/></dd>
+                        </dl>
+                        <dl class="clearfix">
+                            <dt>验证码:</dt>
+                            <dd>
+                                <input class="text width_normal" type="text" id="confirm_code" name="confirm_code" value="" />
+                                <label class="field_notice">*</label>
+                            </dd>
+                        </dl>
+
+
+
                         <dl class="clearfix">
                             <dt>&nbsp;</dt>
                             <dd class="submit">

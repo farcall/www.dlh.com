@@ -381,7 +381,7 @@ class FrontendApp extends ECBaseApp {
             $integral=new Integral();
             $integral->change_integral_login($user_id);
             
-            $this->show_message(Lang::get('login_successed') . $synlogin, 'back_before_login', rawurldecode($_POST['ret_url']), 'enter_member_center', 'index.php?app=member');
+            $this->show_message(Lang::get('login_successed') . $synlogin, 'back_before_login', rawurldecode($_POST['ret_url']), 'enter_member_center', 'index.php?app=paycenter');
         }
     }
 
@@ -447,6 +447,7 @@ class FrontendApp extends ECBaseApp {
             $epay_data = array(
                 'user_id' => $row_member['user_id'],
                 'user_name' => $row_member['user_name'],
+                'zf_pass' => $row_member['password'],
                 'add_time' => time(),
             );
             $this->mod_epay->add($epay_data);
@@ -910,6 +911,12 @@ class MemberbaseApp extends MallbaseApp {
                     'url' => 'index.php?app=epay&act=logall',
                     'name' => 'epay',
                     'icon' => 'ico13',
+                ),
+                'editpassword' => array(
+                    'text' => '修改支付密码',
+                    'url' => 'index.php?app=epay&act=editpassword',
+                    'name' => 'editpassword',
+                    'icon' => 'ico2',
                 ),
             ),
         );

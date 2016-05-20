@@ -53,6 +53,12 @@ class Offline_orderApp extends PaycenterbaseApp
 
             //会员检查
             $buyer_name = $_POST['buyer_name'];
+            if ($buyer_name == $this->visitor->get('user_name')) {
+                $this->show_warning('买家不能与卖家账户相同');
+                return;
+            }
+
+
             $buyer_member = $this->_member_mod->get(array(
                 'conditions' => "user_name = '{$buyer_name}'",
             ));
@@ -123,7 +129,7 @@ class Offline_orderApp extends PaycenterbaseApp
                 'seller_mobile' => $seller_member['phone_mob'],
                 'money' => $money,
                 'yongjin' => $yongjin,
-                'goods_name' => $_POST['googs_name'],
+                'goods_name' => $_POST['goods_name'],
                 'offline_image' => $offline_image,
                 'status' => ORDER_SHENHE_ING,
                 'add_time' => gmtime(),

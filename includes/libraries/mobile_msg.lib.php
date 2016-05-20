@@ -1,5 +1,7 @@
 <?php
 
+require_once 'ChuanglanSmsHelper/ChuanglanSmsApi.php';
+
 class Mobile_msg {
 
     var $_msg_mod;
@@ -89,6 +91,9 @@ class Mobile_msg {
         } else if ($type == 'find') {
             //找回密码发送的短信内容
             $smsText = "您的找回密码验证码是:" . $mcode . ".请不要把验证码泄露给其他人.";
+        }else if($type == 'tixian'){
+            //提现申请验证短信
+            $smsText = "您正在申请提现验证码为：【".$mcode."】，为了保障您的资产安全，切勿泄露于他人。";
         }
         //存入session 做认证
         unset($_SESSION['MobileConfirmCode']);
@@ -125,7 +130,7 @@ class Mobile_msg {
 
 
     /**
-     * 
+     *
      * @param type $user_id   记录ID   为0 表示为系统发送消息
      * @param type $user_name  用户名
      * @param type $to_mobile  地址
@@ -133,10 +138,11 @@ class Mobile_msg {
      * @return boolean
      */
     function send_msg($user_id, $user_name, $to_mobile, $smsText) {
-        //发送短信
-        $url = 'http://utf8.sms.webchinese.cn/?Uid=' . SMS_UID . '&Key=' . SMS_KEY . '&smsMob=' . $to_mobile . '&smsText=' . $smsText;
-        $res = $this->Sms_Get($url);
+        $clapi  = new ChuanglanSmsApi();
+        $result = $clapi->sendSMS($to_mobile, $smsText,'true');
+        $result = $clapi->execResult($result);
 
+        $res = $result[1]==0?1:0;
         $add_msglog = array(
             'user_id' => $user_id,
             'user_name' => $user_name,
@@ -145,19 +151,52 @@ class Mobile_msg {
             'state' => $res,
             'time' => gmtime(),
         );
-        
+
         $this->_msglog_mod->add($add_msglog);
 
-        if ($res > 0) {
-            // user_id = 0 user_name = admin  表示为系统发送,短信的条数不做操作
-            if ($user_id != 0) {
-                $this->_msg_mod->edit('user_id=' . $user_id, 'num=num-1');
-            }
-            return TRUE;
-        } else {
-            return FALSE;
+
+        if($result[1]==0){
+            return true;
+        }else{
+            return false;
         }
     }
+
+
+    /**
+     * 
+     * @param type $user_id   记录ID   为0 表示为系统发送消息
+     * @param type $user_name  用户名
+     * @param type $to_mobile  地址
+     * @param type $content  内容
+     * @return boolean
+     */
+//    function send_msg($user_id, $user_name, $to_mobile, $smsText) {
+//        //发送短信
+//        $url = 'http://utf8.sms.webchinese.cn/?Uid=' . SMS_UID . '&Key=' . SMS_KEY . '&smsMob=' . $to_mobile . '&smsText=' . $smsText;
+//        $res = $this->Sms_Get($url);
+//
+//        $add_msglog = array(
+//            'user_id' => $user_id,
+//            'user_name' => $user_name,
+//            'to_mobile' => $to_mobile,
+//            'content' => $smsText,
+//            'state' => $res,
+//            'time' => gmtime(),
+//        );
+//
+//        $this->_msglog_mod->add($add_msglog);
+//
+//        if ($res > 0) {
+//            // user_id = 0 user_name = admin  表示为系统发送,短信的条数不做操作
+//            if ($user_id != 0) {
+//                $this->_msg_mod->edit('user_id=' . $user_id, 'num=num-1');
+//            }
+//            return TRUE;
+//        } else {
+//            return FALSE;
+//        }
+//    }
 
     /**
      *    中国网建接口

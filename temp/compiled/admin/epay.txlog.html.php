@@ -74,10 +74,10 @@
             <td><?php if ($this->_var['val']['add_time']): ?><?php echo local_date("y-m-d H:i",$this->_var['val']['add_time']); ?><?php else: ?>未审核<?php endif; ?></td>
             <td class="table_center">
                 <?php if ($this->_var['val']['states'] == 71): ?>
-                <img src="<?php echo $this->res_base . "/" . 'admin/images/positive_enabled.gif'; ?>">
+                <img src="<?php echo $this->res_base . "/" . 'style/images/positive_enabled.gif'; ?>">
                 <?php endif; ?>
                 <?php if ($this->_var['val']['states'] == 70): ?>
-                <img src="<?php echo $this->res_base . "/" . 'admin/images/positive_disabled.gif'; ?>">
+                <img src="<?php echo $this->res_base . "/" . 'style/images/positive_disabled.gif'; ?>">
                 <?php endif; ?>
             </td>
             <td><?php echo $this->_var['val']['to_id']; ?></td>  

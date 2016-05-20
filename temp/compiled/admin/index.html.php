@@ -1,151 +1,68 @@
-<?php echo $this->fetch('paycenter/header.html'); ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
 
-<?php echo $this->fetch('paycenter/left.html'); ?>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7 charset=<?php echo $this->_var['charset']; ?>" />
+<meta http-equiv="Content-Type" content="text/html;charset=<?php echo $this->_var['charset']; ?>" />
+<title>商城后台</title>
+<link href="templates/style/admin.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo $this->lib_base . "/" . 'jquery.js'; ?>" charset="utf-8"></script>
+<script type="text/javascript" src="<?php echo $this->lib_base . "/" . 'ecmall.js'; ?>" charset="utf-8"></script>
 
+<script type="text/javascript">
+var menu = <?php echo $this->_var['menu_json']; ?>;
+</script>
 
-<div class="content-wrapper">
-
-
-    <section class="content">
-
-        <div class="row">
-
-            <section class="col-md-6 connectedSortable">
-
-                <div class="row">
-                    <div id="fenpeiliebiao" class="dataTables_wrapper form-inline dt-bootstrap">
-                        <div class="col-md-12">
-                            <div class="box">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">今日分配预览</h3>
-                                </div>
-
-                                <div class="box-body  table-responsive no-padding">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <th style="width: 80px">用户ID</th>
-                                            <th>用户名</th>
-                                            <th>积分赠送权</th>
-                                            <th>红积分</th>
-                                            <th>现金余额</th>
-                                            <th>状态</th>
-                                        </tr>
-                                        <?php $_from = $this->_var['members'];
-                                        if (!is_array($_from) && !is_object($_from)) {
-                                            settype($_from, 'array');
-                                        };
-                                        $this->push_vars('', 'member');
-                                        if (count($_from)):
-                                            foreach ($_from AS $this->_var['member']):
+<script type="text/javascript" src="<?php echo $this->res_base . "/" . 'js/index.js'; ?>" charset="utf-8"></script>
+</head>
+<body>
+<div class="back_nav">
+    <div class="back_nav_list">
+    <?php $_from = $this->_var['back_nav']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('key', 'menu');if (count($_from)):
+    foreach ($_from AS $this->_var['key'] => $this->_var['menu']):
 ?>
-                                                <tr>
-                                                    <td><?php echo $this->_var['member']['user_id']; ?></td>
-                                                    <th><?php echo $this->_var['member']['user_name']; ?></th>
-                                                    <th><?php echo $this->_var['member']['integral_power']; ?></th>
-                                                    <td>
-                                                        <?php echo $this->_var['member']['integral_red']; ?>
-                                                    </td>
-                                                    <td>
-                                                        <?php echo $this->_var['member']['money']; ?>
-                                                    </td>
-                                                    <td>
-                                                        <span class="label label-warning">待分配</span>
-                                                    </td>
-
-                                                </tr>
-                                            <?php endforeach; endif;
-                                        unset($_from); ?><?php $this->pop_vars();; ?>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php echo $this->fetch('paycenter/page.bottom.html'); ?>
-            </section>
-
-            <section class="col-md-6 connectedSortable">
-                <div class="row info">
-                    <div class="col-md-6 col-xs-6">
-
-                        <div class="small-box bg-aqua">
-                            <div class="inner">
-                                <h3><?php echo $this->_var['allmoney']; ?>元</h3>
-
-                                <p>今日平台流水</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-card"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-xs-6">
-
-                        <div class="small-box bg-green">
-                            <div class="inner">
-                                <h3><?php echo $this->_var['yongjins']; ?>元</h3>
-
-                                <p>今日平台佣金</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-social-yen"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-xs-6">
-
-                        <div class="small-box bg-red">
-                            <div class="inner">
-                                <h3><?php echo $this->_var['integral_power_count']; ?>个</h3>
-
-                                <p>平台积分赠送权之和</p>
-                            </div>
-                            <div class="icon">
-                                <i class="ion ion-social-yen"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-12" id="querenfenpei">
-                        <div class="box box-info">
-                            <div class="box-content">
-                                <form method="get">
-                                    <div class="box-body">
-                                        <input type="hidden" name="app" value="paycenter"/>
-                                        <input type="hidden" name="act" value="fanli"/>
-
-                                        <div class="form-group has-success">
-                                            <br/>
-
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" id="fanli_money"
-                                                       name="fanli_money" value="" style="font-size: x-large;">
-                                                <label class="input-group-addon">确认分配金额(元) </label>
-                                            </div>
-                                        </div>
-                                        <button type="submit" name="method" value="submit"
-                                                class="btn  btn-warning btn-lg pull-right"> 立即提交 <span
-                                                class="ion-paper-airplane"></span></button>
-                                    </div>
-                                </form>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </section>
-        </div>
-
-
-    </section>
-
+        <dl>
+            <dt><?php echo $this->_var['menu']['text']; ?></dt>
+            <?php $_from = $this->_var['menu']['children']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }; $this->push_vars('sub_key', 'sub_menu');if (count($_from)):
+    foreach ($_from AS $this->_var['sub_key'] => $this->_var['sub_menu']):
+?>
+            <dd><a href="javascript:;" onclick="openItem('<?php echo $this->_var['sub_key']; ?>','<?php echo $this->_var['key']; ?>');none_fn();"><?php echo $this->_var['sub_menu']['text']; ?></a></dd>
+            <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
+        </dl>
+    <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
+    </div>
+    <div class="shadow"></div>
+    <div class="close_float"><img src="templates/style/images/close2.gif" /></div>
 </div>
-
-
-
-<?php echo $this->fetch('paycenter/footer.html'); ?>
+<div id="head">
+    <div id="logo"><a href="index.php"><img src="templates/style/images/logo.gif" /></a></div>
+    <div id="menu"><span>您好<strong><?php echo $this->_var['visitor']['user_name']; ?></strong> <a href="index.php?act=logout">[退出]</a> <a href="<?php echo $this->_var['site_url']; ?>/index.php" target="_blank">[商城首页]</a></span>
+    <a href="javascript:;" class="menu_btn1" id="iframe_refresh">刷新</a>
+    <a href="javascript:;" class="menu_btn2" id="clear_cache">更新缓存</a>
+    <a href="#" id="back_btn"><img src="templates/style/images/tiring_room_nav.gif" /></a>
+    </div>
+    <ul id="nav">
+    </ul>
+    <div id="headBg"></div>
+</div>
+<div id="content">
+    <div id="left">
+        <div id="leftMenus">
+            <dl id="submenu">
+                <dt><a class="ico1" id="submenuTitle" href="javascript:;"></a></dt>
+            </dl>
+            <!--
+            <dl id="history" class="history">
+                <dt>
+                    <a class="ico2" id="historyText" href="#">操作历史</a>
+                </dt>
+            </dl>
+            -->
+         </div>
+    </div>
+    <div id="right">
+        <iframe frameborder="0" style="display:none;" width="100%" id="workspace"></iframe>
+    </div>
+</div>
+</body>
+</html>

@@ -105,7 +105,33 @@
 
                 </div>
                 <div class="row">
-                    <div class="col-md-12" id="querenfenpei">
+                    <div class="col-md-6">
+                        <div class="box box-info">
+                            <div class="box-content">
+                                <form method="get">
+                                    <div class="box-body">
+                                        <input type="hidden" name="app" value="paycenter"/>
+                                        <input type="hidden" name="act" value="fanli_ratio"/>
+
+                                        <div class="form-group has-success">
+                                            <br/>
+
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="ratio"
+                                                       name="ratio" value="" style="font-size: x-large;">
+                                                <label class="input-group-addon">汇率 </label>
+                                            </div>
+                                        </div>
+                                        <button type="submit" name="method" value="submit"
+                                                class="btn  btn-warning btn-lg pull-right"> 提交 <span
+                                                class="ion-paper-airplane"></span></button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="querenfenpei">
                         <div class="box box-info">
                             <div class="box-content">
                                 <form method="get">
@@ -119,18 +145,17 @@
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="fanli_money"
                                                        name="fanli_money" value="" style="font-size: x-large;">
-                                                <label class="input-group-addon">确认分配金额(元) </label>
+                                                <label class="input-group-addon">奖励资金</label>
                                             </div>
                                         </div>
                                         <button type="submit" name="method" value="submit"
-                                                class="btn  btn-warning btn-lg pull-right"> 立即提交 <span
+                                                class="btn  btn-warning btn-lg pull-right"> 提交 <span
                                                 class="ion-paper-airplane"></span></button>
                                     </div>
                                 </form>
 
                             </div>
                         </div>
-
                     </div>
                 </div>
 

@@ -128,6 +128,17 @@ class Offline_orderApp extends BackendApp
             return;
         }
 
+        //判断这笔订单是否已经处理
+        $order_data = $this->_order_mod->get(array(
+            'conditions' => "order_id='$order_id'",
+        ));
+
+        if($order_data['status'] == '0' or $order_data['status'] == '40'){
+            $this->show_warning("请不要重复提交");
+            return;
+        }
+
+
         //线下做单-管理员审核拒绝
         if ($status == 0 and strlen($remark) >= 22) {
             $this->_cancel_order($order_id, $remark);
