@@ -207,9 +207,20 @@ class EpayApp extends MemberbaseApp {
                 return;
             }
 
-            //24小时之内只能提现一次
+            //如果有未处理的提现请求,不能申请
+            $check_epaylog = $this->mod_epaylog->get(array(
+                'conditions' => "type=".EPAY_TX." and complete = 0 and user_id=".$this->visitor->get('user_id'),
+                'order' => 'add_time DESC',
+            ));
+
+            if(!empty($check_epaylog)){
+                $this->show_warning('对不起，您提现时间为'.date("Y-m-d H:i:s", $check_epaylog['add_time']+8*3600).'的请求还未处理，请处理完毕之后再申请提现！');
+                return;
+            }
+
+            //7天之内如有提现成功的则不能申请
             $epaylog_data = $this->mod_epaylog->get(array(
-                'conditions' => "type=".EPAY_TX." and user_id=".$this->visitor->get('user_id'),
+                'conditions' => "type=".EPAY_TX." and states=71 and user_id=".$this->visitor->get('user_id'),
                 'order' => 'add_time DESC',
             ));
 
