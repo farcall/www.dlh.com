@@ -158,6 +158,7 @@ class MemberApp extends MemberbaseApp {
         return $data;
     }
 
+
     /**
      *    注册一个新用户
      *
@@ -192,10 +193,13 @@ class MemberApp extends MemberbaseApp {
             }
             /* 导入jQuery的表单验证插件   */
             $this->import_resource(array(
-                'script' => 'jquery.plugins/jquery.validate.js,jquery.plugins/poshy_tip/jquery.poshytip.js',
-                'style' => 'jquery.plugins/poshy_tip/tip-yellowsimple/tip-yellowsimple.css')
-            );
-            $this->display('member.register.html');
+                'script' => 'jquery.plugins/jquery.validate.js', ));
+//            $this->import_resource(array(
+//                'script' => 'jquery.plugins/jquery.validate.js,jquery.plugins/poshy_tip/jquery.poshytip.js',
+//                'style' => 'jquery.plugins/poshy_tip/tip-yellowsimple/tip-yellowsimple.css')
+//            );
+          //  $this->display('member.register.html');
+            $this->display('mobile/member.register.html');
         } else {
             if (!$_POST['agree']) {
                 $this->show_warning('agree_first');
@@ -215,7 +219,7 @@ class MemberApp extends MemberbaseApp {
             /* 注册并登陆 */
             $user_name = trim($_POST['user_name']);
             $password = $_POST['password'];
-            $email = trim($_POST['email']);
+//            $email = trim($_POST['email']);
             $passlen = strlen($password);
             $user_name_len = strlen($user_name);
             if ($user_name_len < 3 || $user_name_len > 25) {
@@ -228,11 +232,11 @@ class MemberApp extends MemberbaseApp {
 
                 return;
             }
-            if (!is_email($email)) {
-                $this->show_warning('email_error');
-
-                return;
-            }
+//            if (!is_email($email)) {
+//                $this->show_warning('email_error');
+//
+//                return;
+//            }
             if (!preg_match("/^[0-9a-zA-Z]{3,15}$/", $user_name)) {
                 $this->show_warning('user_already_taken');
                 return;
@@ -244,8 +248,8 @@ class MemberApp extends MemberbaseApp {
             }
 
             $ms = & ms(); //连接用户中心
-            $user_id = $ms->user->register($user_name, $password,$email, array('phone_mob'=>$_POST['phone_mob']));
-
+            $phone_mob = $user_name;
+            $user_id = $ms->user->register($user_name, $password,'', array('phone_mob'=>$phone_mob));
             if (!$user_id) {
                 $this->show_warning($ms->user->get_error());
 
@@ -253,13 +257,13 @@ class MemberApp extends MemberbaseApp {
             }
             
             /*用户注册功能后 积分操作*/
-            import('integral.lib');
-            $integral=new Integral();
-            $integral->change_integral_reg($user_id);
-            /*用户注册如果有推荐人，则推荐人增加积分*/
-            if(intval($_SESSION['referid'])){
-                $integral->change_integral_recom(intval($_SESSION['referid']));
-            }
+//            import('integral.lib');
+//            $integral=new Integral();
+//            $integral->change_integral_reg($user_id);
+//            /*用户注册如果有推荐人，则推荐人增加积分*/
+//            if(intval($_SESSION['referid'])){
+//                $integral->change_integral_recom(intval($_SESSION['referid']));
+//            }
             
             $this->_hook('after_register', array('user_id' => $user_id));
             //登录
@@ -267,7 +271,7 @@ class MemberApp extends MemberbaseApp {
 
             //修改成长值和会员等级 by qufood
             $user_mod=&m('member');
-            $user_mod->edit_growth($user_id,'register');
+            //$user_mod->edit_growth($user_id,'register');
             
             /* 同步登陆外部系统 */
             $synlogin = $ms->user->synlogin($user_id);

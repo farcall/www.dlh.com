@@ -39,66 +39,11 @@
                         <dt>充值方式：</dt>
                         <dd class="clearfix" ectype="recharge-method">
                             <div class="czlist_type">
-                                <input name="method" type="radio" value="online" id="online" checked="checked"/><label for="online">线上充值</label>
-                            </div>
-                            <div class="czlist_type">
                                 <input name="method" type="radio" value="offline" id="offline"/><label for="offline">线下汇款</label>
                             </div>
                         </dd>
+                        <img src="/data/files/offline/huikuan.jpg" alt=""/>
                     </dl>
-                    <form name="online_form" onSubmit="return online_chongzhi();" action="index.php?app=epay&act=czfs" method="post" target="_blank" ectype="online">
-                        <dl class="clearfix">
-                            <dt>充值渠道：</dt>
-                            <dd class="clearfix">
-                                <?php if ($this->_var['epay_alipay_enabled']): ?>
-                                <div class="czlist_type" style="width: 220px;">
-                                    <input name="czfs" type="radio" value="alipay" id="alipay" checked="checked"/>
-                                    <label for="alipay">
-                                        <img height="20" src="<?php echo $this->res_base . "/" . 'images_bk/28.gif'; ?>" />
-                                    </label>
-                                </div>
-                                <?php endif; ?>
-                                <?php if ($this->_var['epay_chinabank_enabled']): ?>
-                                <div class="czlist_type" style="width: 220px;">
-                                    <input name="czfs" type="radio" value="chinabank" id="chinabank"/>
-                                    <label for="chinabank">
-                                        <img src="<?php echo $this->res_base . "/" . 'images_bk/chinablanklogo.gif'; ?>"  />
-                                    </label>
-                                </div>
-                                <?php endif; ?>
-                                <?php if ($this->_var['epay_tenpay_enabled']): ?>
-                                <div class="czlist_type" style="width: 220px;">
-                                    <input name="czfs" type="radio" value="tenpay" id="tenpay"/>
-                                    <label for="tenpay">
-                                        <img src="<?php echo $this->res_base . "/" . 'images_bk/tenpaylogo.gif'; ?>" />
-                                    </label>
-                                </div>
-                                <?php endif; ?>
-                                <?php if ($this->_var['epay_wxnative_enabled']): ?>
-                                <div class="czlist_type" style="width: 220px;">
-                                    <input name="czfs" type="radio" value="wxnative" id="wxnative"/>
-                                    <label for="wxnative">
-                                        <img src="<?php echo $this->res_base . "/" . 'images_bk/wxnativelogo.gif'; ?>" />
-                                    </label>
-                                </div>
-                                <?php endif; ?>
-
-                            </dd>
-                        </dl>
-                        <dl class="clearfix">
-                            <dt>充值金额：</dt>
-                            <dd><input name="cz_money" type="text" value="0.01" size="8" /></dd>
-                        </dl>
-                        <dl class="clearfix">
-                            <dt>&nbsp;</dt>
-                            <dd class="submit">
-                                <span class="epay_btn">
-                                    <input type="submit" value="提交" />
-                                </span>
-                            </dd>
-                        </dl>
-                    </form>
-
 
                     <form name="offline_form" action="index.php?app=epay&act=offline_chongzhi" method="post" ectype="offline" style="display: none;">
                         <dl class="clearfix">

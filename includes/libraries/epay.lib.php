@@ -4,10 +4,11 @@ class Epay {
 
     var $_epay_mod;
     var $_epaylog_mod;
-
+    var $_epayintegrallog_mod;
     function __construct() {
         $this->_epay_mod = & m('epay');
         $this->_epaylog_mod = & m('epaylog');
+        $this->_epayintegrallog_mod = &m('epay_integral_log');
     }
     
     /**

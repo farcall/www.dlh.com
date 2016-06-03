@@ -192,67 +192,66 @@ class FrontendApp extends ECBaseApp {
     function _get_wap_info()
     {
         if (ECMALL_WAP == 1) {
-            /* 推荐产品 */
-            $goods_mod = & m('goods');
-            $conditions = 'mall_recommended = 1';
-            $conditions .= $city_wheresql;
-            $wap_recommended_goods = $goods_mod->get_list(
-                    array(
-                        'conditions' => $conditions,
-                        'order' => 'mall_sort_order',
-                        'limit' => 20,
-                    )
-            );
-            $this->assign('wap_recommended_goods', $wap_recommended_goods);
+//            /* 推荐产品 */
+//            $goods_mod = & m('goods');
+//            $conditions = 'mall_recommended = 1';
+//            $conditions .= $city_wheresql;
+//            $wap_recommended_goods = $goods_mod->get_list(
+//                    array(
+//                        'conditions' => $conditions,//                        'order' => 'mall_sort_order',l
+//                        'limit' => 20,
+//                    )
+//            );
+//            $this->assign('wap_recommended_goods', $wap_recommended_goods);
+//
+//            /* 推荐店铺 */
+//            $store_mod = & m('store');
+//            $conditions = "state = 1 AND recommended = 1";
+//            $wap_recommended_stores = $store_mod->find(array(
+//                'conditions' => $conditions,
+//                'order' => 'sort_order',
+//                'fields' => 'store_id, store_name, store_logo, praise_rate, user_name',
+//                'join' => 'belongs_to_user',
+//                'limit' => 6,
+//            ));
+//            foreach ($wap_recommended_stores as $key => $store) {
+//                empty($store['store_logo']) && $wap_recommended_stores[$key]['store_logo'] = Conf::get('default_store_logo');
+//                //等级图片
+//                $step = intval(Conf::get('upgrade_required'));
+//                $step < 1 && $step = 5;
+//                $wap_recommended_stores[$key]['credit_image'] = 'themes/wapmall/default/styles/default/images/' . $store_mod->compute_credit($store['credit_value'], $step);
+//            }
+//            $this->assign('wap_recommended_stores', $wap_recommended_stores);
+//
+//
+//            //获取广告图片
+//            $ad_mod = &m('ad');
+//            $ads = $ad_mod->find(array(
+//                'conditions' => 'user_id=0',
+//                'order' => "sort_order desc",
+//            ));
+//            foreach ($ads as $key => $ad) {
+//                $wap_ads[$ad['ad_type']][] = $ad;
+//            }
+//            $this->assign('wap_ads', $wap_ads);
+//
+//            //获取优惠卷
+//            $coupon_mod =& m('coupon');
+//            $wap_coupons = $coupon_mod->find(array(
+//                'fields' => 'coupon.*,s.store_name,s.address,s.region_name',
+//                'conditions' => 'coupon.end_time > ' . gmtime(),
+//                'order' => 'add_time desc',
+//                'join' => 'belong_to_store',
+//                'limit' => 3,
+//            ));
+//            foreach ($wap_coupons as $key => $coupon) {
+//                if (empty($coupon['coupon_bg'])) {
+//                    $wap_coupons[$key]['coupon_bg'] = Conf::get('default_coupon_image');
+//                }
+//            }
+//            $this->assign('wap_coupons', $wap_coupons);
+//
 
-            /* 推荐店铺 */
-            $store_mod = & m('store');
-            $conditions = "state = 1 AND recommended = 1";
-            $wap_recommended_stores = $store_mod->find(array(
-                'conditions' => $conditions,
-                'order' => 'sort_order',
-                'fields' => 'store_id, store_name, store_logo, praise_rate, user_name',
-                'join' => 'belongs_to_user',
-                'limit' => 6,
-            ));
-            foreach ($wap_recommended_stores as $key => $store) {
-                empty($store['store_logo']) && $wap_recommended_stores[$key]['store_logo'] = Conf::get('default_store_logo');
-                //等级图片
-                $step = intval(Conf::get('upgrade_required'));
-                $step < 1 && $step = 5;
-                $wap_recommended_stores[$key]['credit_image'] = 'themes/wapmall/default/styles/default/images/' . $store_mod->compute_credit($store['credit_value'], $step);
-            }
-            $this->assign('wap_recommended_stores', $wap_recommended_stores);
-            
-            
-            //获取广告图片
-            $ad_mod = &m('ad');
-            $ads = $ad_mod->find(array(
-                'conditions' => 'user_id=0',
-                'order' => "sort_order desc",
-            ));
-            foreach ($ads as $key => $ad) {
-                $wap_ads[$ad['ad_type']][] = $ad;
-            }
-            $this->assign('wap_ads', $wap_ads);
-            
-            //获取优惠卷
-            $coupon_mod =& m('coupon');
-            $wap_coupons = $coupon_mod->find(array(
-                'fields' => 'coupon.*,s.store_name,s.address,s.region_name',
-                'conditions' => 'coupon.end_time > ' . gmtime(),
-                'order' => 'add_time desc',
-                'join' => 'belong_to_store',
-                'limit' => 3,
-            ));
-            foreach ($wap_coupons as $key => $coupon) {
-                if (empty($coupon['coupon_bg'])) {
-                    $wap_coupons[$key]['coupon_bg'] = Conf::get('default_coupon_image');
-                }
-            }
-            $this->assign('wap_coupons', $wap_coupons);
-            
-            
             $this->assign('wap_site_logo', Conf::get('wap_site_logo'));
         }
     }
@@ -316,12 +315,12 @@ class FrontendApp extends ECBaseApp {
         return $keywords;
     }
 
-    function login() {
+    function wap_login(){
         if ($this->visitor->has_login) {
             $this->show_warning('has_login');
-
             return;
         }
+
         if (!IS_POST) {
             if (!empty($_GET['ret_url'])) {
                 $ret_url = trim($_GET['ret_url']);
@@ -345,7 +344,81 @@ class FrontendApp extends ECBaseApp {
             $this->assign('ret_url', rawurlencode($ret_url));
             $this->_curlocal(LANG::get('user_login'));
             $this->_config_seo('title', Lang::get('user_login') . ' - ' . Conf::get('site_title'));
+            $this->display('mobile/member.login.html');
+            /* 同步退出外部系统 */
+            if (!empty($_GET['synlogout'])) {
+                $ms = & ms();
+                echo $synlogout = $ms->user->synlogout();
+            }
+        } else {
+            if (Conf::get('captcha_status.login') && base64_decode($_SESSION['captcha']) != strtolower($_POST['captcha'])) {
+                $this->show_warning('captcha_failed');
+
+                return;
+            }
+
+            $user_name = trim($_POST['user_name']);
+            $password = $_POST['password'];
+
+            $ms = & ms();
+            $user_id = $ms->user->auth($user_name, $password);
+            if (!$user_id) {
+                /* 未通过验证，提示错误信息 */
+                $this->show_warning($ms->user->get_error());
+
+                return;
+            } else {
+                /* 通过验证，执行登陆操作 */
+                $this->_do_login($user_id);
+
+                /* 同步登陆外部系统 */
+                $synlogin = $ms->user->synlogin($user_id);
+            }
+
+            /*用户登录后 获得积分*/
+            import('integral.lib');
+            $integral=new Integral();
+            $integral->change_integral_login($user_id);
+
+            header('Location: index.php?app=paycenter');
+            return;
+            /* 请求转发 */
+            $this->show_message(Lang::get('login_successed') . $synlogin, 'back_before_login', rawurldecode($_POST['ret_url']), 'enter_member_center', 'index.php?app=paycenter');
+        }
+    }
+    function login() {
+        if ($this->visitor->has_login) {
+            $this->show_warning('has_login');
+            return;
+        }
+
+        if (!IS_POST) {
+            if (!empty($_GET['ret_url'])) {
+                $ret_url = trim($_GET['ret_url']);
+            } else {
+                if (isset($_SERVER['HTTP_REFERER'])) {
+                    $ret_url = $_SERVER['HTTP_REFERER'];
+                } else {
+                    $ret_url = SITE_URL . '/index.php';
+                }
+            }
+            /* 防止登陆成功后跳转到登陆、退出的页面 */
+            $ret_url = strtolower($ret_url);
+            if (str_replace(array('act=login', 'act=logout',), '', $ret_url) != $ret_url) {
+                $ret_url = SITE_URL . '/index.php';
+            }
+
+            if (Conf::get('captcha_status.login')) {
+                $this->assign('captcha', 1);
+            }
+            $this->import_resource(array('script' => 'jquery.plugins/jquery.validate.js'));
+            $this->assign('ret_url', rawurlencode($ret_url));
+            $this->_curlocal(LANG::get('user_login'));
+            $this->_config_seo('title', Lang::get('user_login') . ' - ' . Conf::get('site_title'));
+
             $this->display('login.html');
+
+
             /* 同步退出外部系统 */
             if (!empty($_GET['synlogout'])) {
                 $ms = & ms();
@@ -410,7 +483,12 @@ class FrontendApp extends ECBaseApp {
         $this->visitor->logout();
         $_SESSION['super_user_id'] = 0;
         /* 跳转到登录页，执行同步退出操作 */
-        header("Location: index.php?app=member&act=login&synlogout=1");
+        if(ECMALL_WAP == 1){
+            header("Location: index.php?app=member&act=wap_login&synlogout=1");
+        }else{
+            header("Location: index.php?app=member&act=login&synlogout=1");
+        }
+
         return;
     }
 
@@ -763,7 +841,7 @@ class MemberbaseApp extends MallbaseApp {
 
     function _run_action() {
         /* 只有登录的用户才可访问 */
-        if (!$this->visitor->has_login && !in_array(ACT, array('login', 'register', 'check_user', 'check_mobile', 'cmc', 'send_code'))) {
+        if (!$this->visitor->has_login && !in_array(ACT, array('login', 'register', 'check_user', 'check_mobile', 'cmc', 'send_code','wap_login'))) {
             if (!IS_AJAX) {
                 header('Location:index.php?app=member&act=login&ret_url=' . rawurlencode($_SERVER['PHP_SELF'] . '?' . $_SERVER['QUERY_STRING']));
 
@@ -773,6 +851,7 @@ class MemberbaseApp extends MallbaseApp {
                 return;
             }
         }
+
 
         parent::_run_action();
     }

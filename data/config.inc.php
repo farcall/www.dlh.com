@@ -2,7 +2,7 @@
 
 return array (
   'SITE_URL' => 'http://www.dlh.com',
-  'DB_CONFIG' => 'mysql://root:root@localhost:3306/dlh',
+  'DB_CONFIG' => 'mysql://root:lianqiao@localhost:3306/delaihui',
   'DB_PREFIX' => 'ecm_',
   'LANG' => 'sc-utf-8',
   'COOKIE_DOMAIN' => '',

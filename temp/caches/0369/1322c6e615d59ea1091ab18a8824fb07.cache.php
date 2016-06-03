@@ -1,7 +1,7 @@
 <?php
 /**
  *  @Created By  PhpCacheServer
- *  @Time:2016-04-17 21:02:24
+ *  @Time:2016-06-04 01:18:08
  */
 
 if(filemtime(__FILE__) + 86400 < time())return false;
@@ -3605,6 +3605,30 @@ return array (
               array (
               ),
             ),
+          ),
+        ),
+        1 => 
+        array (
+          'id' => '472',
+          'value' => '红酒',
+          'children' => 
+          array (
+          ),
+        ),
+        2 => 
+        array (
+          'id' => '473',
+          'value' => '啤酒',
+          'children' => 
+          array (
+          ),
+        ),
+        3 => 
+        array (
+          'id' => '474',
+          'value' => '白酒',
+          'children' => 
+          array (
           ),
         ),
       ),

@@ -165,14 +165,14 @@ $(function(){
                  <td><input type="file" name="image_1" />
                        <?php if ($this->_var['store']['image_1']): ?><p class="d_inline"><a href="<?php echo $this->_var['site_url']; ?>/<?php echo $this->_var['store']['image_1']; ?>" target="_blank">查看</a></p><?php endif; ?>
                  </td>
-                 <td><span class="field_notice">支持格式jpg,jpeg,png,gif，请保证图片清晰且文件大小不超过400KB</span></td>
+                 <td><span class="field_notice">支持格式jpg,jpeg,png,gif，请保证图片清晰且文件大小不超过1M</span></td>
               </tr>
               <tr>
                  <th>上传执照：</th>
                  <td><input type="file" name="image_2" />
                      <?php if ($this->_var['store']['image_2']): ?><p class="d_inline"><a href="<?php echo $this->_var['site_url']; ?>/<?php echo $this->_var['store']['image_2']; ?>" target="_blank">查看</a></p><?php endif; ?>
                  </td>
-                 <td><span class="field_notice">支持格式jpg,jpeg,png,gif，请保证图片清晰且文件大小不超过400KB</span></td>
+                 <td><span class="field_notice">支持格式jpg,jpeg,png,gif，请保证图片清晰且文件大小不超过1M</span></td>
               </tr>
               <tr>
                  <td colspan="2" class="warning"><p><input type="checkbox"<?php if ($this->_var['store']): ?> checked="checked"<?php endif; ?> name="notice" value="1" id="warning" /> <label for="warning">我已认真阅读并完全同意<a href="index.php?app=article&act=system&code=setup_store" target="_blank">开店协议</a>中的所有条款</label></p></td>

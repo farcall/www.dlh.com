@@ -74,19 +74,38 @@ class PaycenterApp extends BackendApp
     {
         echo '请不要非法提交';
         return;
+
         //金币汇率
+
         $power_rate = 1.4;
 
         $epay_members = $this->_epay_mod->find(array(
-            'conditions' => "integral_power>=100000 and integral_power<2000000 and user_name not in  ('18354951778','15806946262','15553904086','15963912291','18668229899')",
+            // and user_name  not in  ('18265180291','13305393569','13475391355')
+            'conditions' => "integral_power>=100000",
+           // 'conditions' => "integral_power>=100000 and integral_power<11000000",
             'count' => true,
             'order' => 'integral_power DESC',
         ));
 
+        $epay_used_members = $this->_epay_mod->getAll("SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =27 ");
 
+        foreach($epay_members as $key=>$epay){
+            foreach($epay_used_members as $key2=>$epay2)
+            {
+                if($epay['user_name']==$epay2['user_name']){
+                    unset($epay_members[$key]);
+                }
+            }
+
+        }
+
+//        echo '------';
+//        echo var_export($epay_members);
+//
+//        return;
         //今日操作日志
         foreach ($epay_members as $key => $epay) {
-            $this->_member_fanli($epay, $power_rate, 16);
+            $this->_member_fanli($epay, $power_rate, 27);
         }
 
         $this->show_message('今日奖励工作已全部完成');

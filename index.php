@@ -21,6 +21,7 @@ $uachar = "/(nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|le
 
 if ((preg_match($uachar, $ua))) {
     define('ECMALL_WAP', 0);
+
 } else {
     define('ECMALL_WAP', 0);
 }

@@ -1,10 +1,145 @@
 {include file=member.header.html}
+<script type="text/javascript">
+    $(function(){
+        $('#epay-withdraw').validate({
+            errorPlacement: function(error, element) {
+                var error_td = element.parent('dd');
+                error_td.find('label').hide();
+                error_td.append(error);
+            },
+            success: function(label) {
+                label.addClass('validate_right').text('OK!');
+            },
+            onkeyup: false,
+            rules: {
+                tx_money:{
+                    required: true,
+                    digits:true
+                },
+                post_zf_pass:{
+                    required: true
+                },
+                phone_mob:{
+                    required: true,
+                    digits:true,
+                    byteRange: [11,11]
+                },
+                confirm_code: {
+                    required: true,
+                    number: true,
+                    byteRange: [6, 6, '{$charset}'],
+                    remote: {
+                        url: 'index.php?app=member&act=cmc&ajax=1',
+                        type: 'get',
+                        data: {
+                            confirm_code: function() {
+                                return $('#confirm_code').val();
+                            }
+                        },
+                        beforeSend: function() {
+                            var _checking = $('#checking_confirm_code');
+                            _checking.next('label').hide();
+                            $(_checking).show();
+
+                        },
+                        complete: function() {
+                            $('#checking_confirm_code').hide();
+                        }
+                    }
+                }
+
+            },
+            messages: {
+                tx_money:{
+                    required:'必填',
+                    digits:'必须是整数'
+                },
+                post_zf_pass:{
+                    required: '必填'
+                },
+                phone_mob:{
+                    required: '必填',
+                    digits:'请输入11位数字',
+                    byteRange:'请输入11位数字'
+                },
+                confirm_code:{
+                    required:'必填',
+                    number:'请输入数字',
+                    byteRange:'请输入六位数字',
+                    remote:'验证码错误'
+                }
+            }
+
+        });
+
+
+
+        var canSend = true;
+        var time = 60;
+        var dtime = 60;
+        $("#sendsms").bind('click', function() {
+            $("#sendsms").css('background','#FF008A');
+            $("#sendsms").css('color','#FFFFFF');
+            var btn = $(this);
+            if (!canSend)
+                return;
+            var sendaddress = $('#phone_mob').val();
+            var fhm = $("[for='phone_mob']").text();
+            if (fhm != '' && fhm != "OK!") {
+                alert("请输入正确的手机号码！");
+                return;
+            }
+            if (fhm == '' && $('#phone_mob').val() == "") {
+                alert("请输入正确的手机号码！");
+                return;
+            }
+            $.ajax({
+                type: "get",
+                url: "index.php?app=epay&act=send_code&type=tixian",
+                data: {
+                    mobile: function() {
+                        return sendaddress;
+                    }
+                },
+                success: function(msg) {
+                    var hander = setInterval(function() {
+                                if (time <= 0) {
+                                    canSend = true;
+                                    clearInterval(hander);
+                                    $("#sendsms").css('background','#f4f4f4');
+                                    $("#sendsms").css('color','#333');
+                                    btn.val("重新发送验证码");
+                                    btn.removeAttr("disabled");
+                                    time = dtime;
+                                } else {
+                                    canSend = false;
+                                    btn.attr({
+                                        "disabled": "disabled"
+                                    });
+                                    btn.val(time + "秒后可重新发送");
+                                    time--;
+                                }
+                            },
+                            1000);
+                    if (msg) {
+                        alert("短信已发送至:" + sendaddress + " 请注意查收！");
+                    } else {
+                        alert("短信发送失败，请检查手机号码是否正确！");
+                    }
+                }
+            });
+        });
+
+
+    });
+</script>
+
 <div class="mb-head">
     <a href="javascript:history.back(-1)" class="l_b">返回</a>
     <div class="tit">申请提现</div>
     <a href="javascript" class="r_b"></a>
 </div>
-{include file=member.submenu.html}
+
 <script>
     $(function () {
         $('#epay-withdraw').submit(function () {
@@ -36,11 +171,8 @@
     <!--{else}-->
     <div class="notice-word">向商城交易宝提取余额到银行卡，请确保您的银行卡信息正确</div>
     <form method="post" id="epay-withdraw">
-
-        <div class="title">提取余额到银行卡</div>
         <div class="title">余额：<strong>{$epay.money}</strong> 元</div>
         <div class="title"><a class="add-bank"  href="{url app=epay&act=bank_add&type=debit}">添加银行卡</a></div>
-        <div class="title"><a  href="{url app=epay&act=logall&type=70}">提现记录</a></div>
 
         <dl class="clearfix">
             <dt>选择银行卡：</dt>
@@ -64,6 +196,15 @@
             <li>
                 <h3>支付密码</h3>
                 <p><input type="password" name="post_zf_pass"  value="" /></p>
+            </li>
+            <li>
+                <input class="text width_normal" type="text" id="phone_mob" name="phone_mob" value="{$phone_mob}" readonly="readonly">
+            </li>
+            <li>
+                <input type="button" id="sendsms" value="发送验证码">
+            </li>
+            <li>
+                <input class="text width_normal" type="text" id="confirm_code" name="confirm_code" value="">
             </li>
         </ul>
         <input class="red_btn" type="submit" value="{$lang.submit}" />
