@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * 地区代理
  * Created by PhpStorm.
