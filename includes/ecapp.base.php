@@ -43,7 +43,7 @@ define('EPAY_ADMIN', 10);    // 管理员手工操作
 define('EPAY_BUY', 20);    // 购买商品
 define('EPAY_SELLER', 30);    // 出售商品
 define('EPAY_IN', 40);    // 账户转入
-define('EPAY_OUT', 50);    // 账户转出
+//define('EPAY_OUT', 50);    // 账户转出
 define('EPAY_CZ', 60);    // 账户充值
 define('EPAY_TX', 70);    // 账户提现
 define('EPAY_REFUND_IN', 80); // 账户退款收入,通常为买家退款成功 得到退款

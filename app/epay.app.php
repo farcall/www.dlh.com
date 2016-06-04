@@ -73,7 +73,7 @@ class EpayApp extends MemberbaseApp {
             EPAY_BUY => Lang::get('epay_buy'), //购买商品
             EPAY_SELLER => Lang::get('epay_seller'), //出售商品
             EPAY_IN => Lang::get('epay_in'), //账户转入
-            EPAY_OUT => Lang::get('epay_out'), //账户转出
+//            EPAY_OUT => Lang::get('epay_out'), //账户转出
             EPAY_CZ => Lang::get('epay_cz'), //账户充值
             EPAY_TX => Lang::get('epay_tx'), //账户提现
             EPAY_TX_REFUSE=>'账户提现被驳回',//提现被驳回
@@ -293,147 +293,10 @@ class EpayApp extends MemberbaseApp {
         }
     }
 
-    /**
-     * 作用:金币提现为虚拟账户中的钱
-     * Created by QQ:710932
-     */
-    function jinbi2money(){
-        $to_money = trim($_POST['to_money']);
-        $user_id = $this->visitor->get('user_id');
-        $user_name = $this->visitor->get('user_name');
-
-        /*dong-持有金币开始*/
-        $fanli_jindou_mod = &m('fanli_jindou');
-        $fanli_jindou_data = $fanli_jindou_mod->get('user_id='.$user_id);
-        if(!isset($fanli_jindou_data)){
-            $jinbi = 0;
-        }else{
-            $jinbi = $fanli_jindou_data['jinbi'];
-        }
-        /*dong-持有金币结束*/
-
-        session_start();
-        if(IS_POST){
-            if(!is_numeric($to_money)){
-                $this->show_warning('非法输入');
-                return;
-            }
-            if($to_money > $jinbi){
-                $this->show_warning('请正确输入金币数量');
-                return;
-            }
-
-            //todo 硬编码 兑换比例1:1
-            $jinbi = $to_money;
-            /*fanli_jinbi_log表*/
-            $fanli_jinbi_log_mod = &m('fanli_jinbi_log');
-            $fanli_jinbi_log_mod->add(array(
-               // user_id	user_name	jinbi	add_time	status
-                'user_id'=>$user_id,
-                'user_name'=>$user_name,
-                'jinbi'=>$to_money,
-                'total'=>$fanli_jindou_data['jinbi']-$to_money,
-                'flow'=>'out',
-                'add_time'=>gmtime(),
-                'status'=>1,
-            ));
-
-            //金币减少
-            $fanli_jindou_data['jinbi'] = $fanli_jindou_data['jinbi']-$to_money;
-            $fanli_jindou_mod->edit('user_id='.$user_id,$fanli_jindou_data);
-
-            /*epay表*/
-            $epady_mod = &m('epay');
-            $epay_data = $epady_mod->get(array(
-                'conditions'    => "user_id = '{$user_id}'",
-            ));
-            $epay_data['money'] = $epay_data['money']+$to_money;
-            $epady_mod->edit($epay_data['id'],$epay_data);
-
-            /*epaylog*/
-            $epaylog_mod = &m('epaylog');
-            $epaylog_data = $epaylog_mod->add(array(
-             //   user_id user_name type(EPAY_DX) states(40) money money_flow(income) complete(1) log_text addtime
-                'user_id'=>$user_id,
-                'user_name'=>$user_name,
-                'type'=>EPAY_DX,
-                'states'=>40,
-                'money'=>$to_money,
-                'money_flow'=>'income',
-                'complete'=>1,
-                'log_text'=>$jinbi.'金币兑换'.$to_money.'元',
-                'add_time'=>gmtime(),
-            ));
-
-            $this->show_message('兑换成功完成');
-            return;
-        }
-        else{
-            /* 当前用户中心菜单 */
-            $this->_curitem('epay');
-            $this->_curmenu('金币兑换为可用资金(钱)');
-            $this->assign('jinbi', $jinbi);
-            $this->display('epay.jinbi2money.html');
-        }
-    }
-
-    /**
-     * 作用:金币兑换日志记录
-     * Created by QQ:710932
-     */
-    function duihuanlogall(){
-        $user_id = $this->visitor->get('user_id');
-
-        $page = $this->_get_page(50);
-        $jinbi_log_mod = &m('fanli_jinbi_log');
-        $logs = $jinbi_log_mod->find(array(
-            'conditions' => "status=1 and flow= 'out' and user_id=".$user_id,
-            'order'      => 'id desc',
-            'fields'     => '',
-            'limit'      => $page['limit'],
-            'count'      => true,
-        ));
-        $page['item_count'] = $jinbi_log_mod->getCount();
-        $this->_format_page($page);
-        $this->assign('page_info', $page);
-
-        /* 当前用户中心菜单 */
-        $this->_curitem('epay');
-        $this->_curmenu('金币兑换记录');
-        $this->assign('logs', $logs);
-        $this->display('epay.duihuanlogall.html');
-    }
-
-    /**
-     * 作用:金币明细
-     * 系统赠送或兑换转出
-     * Created by QQ:710932
-     */
-    function jinbimingxi(){
-        $user_id = $this->visitor->get('user_id');
-
-        $page = $this->_get_page(50);
-        $jinbi_log_mod = &m('fanli_jinbi_log');
-        $logs = $jinbi_log_mod->find(array(
-            'conditions' => "status=1 and user_id=".$user_id,
-            'order'      => 'id desc',
-            'fields'     => '',
-            'limit'      => $page['limit'],
-            'count'      => true,
-        ));
-        $page['item_count'] = $jinbi_log_mod->getCount();
-        $this->_format_page($page);
-        $this->assign('page_info', $page);
-
-        /* 当前用户中心菜单 */
-        $this->_curitem('epay');
-        $this->_curmenu('金币明细');
-        $this->assign('logs', $logs);
-        $this->display('epay.jinbimingxi.html');
-    }
-
     //余额转帐
     function out() {
+        echo '账户间资金转移功能已下线,上线时间不定';
+        return;
         $to_user = trim($_POST['to_user']);
         $to_money = trim($_POST['to_money']);
         $user_id = $this->visitor->get('user_id');
@@ -772,22 +635,22 @@ class EpayApp extends MemberbaseApp {
                 'name'  => 'epay_logall',
                 'url'   => 'index.php?app=epay&act=logall',
             ),
-            array(
-                'name' =>'金币明细',
-                'url' =>'index.php?app=epay&act=jinbimingxi',
-            ),
-            array(
-                'name'  => '金币兑换人民币',
-                'url'   => 'index.php?app=epay&act=jinbi2money',
-            ),
+//            array(
+//                'name' =>'金币明细',
+//                'url' =>'index.php?app=epay&act=jinbimingxi',
+//            ),
+//            array(
+//                'name'  => '金币兑换人民币',
+//                'url'   => 'index.php?app=epay&act=jinbi2money',
+//            ),
             array(
                 'name'  => 'epay_withdraw',
                 'url'   => 'index.php?app=epay&act=withdraw',
             ),
-            array(
-                'name'  => 'epay_out',
-                'url'   => 'index.php?app=epay&act=out',
-            ),
+//            array(
+//                'name'  => 'epay_out',
+//                'url'   => 'index.php?app=epay&act=out',
+//            ),
 
 //            array(
 //                'name'  => '金币兑换记录',
@@ -797,11 +660,11 @@ class EpayApp extends MemberbaseApp {
         );
         return $menus;
     }
-    
-    
-    
-    
-    
+
+
+
+
+
 
     //支付定单
     function payment() {

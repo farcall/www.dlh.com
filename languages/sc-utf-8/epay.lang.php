@@ -10,7 +10,7 @@ return array(
     'epay_buy' => '购买商品',
     'epay_seller' => '出售商品',
     'epay_in' => '账户转入',
-    'epay_out' => '账户转出',
+//    'epay_out' => '账户转出',
     'epay_cz' => '账户充值',
     'epay_tx' => '账户提现',
     'epay_refund_in'=>'退款收入',

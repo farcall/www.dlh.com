@@ -276,7 +276,7 @@ class EpayApp extends BackendApp {
             EPAY_BUY => Lang::get('epay_buy'), //购买商品
             EPAY_SELLER => Lang::get('epay_seller'), //出售商品
             EPAY_IN => Lang::get('epay_in'), //账户转入
-            EPAY_OUT => Lang::get('epay_out'), //账户转出
+           // EPAY_OUT => Lang::get('epay_out'), //账户转出
             EPAY_CZ => Lang::get('epay_cz'), //账户充值
             EPAY_TX => Lang::get('epay_tx'), //账户提现
             EPAY_REFUND_IN => Lang::get('epay_refund_in'), //账户退款收入,通常为买家退款成功 得到退款
