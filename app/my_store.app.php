@@ -112,8 +112,8 @@ class My_storeApp extends StoreadminbaseApp {
 
             $data = array_merge($data, array(
                 'store_name' => $_POST['store_name'],
-                'region_id' => $_POST['region_id'],
-                'region_name' => $_POST['region_name'],
+//                'region_id' => $_POST['region_id'],
+//                'region_name' => $_POST['region_name'],
                 'description' => $_POST['description'],
                 'address' => $_POST['address'],
                 'tel' => $_POST['tel'],

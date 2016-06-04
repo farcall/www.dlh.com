@@ -168,26 +168,6 @@ function drop_image(file_id)
                                 </td>
                             </tr>
                             <tr>
-                                <th>{$lang.region}:</th>
-                                <td><div id="region">
-                                    <input type="hidden" name="region_id" value="{$store.region_id}" class="mls_id" />
-                                    <input type="hidden" name="region_name" value="{$store.region_name|escape}" class="mls_names" />
-                                    <!-- {if $store.store_id} -->
-                                    <span>{$store.region_name|escape}</span>
-                                    <input type="button" value="{$lang.edit}" class="edit_region" />
-                                    <select style="display:none">
-                                      <option>{$lang.select_pls}</option>
-                                      {html_options options=$regions}
-                                    </select>
-                                    <!-- {else} -->
-                                    <select class="select">
-                                      <option>{$lang.select_pls}</option>
-                                      {html_options options=$regions}
-                                    </select>
-                                    <!-- {/if} --></div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <th>{$lang.address}:</th>
                                 <td>
                                     <p class="td_block"><input type="text" name="address" class="text width_normal" id="address" value="{$store.address|escape}" /><span class="field_notice">{$lang.address_info}</span></p>
