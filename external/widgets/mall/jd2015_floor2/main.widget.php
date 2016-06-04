@@ -51,19 +51,6 @@ class jd2015_floor2Widget extends BaseWidget {
             'ad14_image_url' => $this->options['ad14_image_url'],
             'ad14_link_url' => $this->options['ad14_link_url'],
             'model_name1' => $this->options['model_name1'],
-            'goods_list_1' => $recom_mod->get_recommended_goods($this->options['img_recom_id_1'], 10, true, $this->options['img_cate_id_1']),
-            'model_name2' => $this->options['model_name2'],
-            'goods_list_2' => $recom_mod->get_recommended_goods($this->options['img_recom_id_2'], 10, true, $this->options['img_cate_id_2']),
-            'model_name3' => $this->options['model_name3'],
-            'goods_list_3' => $recom_mod->get_recommended_goods($this->options['img_recom_id_3'], 10, true, $this->options['img_cate_id_3']),
-            'model_name4' => $this->options['model_name4'],
-            'goods_list_4' => $recom_mod->get_recommended_goods($this->options['img_recom_id_4'], 10, true, $this->options['img_cate_id_4']),
-            'model_name5' => $this->options['model_name5'],
-            'goods_list_5' => $recom_mod->get_recommended_goods($this->options['img_recom_id_5'], 10, true, $this->options['img_cate_id_5']),
-            'model_name6' => $this->options['model_name6'],
-            'goods_list_6' => $recom_mod->get_recommended_goods($this->options['img_recom_id_6'], 10, true, $this->options['img_cate_id_6']),
-            'model_name7' => $this->options['model_name7'],
-            'goods_list_7' => $recom_mod->get_recommended_goods($this->options['img_recom_id_7'], 10, true, $this->options['img_cate_id_7']),
         );
         return $data;
     }
