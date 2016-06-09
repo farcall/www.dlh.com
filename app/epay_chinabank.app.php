@@ -61,6 +61,7 @@ class Epay_chinabankApp extends MallbaseApp
                 if (empty($row_epay_log) || $row_epay_log['complete'] == '1') {
                     $this->writelog('已经完成');
                     echo 'ok';
+                    return;
                 }
 
                 //获取用户的余额
@@ -107,6 +108,7 @@ class Epay_chinabankApp extends MallbaseApp
                     //检测余额是否足够
                     if ($buyer_old_money < $order_money) {   //检测余额是否足够 开始
                         echo 'ok';
+                        return;
                     }
 
 
