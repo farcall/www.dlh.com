@@ -2,7 +2,7 @@
 <div id="header" class="w-full">
     <div class="shop-t w clearfix pb10 mb5 mt5">
         <div class="logo">
-            <a href="<?php echo $this->_var['site_url']; ?>" title="<?php echo $this->_var['site_title']; ?>"><img alt="<?php echo $this->_var['site_title']; ?>" src="<?php echo $this->_var['site_logo']; ?>" /></a>
+            <a href="<?php echo $this->_var['site_url']; ?>" title="<?php echo $this->_var['site_title']; ?>"><img alt="<?php echo $this->_var['site_title']; ?>" src="<?php echo $this->_var['site_logo']; ?>"/></a>
         </div>
         <div class="top-search">
             <div class="top-search-box clearfix">

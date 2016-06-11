@@ -1,4 +1,21 @@
 {include file=member.header.html}
+<div class="mb-head">
+    <a href="javascript:history.back(-1)" class="l_b">返回</a>
+    <div class="tit">申请提现</div>
+    <a href="javascript" class="r_b"></a>
+</div>
+{include file=member.submenu.html}
+<script>
+    $(function () {
+        $('#epay-withdraw').submit(function () {
+            if ($(this).find('input[name="tx_money"]').val() == '' || $(this).find('input[name="tx_money"]').val() <= 0) {
+                alert('{$lang.withdraw_money_error}');
+                return false;
+            }
+        });
+    })
+</script>
+
 <script type="text/javascript">
     $(function(){
         $('#epay-withdraw').validate({
@@ -133,24 +150,6 @@
 
     });
 </script>
-
-<div class="mb-head">
-    <a href="javascript:history.back(-1)" class="l_b">返回</a>
-    <div class="tit">申请提现</div>
-    <a href="javascript" class="r_b"></a>
-</div>
-
-<script>
-    $(function () {
-        $('#epay-withdraw').submit(function () {
-            if ($(this).find('input[name="tx_money"]').val() == '' || $(this).find('input[name="tx_money"]').val() <= 0) {
-                alert('{$lang.withdraw_money_error}');
-                return false;
-            }
-        });
-    })
-</script>
-
 <style>
     .epay_withdraw{margin:10px 16px;}
     .epay_withdraw .title{text-align: center;margin-bottom: 10px;font-size: 14px;}
@@ -171,8 +170,11 @@
     <!--{else}-->
     <div class="notice-word">向商城交易宝提取余额到银行卡，请确保您的银行卡信息正确</div>
     <form method="post" id="epay-withdraw">
+
+        <div class="title">提取余额到银行卡</div>
         <div class="title">余额：<strong>{$epay.money}</strong> 元</div>
         <div class="title"><a class="add-bank"  href="{url app=epay&act=bank_add&type=debit}">添加银行卡</a></div>
+        <div class="title"><a  href="{url app=epay&act=logall&type=70}">提现记录</a></div>
 
         <dl class="clearfix">
             <dt>选择银行卡：</dt>
@@ -198,14 +200,20 @@
                 <p><input type="password" name="post_zf_pass"  value="" /></p>
             </li>
             <li>
-                <input class="text width_normal" type="text" id="phone_mob" name="phone_mob" value="{$phone_mob}" readonly="readonly">
+                <h3>手机号码:</h3>
+                <p><input type="number" id="phone_mob" name="phone_mob" value={$phone_mob} readonly="readonly"/></p>
             </li>
             <li>
-                <input type="button" id="sendsms" value="发送验证码">
+                <input type="button" id="sendsms" value="发送验证码"/>
             </li>
+
             <li>
-                <input class="text width_normal" type="text" id="confirm_code" name="confirm_code" value="">
+                <h3>短信验证码:</h3>
+                <p>
+                    <input type="text" id="confirm_code" name="confirm_code" value="">
+                </p>
             </li>
+
         </ul>
         <input class="red_btn" type="submit" value="{$lang.submit}" />
     </form>

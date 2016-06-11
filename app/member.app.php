@@ -16,6 +16,7 @@ class MemberApp extends MemberbaseApp {
 
     function MemberApp() {
         parent::__construct();
+
         $ms = & ms();
         $this->_feed_enabled = $ms->feed->feed_enabled();
         $this->assign('feed_enabled', $this->_feed_enabled);
@@ -24,6 +25,7 @@ class MemberApp extends MemberbaseApp {
     }
 
     function index() {
+
         /* 清除新短消息缓存 */
         $cache_server = & cache_server();
         $cache_server->delete('new_pm_of_user_' . $this->visitor->get('user_id'));
@@ -121,6 +123,31 @@ class MemberApp extends MemberbaseApp {
             $this->assign('applying', 1);
         }
 
+
+
+
+        //会员名称
+        $epay_mod = &m('epay');
+        $epay_data = $epay_mod->get(array(
+            'conditions' => "user_id=" . $user['user_id'],
+        ));
+
+        //会员级别
+
+        $paycenter = array(
+            'vip'=>$info['vip'],
+            'money'=>$epay_data['money'],
+            'money_dj'=>$epay_data['money_dj'],
+            'money_tax' => $epay_data['money_tax'],
+            'integral_power'=>intval($epay_data['integral_power']/100000),
+            'integral_white'=>$info['integral'],
+            'integral_red'=>$epay_data['integral_red'],
+            );
+
+
+        $this->assign('paycenter',$paycenter);
+
+
         $this->assign('system_notice', $this->_get_system_notice($_SESSION['member_role']));
 
         /* 当前位置 */
@@ -194,12 +221,12 @@ class MemberApp extends MemberbaseApp {
             /* 导入jQuery的表单验证插件   */
             $this->import_resource(array(
                 'script' => 'jquery.plugins/jquery.validate.js', ));
-//            $this->import_resource(array(
-//                'script' => 'jquery.plugins/jquery.validate.js,jquery.plugins/poshy_tip/jquery.poshytip.js',
-//                'style' => 'jquery.plugins/poshy_tip/tip-yellowsimple/tip-yellowsimple.css')
-//            );
-          //  $this->display('member.register.html');
-            $this->display('mobile/member.register.html');
+            $this->import_resource(array(
+                'script' => 'jquery.plugins/jquery.validate.js,jquery.plugins/poshy_tip/jquery.poshytip.js',
+                'style' => 'jquery.plugins/poshy_tip/tip-yellowsimple/tip-yellowsimple.css')
+            );
+            $this->display('member.register.html');
+
         } else {
             if (!$_POST['agree']) {
                 $this->show_warning('agree_first');

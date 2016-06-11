@@ -168,26 +168,6 @@ function drop_image(file_id)
                                 </td>
                             </tr>
                             <tr>
-                                <th>所在地区:</th>
-                                <td><div id="region">
-                                    <input type="hidden" name="region_id" value="<?php echo $this->_var['store']['region_id']; ?>" class="mls_id" />
-                                    <input type="hidden" name="region_name" value="<?php echo htmlspecialchars($this->_var['store']['region_name']); ?>" class="mls_names" />
-                                    <?php if ($this->_var['store']['store_id']): ?>
-                                    <span><?php echo htmlspecialchars($this->_var['store']['region_name']); ?></span>
-                                    <input type="button" value="编辑" class="edit_region" />
-                                    <select style="display:none">
-                                      <option>请选择...</option>
-                                      <?php echo $this->html_options(array('options'=>$this->_var['regions'])); ?>
-                                    </select>
-                                    <?php else: ?>
-                                    <select class="select">
-                                      <option>请选择...</option>
-                                      <?php echo $this->html_options(array('options'=>$this->_var['regions'])); ?>
-                                    </select>
-                                    <?php endif; ?></div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <th>详细地址:</th>
                                 <td>
                                     <p class="td_block"><input type="text" name="address" class="text width_normal" id="address" value="<?php echo htmlspecialchars($this->_var['store']['address']); ?>" /><span class="field_notice">不必重复填写所在地区</span></p>

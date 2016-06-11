@@ -393,6 +393,7 @@ class SessionProcessor
     {
             session_name($this->session_name); // 自定义session_name
             session_set_cookie_params(0, $this->session_cookie_path, $this->session_cookie_domain, $this->session_cookie_secure);
+        
         return session_start();
     }
 }

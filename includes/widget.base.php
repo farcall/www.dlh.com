@@ -10,7 +10,7 @@ class BaseWidget extends Object {
 
     var $options = null;    //显示选项
     var $_name = null;    //挂件标识
-    var $id = null;     //在页面中的唯一标识
+    var $id = null;     //在页面中的d唯一标识
     var $widget_root = '';  //HTTP根目录
     var $widget_path = '';  //物理路径
     var $_ttl = 3600;    //缓存时间

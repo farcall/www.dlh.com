@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -32,7 +33,7 @@
                 <form>
                     <input type="hidden" name="app" value="search"/>
                     <input type="hidden" name="act" value="index"/>
-                    <input type="text" name="keyword"  value="" placeholder="搜索你关注的商品" class="keyword" />
+                    <input type="text" name="keyword"  value="" placeholder=" 搜索你关注的商品" class="keyword" />
                     <input type="submit" class="search-btn" value="" />
                 </form>
             </div>

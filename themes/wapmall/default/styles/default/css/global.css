@@ -1,11 +1,15 @@
 /*----------------ini----------------*/
-@font-face {font-family: 'iconfont';
-            src: url('../iconfont/iconfont.eot'); /* IE9*/
-            src: url('../iconfont/iconfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
-                url('../iconfont/iconfont.woff') format('woff'), /* chrome、firefox */
-                url('../iconfont/iconfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-                url('../iconfont/iconfont.svg#uxiconfont') format('svg'); /* iOS 4.1- */
+@font-face {
+    font-family: 'iconfont';
+    src: url('//at.alicdn.com/t/font_1465405322_9677632.eot'); /* IE9*/
+    src: url('//at.alicdn.com/t/font_1465405322_9677632.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('//at.alicdn.com/t/font_1465405322_9677632.woff') format('woff'), /* chrome、firefox */
+    url('//at.alicdn.com/t/font_1465405322_9677632.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('//at.alicdn.com/t/font_1465405322_9677632.svg#iconfont') format('svg'); /* iOS 4.1- */
 }
+
+
+
 .iconfont{
     font-family:"iconfont" !important;
     font-size:16px;font-style:normal;
@@ -90,8 +94,14 @@ display:block;text-align: center;
 
 
 /*浮动窗*/
+/*#footer_nav{position: fixed;left: 0px;bottom: 0px;z-index: 10;display: table;width: 100%;}*/
+/*#footer_nav ul{height:50px;background: #5c5c5c;background-size: contain;width:100%;margin: 0 auto;border-top: 1px #444444 solid;text-shadow: none;font-size: 16px;}*/
+/*#footer_nav li{width:20%;text-align: center;position: relative;float:left}*/
+/*#footer_nav li a{color:#fff;font-size: 12px;}*/
+/*#footer_nav li span{font-size:20px;}*/
 #footer_nav{position: fixed;left: 0px;bottom: 0px;z-index: 10;display: table;width: 100%;}
-#footer_nav ul{height:50px;background: #5c5c5c;background-size: contain;width:100%;margin: 0 auto;border-top: 1px #444444 solid;text-shadow: none;font-size: 16px;}
-#footer_nav li{width:20%;text-align: center;position: relative;float:left}
-#footer_nav li a{color:#fff;font-size: 12px;}
+#footer_nav ul{height:50px;background: #ffffff;background-size: contain;width:100%;margin: 0 auto;text-shadow: none;font-size: 16px;}
+#footer_nav li{width:20%;text-align: center;position: relative;float:left;}
+#footer_nav li a{color:#fff;font-size: 12px;
+    color: #c91e31;}
 #footer_nav li span{font-size:20px;}

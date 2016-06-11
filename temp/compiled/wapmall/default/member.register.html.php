@@ -229,7 +229,7 @@
         <h2>填写注册信息</h2>
         <table  width="100%">
             <tr>
-                <td> <input placeholder="用户名" type="text" name="user_name" id="user_name" class="text">
+                <td> <input placeholder="用户名,请用您的手机号注册" type="number" name="user_name" id="user_name" class="text">
                     <label class="field_notice"></label></td>
             </tr>
             <tr>  
@@ -245,12 +245,6 @@
             <?php if ($this->_var['msg_enabled']): ?>
             <tr> 
                 <td>  
-                    <input placeholder="手机" id="phone_mob"  name="phone_mob" type="text"  class="text">  
-                    <label class="field_notice"></label>
-                </td>
-            </tr>
-            <tr> 
-                <td>  
                     <input type="button" id="sendsms" value="免费发送短信验证码"/>
                 </td>
             </tr>
@@ -261,12 +255,6 @@
                 </td>
             </tr>
             <?php endif; ?>
-            <tr> 
-                <td>  
-                    <input placeholder="电子邮箱" id="email"  name="email" type="text"  class="text">  
-                    <label class="field_notice"></label>
-                </td>
-            </tr>
             <?php if ($this->_var['captcha']): ?>
             <tr>
                 <td>验证码:<input type="text" name="captcha" class="text" id="captcha1" />

@@ -34,7 +34,7 @@ class PaycenterApp extends BackendApp
         $this->_member_mod = &m('member');
         $this->_epay_mod = &m('epay');
         $this->_operate_log_mod = &m('operate_log');
-
+        $this->_operate_change_log_mod = &m('operate_change_log');
         import('mobile_msg.lib');
         $this->mobile_msg = new Mobile_msg();
     }
@@ -70,9 +70,68 @@ class PaycenterApp extends BackendApp
         $this->display('paycenter/index.html');
     }
 
+    /**
+     *
+     */
+    function findusers()
+    {
+        return;
+        $epay_used_members30 = $this->_epay_mod->getAll("SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =30 and Id>12094");
+        echo sizeof($epay_used_members30);
+
+        foreach ($epay_used_members30 as $key => $epay30) {
+            echo '<br>';
+            //手动拒绝提现
+            $this->step1($epay30);
+            $id = $epay30['Id'];
+            $this->_operate_change_log_mod->drop("$id");
+
+//            $integral_log_mod = &m('integral_log');
+//            $log = $integral_log_mod->find("user_name=".$epay30['user_name']." add_time desc");
+//            var_dump($log);
+        }
+
+        return;
+    }
+
+    function step1($epay30){
+        return;
+        //查找
+        $user_name = $epay30['user_name'];
+        $epay31 = $this->_epay_mod->getAll("select * from ecm_operate_change_log WHERE operate_id=31 and user_name = $user_name");
+
+        $zhanghu = $this->_epay_mod->get("user_name=$user_name");
+        echo "用户名:".$zhanghu['user_name']."冻结资金:".$zhanghu['money_dj']."---账户余额:".$zhanghu['money']."---税费:".$zhanghu['money_tax']."---红积分:".$zhanghu['integral_red']."---积分赠送权:".$zhanghu['integral_power'];
+
+        if ($epay30['pre_integral_white'] > $epay31[0]['pre_integral_white'])
+        {
+            $epay_pre = $epay30;
+            $epay_last = $epay31[0];
+        }else{
+            $epay_pre = $epay31[0];
+            $epay_last = $epay30;
+        }
+
+
+        $xxx = $this->_epay_mod->edit($zhanghu['id'],array(
+            'money'=>'0',
+            'money_tax'=>'0',
+            'integral_red'=>$epay_pre['change_integral_red'],
+            'integral_power'=>$epay_pre['pre_integral_power'],
+        ));
+
+
+        $yyy = $this->_member_mod->edit('user_name='.$user_name,array(
+            'integral'=>$epay_last['pre_integral_white'],
+            'total_integral'=>$epay_last['pre_integral_white'],
+        ));
+
+    }
+
+
     function todayfanli()
     {
-        echo '请不要非法提交';
+        echo '2016年06月11日18:02:25';
         return;
 
         //金币汇率
@@ -87,7 +146,7 @@ class PaycenterApp extends BackendApp
             'order' => 'integral_power DESC',
         ));
 
-        $epay_used_members = $this->_epay_mod->getAll("SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =27 ");
+        $epay_used_members = $this->_epay_mod->getAll("SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =  38");
 
         foreach($epay_members as $key=>$epay){
             foreach($epay_used_members as $key2=>$epay2)
@@ -105,10 +164,10 @@ class PaycenterApp extends BackendApp
 //        return;
         //今日操作日志
         foreach ($epay_members as $key => $epay) {
-            $this->_member_fanli($epay, $power_rate, 27);
+            $this->_member_fanli($epay, $power_rate, 38);
         }
 
-        $this->show_message('今日奖励工作已全部完成');
+        echo '今日奖励工作已全部完成';
         return;
     }
 

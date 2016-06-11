@@ -1,10 +1,10 @@
 .index-header .search .keyword,.index-header .search .search-btn{-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-appearance: none;border: 0;border-radius: 0;}
 /* 首页头部 */
-.index-header{padding:7px 1%;height:30px; width:98%;z-index:999;background: url(../images/header-bg.png) repeat-x #efefef;background-size: 100% 44px;border-bottom:1px solid #bfbfbf;position:fixed;top:0;}
+.index-header{padding:7px 1%;height:30px; width:98%;z-index:999;background: url(../images/header-bg.pngX) repeat-x #c91e31;background-size: 100% 44px;position:fixed;top:0;}
 .index-header .logo{float:left;width:12%;overflow: hidden;}
 .index-header .logo img{display: table;height: 30px;float: left;}
 .index-header .selector{line-height: 30px;height:30px;width:74px; float: left;display: block;color: #fff;}
-.index-header .search{ -webkit-box-flex: 1;padding: 0 1%; background:#fff;border-radius: 4px; height:30px;display: -webkit-box;line-height:30px;width:75%;float:left;border:1px solid #bfbfbf;}
+.index-header .search{ -webkit-box-flex: 1;padding: 0 1%; background:#fff;border-radius: 4px; height:30px;display: -webkit-box;line-height:30px;width:75%;float:left;}
 .index-header .search .search-box{-webkit-box-flex: 1;display: table; width:100%;}
 .index-header .search .keyword{-webkit-box-flex: 1; width:150px; height:30px;vertical-align: bottom;line-height: 30px;}
 .index-header .search .search-btn{ width:30px; height:30px;background:url(../images/btn_search.png) no-repeat center center;-webkit-background-size: 15px 15px;-webkit-box-flex: 1;display: table-cell; float: right}
@@ -21,13 +21,27 @@
 
 
 /*导航图标*/
-#guide{ width:100%; overflow:hidden; background:#fff;}
-#guide #apps{ padding-top:5px;}
-#guide #apps dl{ width:24.9%; float:left; }
-#guide #apps dl dt a{display: block;height: 65px;text-align: center;padding: 5px 0px; color:#545454;}
-#guide #apps dl dt a:hover{ color:#f33100;}
-#guide #apps dl dt a img{width:25px;height: 22px;}
-#guide #apps dl dt a span{display: inline-block;width: 100%;height: 23px;line-height: 23px;text-align: center;font-size: 12px;text-decoration: none;}
+/*#guide{ width:100%; overflow:hidden; background:#fff;}*/
+/*#guide #apps{ padding-top:5px;}*/
+/*#guide #apps dl{ width:24.9%; float:left; }*/
+/*#guide #apps dl dt a{display: block;height: 65px;text-align: center;padding: 5px 0px; color:#545454;}*/
+/*#guide #apps dl dt a:hover{ color:#f33100;}*/
+/*#guide #apps dl dt a img{width:25px;height: 22px;}*/
+/*#guide #apps dl dt a span{display: inline-block;width: 100%;height: 23px;line-height: 23px;text-align: center;font-size: 12px;text-decoration: none;}*/
+
+.guide{width: 100%;overflow: hidden;background: #fff;padding: 10px 0px;margin-top:-30px;margin-bottom:10px}
+.guide .info{border-top:1px solid #e6e6e6}
+.guide .info dl{width:50%;height:70px;float: left;box-shadow: 1px 1px 0 rgba(200,200,200,0.6);display: table;}
+.guide .info dl dd{width:100%;padding:10px 0 0 20px;text-align: left;font-size: 12px;}
+.guide .info dl dt{text-align: center;font-weight: bold;font-size:16px;padding-top: 5px;}
+.guide ul{margin-top:20px;}
+.guide ul li {width: 24.9%;float: left;}
+.guide ul li a {display: block;height: 65px;text-align: center;padding: 5px 0px;color: #545454;}
+/*.guide ul li a .ico{width: 40px;height: 40px;text-align: center;display: block;margin: auto;border-radius:20px;}*/
+.guide ul li a .iconfont{font-size:32px;}
+.guide ul li a .ico em{color:#fff;margin-left:auto;margin-right:auto;}
+.guide ul li a .title{display: inline-block;width: 100%;height: 23px;line-height: 23px;text-align: center;font-size: 12px;text-decoration: none;}
+
 
 
 /* 楼层 */

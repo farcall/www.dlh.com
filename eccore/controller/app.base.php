@@ -14,6 +14,7 @@ class BaseApp extends Object
     function __construct()
     {
         $this->BaseApp();
+
     }
 
     function BaseApp()
@@ -43,7 +44,7 @@ class BaseApp extends Object
     }
     function index()
     {
-        echo 'Hello! 临沂盒子信息科技有限公司';
+        echo 'Hello! Box';
     }
 
     /**

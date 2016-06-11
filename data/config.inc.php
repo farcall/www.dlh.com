@@ -19,5 +19,5 @@ return array (
   'SESSION_MEMCACHED' => 'localhost:11211',
   'CACHE_MEMCACHED' => 'localhost:11211',
 );
-//Ma
+
 ?>

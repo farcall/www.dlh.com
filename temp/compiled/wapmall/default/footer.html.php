@@ -1,3 +1,4 @@
+
 <footer id="copyright">
     <section class="footer-t">
         <div class="fl" id="is_login">
@@ -15,22 +16,26 @@
     <?php echo $this->_var['async_sendmail']; ?>
 </footer>
 
-<div id="footer_nav">
+<div id="footer_nav" style="opacity: 0.9;">
     <ul>
         <li>
-            <a href="<?php echo url('app=default'); ?>"><span class="iconfont">&#xf00a0;</span><br/>首页</a>
+            <a href="<?php echo url('app=default'); ?>">
+                <span class="iconfont">&#xe609;</span>
+                <br/>
+                首页
+            </a>
         </li>
         <li>
-            <a href="<?php echo url('app=category'); ?>"><span class="iconfont">&#xf00a6;</span><br/>分类</a>
+            <a href="<?php echo url('app=category'); ?>"><span class="iconfont">&#xe60b;</span><br/>分类</a>
         </li>
         <li>
-            <a href="tel:<?php echo $this->_var['site_phone_tel']; ?>"><span class="iconfont">&#xf012b;</span><br/>电话</a>
+            <a href="tel:<?php echo $this->_var['site_phone_tel']; ?>"><span class="iconfont">&#xe60a;</span><br/>电话</a>
         </li>
         <li>
-            <a href="<?php echo url('app=cart'); ?>"><span class="iconfont">&#xf009f;</span><br/>购物车</a>
+            <a href="<?php echo url('app=cart'); ?>"><span class="iconfont">&#xe60d;</span><br/>购物车</a>
         </li>
         <li>
-            <a href="<?php echo url('app=member'); ?>"><span class="iconfont">&#xf00a2;</span><br/>我的商城</a>
+            <a href="<?php echo url('app=member'); ?>"><span class="iconfont">&#xe60c;</span><br/>个人中心</a>
         </li>
     </ul>
 </div>

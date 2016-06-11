@@ -312,25 +312,25 @@ return array(
 //            ),
         ),
     ),
-    // 手机版设置
-//    'wap_setting' => array(
-//        'text' => Lang::get('wap_setting'),
-//        'default' => 'wap_setting',
-//        'children' => array(
-//            'wap_setting' => array(
-//                'text' => Lang::get('wap_setting'),
-//                'url' => 'index.php?app=wap_setting',
-//            ),
-//            'ad' => array(
-//                'text' => Lang::get('ad'),
-//                'url' => 'index.php?app=ad',
-//            ),
+//     手机版设置
+    'wap_setting' => array(
+        'text' => Lang::get('wap_setting'),
+        'default' => 'wap_setting',
+        'children' => array(
+            'wap_setting' => array(
+                'text' => Lang::get('wap_setting'),
+                'url' => 'index.php?app=wap_setting',
+            ),
+            'ad' => array(
+                'text' => Lang::get('ad'),
+                'url' => 'index.php?app=ad',
+            ),
 //            'waptheme' => array(
 //                'text' => Lang::get('waptheme'),
 //                'url' => 'index.php?app=waptheme',
 //            ),
-//        ),
-//    ),
+        ),
+    ),
 
     // 扩展
     'extend' => array(

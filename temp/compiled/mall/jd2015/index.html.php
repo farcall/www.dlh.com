@@ -1,4 +1,4 @@
-<?php echo $this->fetch('header.html'); ?>
+ <?php echo $this->fetch('header.html'); ?>
 <div  id="main" class="w-full">
     <div id="page-home" class="w-full mb20">
         <div class="col-1 relative w">

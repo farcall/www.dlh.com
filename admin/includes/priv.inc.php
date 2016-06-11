@@ -65,6 +65,10 @@ $menu_data = array
         'module'   => 'module|all',//模块管理
         'widget'   => 'widget|all',//挂件管理
     ),
+    'wap_setting' => array(
+        'wap_setting' => 'wap_setting|all',//手机版设置
+        'ad'   => 'ad|all',//素材管理
+    ),
     'clear_cache' =>array
     (
         'clear_cache' => 'clear_cache|all',//清空缓存

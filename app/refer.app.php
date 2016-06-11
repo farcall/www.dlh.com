@@ -82,7 +82,7 @@ class ReferApp extends MemberbaseApp {
         $tree->setTree($members, 'user_id', 'referid', 'user_name');
 
 
-        return $tree->getOptions(0, $user_id, NULL, '<img src="' . site_url() . '/themes/mall/jd2014/styles/default/images/treetable/tv-item-last.gif" class="ttimage">');
+        return $tree->getOptions(0, $user_id, NULL, '<img src="' . site_url() . '/themes/mall/jd2015/styles/default/images/treetable/tv-item-last.gif" class="ttimage">');
 //        return $tree->getArrayList(0);
     }
 

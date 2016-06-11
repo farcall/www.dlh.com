@@ -14,7 +14,7 @@
             rules: {
                 user_name: {
                     required: true,
-                    byteRange: [3, 15, '{$charset}'],
+                    byteRange: [11, 11, '{$charset}'],
                     remote: {
                         url: 'index.php?app=member&act=check_user&ajax=1',
                         type: 'get',
@@ -158,8 +158,8 @@
             var btn = $(this);
             if (!canSend)
                 return;
-            var sendaddress = $('#phone_mob').val();
-            var fhm = $("[for='phone_mob']").text();
+            var sendaddress = $('#user_name').val();
+            var fhm = $("[for='user_name']").text();
             if (fhm != '' && fhm != "OK!") {
                 alert("请输入正确的手机号码！");
                 return;
@@ -242,7 +242,7 @@
                             <dl class="clearfix">
                                 <dt>{$lang.user_name}</dt>
                                 <dd>
-                                    <input type="text" style="width:245px;height:26px;" id="user_name" class="input"  name="user_name" title="{$lang.user_name_tip}"  />
+                                    <input type="number" style="width:245px;height:26px;" id="user_name" class="input"  name="user_name" title="{$lang.user_name_tip}"  />
                                     <br /><label></label>
                                 </dd>
                             </dl>
@@ -262,13 +262,6 @@
                             </dl>
                             <!--{if $msg_enabled}-->
                             <dl class="clearfix">
-                                <dt>{$lang.phone_mob}</dt>
-                                <dd>
-                                    <input type="text" id="phone_mob" name="phone_mob" class="input" maxlength="11" />
-                                    <br /><label></label>
-                                </dd>
-                            </dl>
-                            <dl class="clearfix">
                                 <dt>{$lang.confirm_code}</dt>
                                 <dd>
                                     <input class="input" type="text" id="confirm_code" name="confirm_code" value=""/>
@@ -283,13 +276,6 @@
                                 </dd>
                             </dl>
                             <!--{/if}-->
-                            <dl class="clearfix">
-                                <dt>{$lang.email}</dt>
-                                <dd>
-                                    <input class="input" type="text" id="email" name="email" title="{$lang.email_tip}" />
-                                    <div class="clr"></div><label></label>
-                                </dd>
-                            </dl>
                             <!--{if $captcha}-->
                             <dl class="clearfix">
                                 <dt>{$lang.captcha}</dt>
