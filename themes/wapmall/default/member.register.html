@@ -6,219 +6,65 @@
 </div>
 
 <script type="text/javascript">
-//注册表单验证
-    $(function() {
-        $('#register_form').validate({
-            errorPlacement: function(error, element) {
-                var error_td = element.parent('td');
-                error_td.find('.field_notice').hide();
-                error_td.append(error);
-            },
-            success: function(label) {
-                label.addClass('validate_right').text('OK!');
-            },
-            onkeyup: false,
-            rules: {
-                user_name: {
-                    required: true,
-                    byteRange: [3, 15, '{$charset}'],
-                    remote: {
-                        url: 'index.php?app=member&act=check_user&ajax=1',
-                        type: 'get',
-                        data: {
-                            user_name: function() {
-                                return $('#user_name').val();
-                            }
-                        },
-                        beforeSend: function() {
-                            var _checking = $('#checking_user');
-                            _checking.prev('.field_notice').hide();
-                            _checking.next('label').hide();
-                            $(_checking).show();
-                        },
-                        complete: function() {
-                            $('#checking_user').hide();
-                        }
-                    }
-                },
-                phone_mob: {
-                    required: true,
-                    number: true,
-                    byteRange: [11, 11, '{$charset}'],
-                    remote: {
-                        url: 'index.php?app=member&act=check_mobile&type=register',
-                        type: 'get',
-                        data: {
-                            phone_mob: function() {
-                                return $('#phone_mob').val();
-                            }
-                        },
-                        beforeSend: function() {
-                            var _checking = $('#checking_mobile');
-                            _checking.prev('.field_notice').hide();
-                            _checking.next('label').hide();
-                            $(_checking).show();
-
-                        },
-                        complete: function() {
-
-                            $('#checking_mobile').hide();
-                        }
-                    }
-                },
-                confirm_code: {
-                    required: true,
-                    number: true,
-                    byteRange: [6, 6, '{$charset}'],
-                    remote: {
-                        url: 'index.php?app=member&act=cmc&ajax=1',
-                        type: 'get',
-                        data: {
-                            confirm_code: function() {
-                                return $('#confirm_code').val();
-                            }
-                        },
-                        beforeSend: function() {
-                            var _checking = $('#checking_code');
-                            _checking.next('label').hide();
-                            $(_checking).show();
-
-                        },
-                        complete: function() {
-                            $('#checking_code').hide();
-                        }
-                    }
-                },
-                password: {
-                    required: true,
-                    minlength: 6
-                },
-                password_confirm: {
-                    required: true,
-                    equalTo: '#password'
-                },
-                email: {
-                    required: true,
-                    email: true
-                },
-                captcha: {
-                    required: true,
-                    remote: {
-                        url: 'index.php?app=captcha&act=check_captcha',
-                        type: 'get',
-                        data: {
-                            captcha: function() {
-                                return $('#captcha1').val();
-                            }
-                        }
-                    }
-                },
-                agree: {
-                    required: true
-                }
-            },
-            messages: {
-                user_name: {
-                    required: '{$lang.user_name_required}',
-                    byteRange: '{$lang.user_name_limit}',
-                    remote: '{$lang.user_already_taken}'
-                },
-                phone_mob: {
-                    required: '{$lang.phone_mob_required}',
-                    number: '{$lang.phone_mob_number}',
-                    byteRange: '{$lang.phone_mob_limit}',
-                    remote: '{$lang.mobile_already_exsit}'
-                },
-                confirm_code: {
-                    required: '{$lang.mobile_code_required}',
-                    number: '{$lang.mobile_code_must_be_number}',
-                    byteRange: '{$lang.mobile_code_limit}',
-                    remote: '{$lang.mobile_code_error}'
-                },
-                password: {
-                    required: '{$lang.password_required}',
-                    minlength: '{$lang.password_length_limit}'
-                },
-                password_confirm: {
-                    required: '{$lang.password_confirm_please}',
-                    equalTo: '{$lang.password_inconsistent}'
-                },
-                email: {
-                    required: '{$lang.email_required}',
-                    email: '{$lang.email_invalid}'
-                },
-                captcha: {
-                    required: '{$lang.captcha_required}',
-                    remote: '{$lang.captcha_error}'
-                },
-                agree: {
-                    required: '{$lang.agree_required}'
-                }
-            }
+    $(document).ready(function(){
+        //用手机号作为用户名
+        $("#user_name").focus(function(){
+            $("#user_name").css("background-color","#FFFFCC");
         });
-        
-        
-        
+        $("#user_name").blur(function(){
+            var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+            if(!myreg.test($("#user_name").val()))
+            {
+                $("#status").text("请输入正确的手机");
+                return false;
+            }
 
+            $("#status").text("OK");
+        });
+
+        //验证码发送按钮
         var canSend = true;
         var time = 60;
         var dtime = 60;
-        $("#sendsms").bind('click', function() {
-            var btn = $(this);
-            if (!canSend)
-                return;
-            var sendaddress = $('#phone_mob').val();
-            var fhm = $("[for='phone_mob']").text();
-            if (fhm != '' && fhm != "OK!") {
-                alert("请输入正确的手机号码！");
-                return;
-            }
-            if (fhm == '' && $('#phone_mob').val() == "") {
-                alert("请输入正确的手机号码！");
-                return;
-            }
-            canSend = false;
-            $.ajax({
-                type: "get",
-                url: "index.php?app=member&act=send_code&type=register",
-                data: {
-                    mobile: function() {
-                        return sendaddress;
-                    }
-                },
-                success: function(msg) {
-                    var hander = setInterval(function() {
+
+        $("#sendsms").click(function(){
+            $("#sendsms").attr({
+                "disabled": "disabled"
+            });
+
+            var sendaddress = $('#user_name').val();
+            result=$.ajax({url:"index.php?app=member&act=send_code&type=change&mobile="+sendaddress,async:false});
+
+            var hander = setInterval(function() {
                         if (time <= 0) {
                             canSend = true;
                             clearInterval(hander);
-                            btn.val("重新发送验证码");
-                            btn.removeAttr("disabled");
+                            $("#sendsms").text("重新发送验证码");
+                            $("#sendsms").removeAttr("disabled");
                             time = dtime;
                         } else {
                             canSend = false;
-                            btn.attr({
+                            $("#sendsms").attr({
                                 "disabled": "disabled"
                             });
-                            btn.val(time + "秒后可重新发送");
+                            $("#sendsms").text(time + "秒后可重新发送");
                             time--;
                         }
-                    }, 1000);
-                    if (msg) {
-                        alert("短信已发送至:" + sendaddress + " 请注意查收！");
-                    } else {
-                        canSend = true;
-                        alert("短信发送失败，请检查手机号码是否正确！");
-                    }
-                }
-            });
+                    },
+                    1000);
+
+
+
+            if(result.responseText == "true"){
+                alert("短信已发送至:" + sendaddress + " 请注意查收！");
+            }else{
+                alert("短信发送失败，请检查手机号码是否正确！");
+            }
+
         });
-        
-        
-        
-        
-        
-        
-        
+
+
+        //确认密码
     });
 </script>
 
