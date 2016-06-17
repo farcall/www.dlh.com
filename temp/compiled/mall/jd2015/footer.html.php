@@ -11,10 +11,8 @@
 
     <div id="footer-2014" class="w">
         <div class="links">
-            <a target="_blank" href="#">关于我们</a>|
-            <a target="_blank" href="#">联系我们</a>|
-            <a target="_blank" href="#">商家入驻</a>|
-            <a target="_blank" href="#">广告报价</a>|
+            <a target="_blank" href="/index.php?app=article&act=view&articl- 0--e_id=9">关于我们</a>|
+            <a target="_blank" href="/index.php?app=article&act=view&article_id=12">联系我们</a>|
         </div>
         <div class="copyright">
             © <?php echo $this->_var['icp_number']; ?><br>

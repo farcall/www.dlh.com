@@ -34,6 +34,7 @@
                 金额从:<input class="queryInput2" type="text" value="<?php echo $this->_var['query']['order_amount_from']; ?>" name="order_amount_from" />
                 至:<input class="queryInput2" type="text" style="width:60px;" value="<?php echo $this->_var['query']['order_amount_to']; ?>" name="order_amount_to" class="pick_date" />
                 <input type="submit" class="formbtn" value="查询" />
+                <input type="submit" class="formbtn" value="导出" onclick="$('[name=act]').val('export');" />
             </div>
             <?php if ($this->_var['filtered']): ?>
             <a class="left formbtn1" href="index.php?app=epay&act=txlog">撤销检索</a>

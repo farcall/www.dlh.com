@@ -11,7 +11,9 @@
         <a href="#" class="retum">回到顶部<b></b></a>
     </section>
     <section class="footer-c">
-        <div>© <?php echo $this->_var['icp_number']; ?></div>
+        <div>© <?php echo $this->_var['icp_number']; ?>
+            <?php echo $this->_var['statistics_code']; ?>
+        </div>
     </section>
     <?php echo $this->_var['async_sendmail']; ?>
 </footer>

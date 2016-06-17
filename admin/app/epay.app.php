@@ -478,4 +478,86 @@ class EpayApp extends BackendApp {
         }
     }
 
+    function export_txlog()
+    {
+        $search_options = array(
+            'user_name' => Lang::get('user_name'),
+            'order_sn' => Lang::get('order_sn'),
+        );
+        /* 默认搜索的字段是操作名 */
+        $field = 'user_name';
+        array_key_exists($_GET['field'], $search_options) && $field = $_GET['field'];
+        $conditions = $this->_get_query_conditions(array(array(
+            'field' => $field, //按用户名,店铺名,支付方式名称进行搜索
+            'equal' => 'LIKE',
+            'name' => 'search_name',
+        ), array(
+            'field' => 'states',
+            'equal' => '=',
+            'name' => 'status',
+            'type' => 'numeric',
+        ), array(
+            'field' => 'add_time',
+            'name' => 'add_time_from',
+            'equal' => '>=',
+            'handler' => 'gmstr2time',
+        ), array(
+            'field' => 'add_time',
+            'name' => 'add_time_to',
+            'equal' => '<=',
+            'handler' => 'gmstr2time_end',
+        ), array(
+            'field' => 'money',
+            'name' => 'order_amount_from',
+            'equal' => '>=',
+            'type' => 'numeric',
+        ), array(
+            'field' => 'money',
+            'name' => 'order_amount_to',
+            'equal' => '<=',
+            'type' => 'numeric',
+        ),
+        ));
+//        $page = $this->_get_page(10);
+        $index = $this->mod_epaylog->find(array(
+            'conditions' => 'type='.EPAY_TX . $conditions,
+//            'limit' => $page['limit'],
+            'order' => "id desc",
+//            'count' => true
+        ));
+
+        $lang_title = array(
+            'order_sn'          => '订单号',
+            'user_name'         => '会员名称',
+            'money'             => '提现金额',
+            'add_time' 			=> '申请时间',
+            'log_text'          => '账户信息',
+            'to_id'             => '转账单号',
+
+        );
+
+        /* xls文件数组 */
+        $record_xls = $record_value = array();
+
+        $folder = 'draw_'.local_date('YmdHis', gmtime());
+
+        $record_xls[]  = $lang_title;
+        foreach($index as $key=>$record)
+        {
+            $record_value['order_sn']	    = $record['order_sn'];
+            $record_value['user_name']   	= $record['user_name'];
+            $record_value['money']			= $record['money'];
+            $record_value['add_time']     	= local_date('Y-m-d H:i:s',$record['add_time']);
+            $record_value['log_text']       =$record['log_text'];
+            $record_value['to_id']			= $record['to_id'];
+
+            $record_xls[] = $record_value;
+        }
+
+        import('excelwriter.lib');
+        $ExcelWriter = new ExcelWriter(CHARSET, $folder);
+        $ExcelWriter->add_array($record_xls);
+        $ExcelWriter->output();
+    }
+
 }

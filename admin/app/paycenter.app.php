@@ -131,13 +131,21 @@ class PaycenterApp extends BackendApp
 
     function todayfanli()
     {
-        echo '2016年06月11日18:02:25';
+        echo '2016年06月15日18:07:24';
         return;
 
+        $operate = $this->_get_last_operate();
+        
         //金币汇率
 
-        $power_rate = 1.4;
+        $power_rate = $operate['power_rate'];
+        $operate_id = $operate['id'];
 
+//        echo $power_rate.'<br>';
+//        echo $operate_id.'<br>';
+//        return;
+//        echo "SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =  {$operate_id}";
+//        return;
         $epay_members = $this->_epay_mod->find(array(
             // and user_name  not in  ('18265180291','13305393569','13475391355')
             'conditions' => "integral_power>=100000",
@@ -146,7 +154,7 @@ class PaycenterApp extends BackendApp
             'order' => 'integral_power DESC',
         ));
 
-        $epay_used_members = $this->_epay_mod->getAll("SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =  38");
+        $epay_used_members = $this->_epay_mod->getAll("SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =  {$operate_id}");
 
         foreach($epay_members as $key=>$epay){
             foreach($epay_used_members as $key2=>$epay2)
@@ -164,7 +172,7 @@ class PaycenterApp extends BackendApp
 //        return;
         //今日操作日志
         foreach ($epay_members as $key => $epay) {
-            $this->_member_fanli($epay, $power_rate, 38);
+            $this->_member_fanli($epay, $power_rate, $operate_id);
         }
 
         echo '今日奖励工作已全部完成';
