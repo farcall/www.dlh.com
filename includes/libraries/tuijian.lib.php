@@ -77,90 +77,90 @@ class Tuijian {
         /* 第1级 佣金操作  查看卖家是否有推荐人  END */
 
 
-        /* 第2级 佣金操作  查看卖家是否有推荐人  BEGIN */
-        if (!Conf::get('tuijian_seller_ratio2')) {
-            return;
-        }
-        $tuijian_seller_ratio2 = round(Conf::get('tuijian_seller_ratio2') / 100, 3);
-        //2级推荐人 不存在卖家的推荐人则返回
-        //查看推荐人是否存在 不存在则不操作
-        $referinfo_2 = $this->get_referid_member($referinfo_1);
-        if (empty($referinfo_2)) {
-            return;
-        }
-        //2级推荐人获得佣金
-        $this->change_integral(
-                array(
-                    'user_id' => $referinfo_2['user_id'],
-                    'add_time'=>$add_time,
-                    'user_name' => $referinfo_2['user_name'],
-                    'order_sn' => $order['order_sn'],
-                    'type' => EPAY_TUIJIAN_SELLER,
-                    'integral' => round($order['goods_amount'] * $tuijian_seller_ratio2, 3) * 100, #2级推荐人应该获取的佣金
-                    'integral_flow' => 'income', #流入佣金
-                    'complete' => '1',
-                    'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio2, 2) * 100 . '白积分,2级佣金比例为' . $tuijian_seller_ratio2
-                    . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
-                )
-        );
-        $this->change_integral_power(array(
-            'user_id' => $referinfo_2['user_id'],
-            'add_time' => $add_time,
-            'user_name' => $referinfo_2['user_name'],
-            'order_sn' => $order['order_sn'],
-            'type' => EPAY_TUIJIAN_SELLER,
-            'integral' => round($order['goods_amount'] * $tuijian_seller_ratio2, 3) * 100, #2级推荐人应该获取的佣金
-            'integral_flow' => 'income', #流入佣金
-            'complete' => '1',
-            'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio2, 2) * 100 . '白积分,2级佣金比例为' . $tuijian_seller_ratio2
-                . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
-        ));
-        /* 第2级 佣金操作  查看卖家是否有推荐人  END */
-
-
-        /* 第3级 佣金操作  查看卖家是否有推荐人  BEGIN */
-        if (!Conf::get('tuijian_seller_ratio3')) {
-            return;
-        }
-        $tuijian_seller_ratio3 = round(Conf::get('tuijian_seller_ratio3') / 100, 3);
-        //2级推荐人 不存在卖家的推荐人则返回
-        if (!$referinfo_2['referid']) {
-            return;
-        }
-        $referid_3 = $referinfo_2['referid'];
-        //查看推荐人是否存在 不存在则不操作
-        $referinfo_3 = $this->get_referid_member($referinfo_2);
-        if (empty($referinfo_3)) {
-            return;
-        }
-        //3级推荐人获得佣金
-        $this->change_integral(
-                array(
-                    'user_id' => $referinfo_3['user_id'],
-                    'add_time'=>$add_time,
-                    'user_name' => $referinfo_3['user_name'],
-                    'order_sn' => $order['order_sn'],
-                    'type' => EPAY_TUIJIAN_SELLER,
-                    'integral' => round($order['goods_amount'] * $tuijian_seller_ratio3, 3) * 100, #3级推荐人应该获取的佣金
-                    'integral_flow' => 'income', #流入佣金
-                    'complete' => '1',
-                    'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio3, 2) * 100 . '白积分,3级佣金比例为' . $tuijian_seller_ratio3
-                    . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
-                )
-        );
-        $this->change_integral_power(array(
-            'user_id' => $referinfo_3['user_id'],
-            'add_time' => $add_time,
-            'user_name' => $referinfo_3['user_name'],
-            'order_sn' => $order['order_sn'],
-            'type' => EPAY_TUIJIAN_SELLER,
-            'integral' => round($order['goods_amount'] * $tuijian_seller_ratio3, 3) * 100, #3级推荐人应该获取的佣金
-            'integral_flow' => 'income', #流入佣金
-            'complete' => '1',
-            'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio3, 2) * 100 . '白积分,3级佣金比例为' . $tuijian_seller_ratio3
-                . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
-        ));
-        /* 第3级 佣金操作  查看卖家是否有推荐人  END */
+//        /* 第2级 佣金操作  查看卖家是否有推荐人  BEGIN */
+//        if (!Conf::get('tuijian_seller_ratio2')) {
+//            return;
+//        }
+//        $tuijian_seller_ratio2 = round(Conf::get('tuijian_seller_ratio2') / 100, 3);
+//        //2级推荐人 不存在卖家的推荐人则返回
+//        //查看推荐人是否存在 不存在则不操作
+//        $referinfo_2 = $this->get_referid_member($referinfo_1);
+//        if (empty($referinfo_2)) {
+//            return;
+//        }
+//        //2级推荐人获得佣金
+//        $this->change_integral(
+//                array(
+//                    'user_id' => $referinfo_2['user_id'],
+//                    'add_time'=>$add_time,
+//                    'user_name' => $referinfo_2['user_name'],
+//                    'order_sn' => $order['order_sn'],
+//                    'type' => EPAY_TUIJIAN_SELLER,
+//                    'integral' => round($order['goods_amount'] * $tuijian_seller_ratio2, 3) * 100, #2级推荐人应该获取的佣金
+//                    'integral_flow' => 'income', #流入佣金
+//                    'complete' => '1',
+//                    'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio2, 2) * 100 . '白积分,2级佣金比例为' . $tuijian_seller_ratio2
+//                    . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
+//                )
+//        );
+//        $this->change_integral_power(array(
+//            'user_id' => $referinfo_2['user_id'],
+//            'add_time' => $add_time,
+//            'user_name' => $referinfo_2['user_name'],
+//            'order_sn' => $order['order_sn'],
+//            'type' => EPAY_TUIJIAN_SELLER,
+//            'integral' => round($order['goods_amount'] * $tuijian_seller_ratio2, 3) * 100, #2级推荐人应该获取的佣金
+//            'integral_flow' => 'income', #流入佣金
+//            'complete' => '1',
+//            'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio2, 2) * 100 . '白积分,2级佣金比例为' . $tuijian_seller_ratio2
+//                . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
+//        ));
+//        /* 第2级 佣金操作  查看卖家是否有推荐人  END */
+//
+//
+//        /* 第3级 佣金操作  查看卖家是否有推荐人  BEGIN */
+//        if (!Conf::get('tuijian_seller_ratio3')) {
+//            return;
+//        }
+//        $tuijian_seller_ratio3 = round(Conf::get('tuijian_seller_ratio3') / 100, 3);
+//        //2级推荐人 不存在卖家的推荐人则返回
+//        if (!$referinfo_2['referid']) {
+//            return;
+//        }
+//        $referid_3 = $referinfo_2['referid'];
+//        //查看推荐人是否存在 不存在则不操作
+//        $referinfo_3 = $this->get_referid_member($referinfo_2);
+//        if (empty($referinfo_3)) {
+//            return;
+//        }
+//        //3级推荐人获得佣金
+//        $this->change_integral(
+//                array(
+//                    'user_id' => $referinfo_3['user_id'],
+//                    'add_time'=>$add_time,
+//                    'user_name' => $referinfo_3['user_name'],
+//                    'order_sn' => $order['order_sn'],
+//                    'type' => EPAY_TUIJIAN_SELLER,
+//                    'integral' => round($order['goods_amount'] * $tuijian_seller_ratio3, 3) * 100, #3级推荐人应该获取的佣金
+//                    'integral_flow' => 'income', #流入佣金
+//                    'complete' => '1',
+//                    'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio3, 2) * 100 . '白积分,3级佣金比例为' . $tuijian_seller_ratio3
+//                    . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
+//                )
+//        );
+//        $this->change_integral_power(array(
+//            'user_id' => $referinfo_3['user_id'],
+//            'add_time' => $add_time,
+//            'user_name' => $referinfo_3['user_name'],
+//            'order_sn' => $order['order_sn'],
+//            'type' => EPAY_TUIJIAN_SELLER,
+//            'integral' => round($order['goods_amount'] * $tuijian_seller_ratio3, 3) * 100, #3级推荐人应该获取的佣金
+//            'integral_flow' => 'income', #流入佣金
+//            'complete' => '1',
+//            'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio3, 2) * 100 . '白积分,3级佣金比例为' . $tuijian_seller_ratio3
+//                . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
+//        ));
+//        /* 第3级 佣金操作  查看卖家是否有推荐人  END */
     }
 
 
@@ -228,97 +228,97 @@ class Tuijian {
         /* 第1级 佣金操作  查看卖家是否有推荐人  END */
 
 
-
-        /* 第2级 佣金操作  查看买家是否有推荐人  BEGIN */
-        if (!Conf::get('tuijian_buyer_ratio2')) {
-            return;
-        }
-        $tuijian_buyer_ratio2 = round(Conf::get('tuijian_buyer_ratio2') / 100, 4);
-        //2级推荐人 不存在买家的推荐人则返回
-        //查看推荐人是否存在 不存在则不操作
-        $referinfo_2 = $this->get_referid_member($referinfo_1);
-        if (empty($referinfo_2)) {
-            return;
-        }
-
-        //2级推荐人获得佣金
-        $this->change_integral(
-                array(
-                    'user_id' => $referinfo_2['user_id'],
-                    'add_time'=>$add_time,
-                    'user_name' => $referinfo_2['user_name'],
-                    'order_sn' => $order['order_sn'],
-                    'type' => EPAY_TUIJIAN_BUYER,
-                    'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio2, 2) * 100, #2级推荐人应该获取的佣金
-                    'integral_flow' => 'income', #流入佣金
-                    'complete' => '1',
-                    'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio2, 2) * 100 . '白积分,2级佣金比例为' . $tuijian_buyer_ratio2
-                    . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
-                )
-        );
-
-        $this->change_integral_power(
-            array(
-                'user_id' => $referinfo_2['user_id'],
-                'add_time' => $add_time,
-                'user_name' => $referinfo_2['user_name'],
-                'order_sn' => $order['order_sn'],
-                'type' => EPAY_TUIJIAN_BUYER,
-                'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio2, 2) * 100, #2级推荐人应该获取的佣金
-                'integral_flow' => 'income', #流入佣金
-                'complete' => '1',
-                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio2, 2) * 100 . '白积分,2级佣金比例为' . $tuijian_buyer_ratio2
-                    . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
-            )
-        );
-        /* 第2级 佣金操作  查看卖家是否有推荐人  END */
-
-
-        /* 第3级 佣金操作  查看卖家是否有推荐人  BEGIN */
-        if (!Conf::get('tuijian_buyer_ratio3')) {
-            return;
-        }
-        $tuijian_buyer_ratio3 = round(Conf::get('tuijian_buyer_ratio3') / 100, 4);
-        //2级推荐人 不存在卖家的推荐人则返回
-        if (!$referinfo_2['referid']) {
-            return;
-        }
-        $referid_3 = $referinfo_2['referid'];
-        //查看推荐人是否存在 不存在则不操作
-        $referinfo_3 = $this->get_referid_member($referinfo_2);
-        if (empty($referinfo_3)) {
-            return;
-        }
-
-        //3级推荐人获得佣金
-        $this->change_integral(
-                array(
-                    'user_id' => $referinfo_3['user_id'],
-                    'add_time'=>$add_time,
-                    'user_name' => $referinfo_3['user_name'],
-                    'order_sn' => $order['order_sn'],
-                    'type' => EPAY_TUIJIAN_BUYER,
-                    'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio3, 2) * 100, #3级推荐人应该获取的佣金
-                    'integral_flow' => 'income', #流入佣金
-                    'complete' => '1',
-                    'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio3, 2) * 100 . '白积分，3级佣金比例为' . $tuijian_buyer_ratio3
-                    . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
-                )
-        );
-
-        $this->change_integral_power(array(
-            'user_id' => $referinfo_3['user_id'],
-            'add_time' => $add_time,
-            'user_name' => $referinfo_3['user_name'],
-            'order_sn' => $order['order_sn'],
-            'type' => EPAY_TUIJIAN_BUYER,
-            'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio3, 2) * 100, #3级推荐人应该获取的佣金
-            'integral_flow' => 'income', #流入佣金
-            'complete' => '1',
-            'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio3, 2) * 100 . '白积分，3级佣金比例为' . $tuijian_buyer_ratio3
-                . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
-        ));
-        /* 第3级 佣金操作  查看卖家是否有推荐人  END */
+//
+//        /* 第2级 佣金操作  查看买家是否有推荐人  BEGIN */
+//        if (!Conf::get('tuijian_buyer_ratio2')) {
+//            return;
+//        }
+//        $tuijian_buyer_ratio2 = round(Conf::get('tuijian_buyer_ratio2') / 100, 4);
+//        //2级推荐人 不存在买家的推荐人则返回
+//        //查看推荐人是否存在 不存在则不操作
+//        $referinfo_2 = $this->get_referid_member($referinfo_1);
+//        if (empty($referinfo_2)) {
+//            return;
+//        }
+//
+//        //2级推荐人获得佣金
+//        $this->change_integral(
+//                array(
+//                    'user_id' => $referinfo_2['user_id'],
+//                    'add_time'=>$add_time,
+//                    'user_name' => $referinfo_2['user_name'],
+//                    'order_sn' => $order['order_sn'],
+//                    'type' => EPAY_TUIJIAN_BUYER,
+//                    'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio2, 2) * 100, #2级推荐人应该获取的佣金
+//                    'integral_flow' => 'income', #流入佣金
+//                    'complete' => '1',
+//                    'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio2, 2) * 100 . '白积分,2级佣金比例为' . $tuijian_buyer_ratio2
+//                    . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
+//                )
+//        );
+//
+//        $this->change_integral_power(
+//            array(
+//                'user_id' => $referinfo_2['user_id'],
+//                'add_time' => $add_time,
+//                'user_name' => $referinfo_2['user_name'],
+//                'order_sn' => $order['order_sn'],
+//                'type' => EPAY_TUIJIAN_BUYER,
+//                'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio2, 2) * 100, #2级推荐人应该获取的佣金
+//                'integral_flow' => 'income', #流入佣金
+//                'complete' => '1',
+//                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio2, 2) * 100 . '白积分,2级佣金比例为' . $tuijian_buyer_ratio2
+//                    . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'],
+//            )
+//        );
+//        /* 第2级 佣金操作  查看卖家是否有推荐人  END */
+//
+//
+//        /* 第3级 佣金操作  查看卖家是否有推荐人  BEGIN */
+//        if (!Conf::get('tuijian_buyer_ratio3')) {
+//            return;
+//        }
+//        $tuijian_buyer_ratio3 = round(Conf::get('tuijian_buyer_ratio3') / 100, 4);
+//        //2级推荐人 不存在卖家的推荐人则返回
+//        if (!$referinfo_2['referid']) {
+//            return;
+//        }
+//        $referid_3 = $referinfo_2['referid'];
+//        //查看推荐人是否存在 不存在则不操作
+//        $referinfo_3 = $this->get_referid_member($referinfo_2);
+//        if (empty($referinfo_3)) {
+//            return;
+//        }
+//
+//        //3级推荐人获得佣金
+//        $this->change_integral(
+//                array(
+//                    'user_id' => $referinfo_3['user_id'],
+//                    'add_time'=>$add_time,
+//                    'user_name' => $referinfo_3['user_name'],
+//                    'order_sn' => $order['order_sn'],
+//                    'type' => EPAY_TUIJIAN_BUYER,
+//                    'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio3, 2) * 100, #3级推荐人应该获取的佣金
+//                    'integral_flow' => 'income', #流入佣金
+//                    'complete' => '1',
+//                    'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio3, 2) * 100 . '白积分，3级佣金比例为' . $tuijian_buyer_ratio3
+//                    . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
+//                )
+//        );
+//
+//        $this->change_integral_power(array(
+//            'user_id' => $referinfo_3['user_id'],
+//            'add_time' => $add_time,
+//            'user_name' => $referinfo_3['user_name'],
+//            'order_sn' => $order['order_sn'],
+//            'type' => EPAY_TUIJIAN_BUYER,
+//            'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio3, 2) * 100, #3级推荐人应该获取的佣金
+//            'integral_flow' => 'income', #流入佣金
+//            'complete' => '1',
+//            'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio3, 2) * 100 . '白积分，3级佣金比例为' . $tuijian_buyer_ratio3
+//                . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'] . '<<--' . $referinfo_2['user_name'] . '<<--' . $referinfo_3['user_name'],
+//        ));
+//        /* 第3级 佣金操作  查看卖家是否有推荐人  END */
     }
 
     /**
