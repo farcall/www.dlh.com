@@ -133,7 +133,6 @@ class MemberApp extends MemberbaseApp {
         ));
 
         //会员级别
-
         $paycenter = array(
             'vip'=>$info['vip'],
             'money'=>$epay_data['money'],

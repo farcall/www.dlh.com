@@ -166,7 +166,7 @@ class OrderApp extends BackendApp
             'conditions'    => '1=1 ' . $conditions,
             'order'         => "$sort $order",
             'join'=>'has_orderextm',
-        )); //找出所有商城的合作伙伴
+        )); // 
         
         
         

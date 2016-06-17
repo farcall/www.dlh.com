@@ -12,6 +12,7 @@ class PaycenterbaseApp extends MemberbaseApp
 {
     function __construct()
     {
+        parent::__construct();
         $this->PaycenterbaseApp();
 
         $this->user = $this->visitor->get();
@@ -41,6 +42,6 @@ class PaycenterbaseApp extends MemberbaseApp
 
     function  PaycenterbaseApp()
     {
-        parent::__construct();
+     //   parent::__construct();
     }
 }

@@ -9,11 +9,11 @@ require(ROOT_PATH . '/app/paycenterbase.app.php');
 
 class PaycenterApp extends PaycenterbaseApp{
     function __construct(){
+        parent::__construct();
         $this->PaycenterApp();
     }
 
     function  PaycenterApp(){
-        parent::__construct();
     }
 
     /**
@@ -46,7 +46,7 @@ class PaycenterApp extends PaycenterbaseApp{
         $data['integral_white'] = $member_data['integral'];
         //红积分:  0
         $data['integral_red'] = $epay_data['integral_red'];
-
+        
         $this->assign('member',$data);
         $this->display('paycenter/index.html');
     }

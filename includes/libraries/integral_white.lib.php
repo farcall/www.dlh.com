@@ -45,7 +45,7 @@ class Integral_white
             'user_name' => $member['user_name'],
             'point' => $integral_buy,
             'add_time' => gmtime(),
-            'remark' => '购买赠送积分' . $integral_buy,
+            'remark' => '购买赠送白积分' . $integral_buy.'赠送前白积分'.$member['integral'].'赠送后白积分:'.$data['integral'],
             'integral_type' => INTEGRAL_BUY,
         );
         $this->_integral_log_mod->add($integral_log);

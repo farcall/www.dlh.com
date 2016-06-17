@@ -17,7 +17,35 @@ class Offline_orderApp extends PaycenterbaseApp
     var $_member_mod;
     var $_order_offline_mod;
     var $_integral_log_mod;
+
     function __construct() {
+        parent::__construct();
+        $referer = $_SERVER['HTTP_REFERER'];
+        if (strpos($referer, 'act=login') === false) {
+            $ret_url = $_SERVER['HTTP_REFERER'];
+            $ret_text = 'go_back';
+        } else {
+            $ret_url = SITE_URL . '/index.php';
+            $ret_text = 'back_index';
+        }
+
+        //是否是商家
+        if (!$this->visitor->get('has_store')) {
+            $this->show_warning('只有签约商家才可以做单!');
+            die;
+        }
+
+        /* 检查店铺开启状态 */
+        $state = $this->visitor->get('state');
+        if ($state == 0) {
+            $this->show_warning('apply_not_agree', $ret_text, $ret_url);
+            die;
+            return;
+        } elseif ($state == 2) {
+            $this->show_warning('store_is_closed', $ret_text, $ret_url);
+            die;
+            return;
+        }
         $this->Offline_order();
     }
 
@@ -34,6 +62,7 @@ class Offline_orderApp extends PaycenterbaseApp
 
 
     function index(){
+
         if(IS_POST){
             if (empty($_POST['goods_name'])) {
                 $this->show_warning('商品名称不能为空');

@@ -230,7 +230,7 @@ class FrontendApp extends ECBaseApp {
             $ad_mod = &m('ad');
             $ads = $ad_mod->find(array(
                 'conditions' => 'user_id=0',
-                'order' => "sort_order desc",
+                'order' => "add_time desc",
             ));
             foreach ($ads as $key => $ad) {
                 $wap_ads[$ad['ad_type']][] = $ad;
