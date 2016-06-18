@@ -25,8 +25,6 @@ class Seller_adminApp extends MemberApp {
         $info = $user_mod->get_info($user['user_id']);
         $user['portrait'] = portrait($user['user_id'], $info['portrait'], 'middle');
         $user['ugrade']=$user_mod->get_grade_info($user['user_id']);
-        $user['integral'] = $info['integral'];
-        $user['total_integral'] = $info['total_integral'];
         $this->assign('user', $user);
 
         //余额支付 

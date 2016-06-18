@@ -230,7 +230,7 @@ class FrontendApp extends ECBaseApp {
             $ad_mod = &m('ad');
             $ads = $ad_mod->find(array(
                 'conditions' => 'user_id=0',
-                'order' => "add_time desc",
+            //    'order' => "add_time desc",
             ));
             foreach ($ads as $key => $ad) {
                 $wap_ads[$ad['ad_type']][] = $ad;
@@ -384,7 +384,7 @@ class FrontendApp extends ECBaseApp {
             /*用户登录后 获得积分*/
             import('integral.lib');
             $integral=new Integral();
-            $integral->change_integral_login($user_id);
+            //$integral->change_integral_login($user_id);
             
             $this->show_message(Lang::get('login_successed') . $synlogin, 'back_before_login', rawurldecode($_POST['ret_url']), 'enter_member_center', 'index.php?app=paycenter');
         }

@@ -40,10 +40,10 @@ class PaycenterApp extends PaycenterbaseApp{
         $data['money_dj'] = $epay_data['money_dj'];
         //税费资金:  0.00
         $data['money_tax'] = $epay_data['money_tax'];
-        //积分赠送全:  0
-        $data['integral_power'] = intval($epay_data['integral_power'] / 100000);
+        //积分赠送权:  0  动态计算
+        $data['integral_power'] = floor($epay_data['total_white']/100000)-floor($epay_data['used_white']/100000);
         //白积分:  0
-        $data['integral_white'] = $member_data['integral'];
+        $data['integral_white'] = $epay_data['total_white']-$epay_data['used_white'];
         //红积分:  0
         $data['integral_red'] = $epay_data['integral_red'];
         

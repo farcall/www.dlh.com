@@ -168,10 +168,8 @@ class Offline_orderApp extends BackendApp
             'postscript' => $remark,
             'status' => ORDER_FINISHED,
         ));
-        if ($order_result == false) {
-            $this->show_warning('操作失败');
-            return;
-        }
+
+
         //order_offline表修改
         $order_offline_result = $this->_order_offline_mod->edit('order_id=' . $order_id, array(
             'check_admin' => $this->visitor->_get_detail('user_name'),
@@ -241,10 +239,7 @@ class Offline_orderApp extends BackendApp
             'postscript' => $remark,
             'status' => ORDER_CANCELED,
         ));
-        if ($order_result == false) {
-            $this->show_warning('操作失败');
-            return;
-        }
+
 
         //order_offline表修改
         $order_offline_result = $this->_order_offline_mod->edit('order_id=' . $order_id, array(

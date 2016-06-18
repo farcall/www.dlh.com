@@ -106,7 +106,7 @@
             });
 
             var sendaddress = $('#user_name').val();
-            result=$.ajax({url:"index.php?app=member&act=send_code&type=change&mobile="+sendaddress,async:false});
+            result=$.ajax({url:"index.php?app=member&act=send_code&type=register&mobile="+sendaddress,async:false});
 
             var hander = setInterval(function() {
                         if (time <= 0) {

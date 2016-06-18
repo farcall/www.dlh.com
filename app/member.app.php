@@ -74,7 +74,7 @@ class MemberApp extends MemberbaseApp {
             'groupbuy_finished' => $groupbuy_mod->getOne($sql6),
         );
         $sum = array_sum($buyer_stat);
-        $buyer_stat['sum'] = $sum;
+        $buyer_stat['sum'] = $sum; 
         $this->assign('buyer_stat', $buyer_stat);
 
         /* 卖家提醒：待处理订单和待发货订单 */
@@ -138,8 +138,8 @@ class MemberApp extends MemberbaseApp {
             'money'=>$epay_data['money'],
             'money_dj'=>$epay_data['money_dj'],
             'money_tax' => $epay_data['money_tax'],
-            'integral_power'=>intval($epay_data['integral_power']/100000),
-            'integral_white'=>$info['integral'],
+            'integral_power'=>floor($epay_data['total_white']/100000)-floor($epay_data['used_white']/100000),
+            'integral_white'=>$epay_data['total_white']-$epay_data['used_white'],
             'integral_red'=>$epay_data['integral_red'],
             );
 

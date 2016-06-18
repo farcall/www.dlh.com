@@ -30,6 +30,10 @@ class white{
 
 
         $this->total_white = $this->_vip() + $this->_tuijian()+$this->_xiaofei()+$this->_xiaoshou();
+        echo '购买vip:'.$this->_vip().'<br>';
+        echo '推荐他人:'.$this->_tuijian().'<br>';
+        echo '消费得到:'.$this->_xiaoshou().'<br>';
+        echo '销售得到:'.$this->_xiaofei().'<br>;';
         $this->used_white = $this->setUsedWhite();
     }
 
@@ -100,6 +104,8 @@ class white{
 class AutocheckApp extends BackendApp
 {
      var $mod_member;
+     var $mod_epay2;
+     var $mod_epay;
     function __construct()
     {
         $this->AutocheckApp();
@@ -111,6 +117,38 @@ class AutocheckApp extends BackendApp
 
         header("Content-Type: text/html;charset=utf-8");
         $this->mod_member = &m('member');
+        $this->mod_epay2 = &m('epay2');
+        $this->mod_epay  = &m('epay');
+
+    }
+
+    function info()
+    {
+        $user_name = $_GET['user_name'];
+        $white = new white($user_name,gmtime());
+
+
+        echo "用户:".$user_name."---全部白积分:".$white->total_white."---消耗白积分:".$white->used_white."---白积分资金差:".($white->total_white-$white->used_white-$member['integral'])."<br>";
+    }
+
+
+
+    function migrate(){
+        $epay2 = $this->mod_epay2->findAll();
+
+        foreach ($epay2 as $k => $v) {
+            echo $v['id'].'<br>';
+            if ($v['id']<4300)
+            {
+                continue;
+            }
+//            $info = $this->mod_epay->get('user_id='.$v['user_id']);
+//            var_dump($info);
+            $this->mod_epay->edit('user_id='.$v['user_id'],array(
+                'total_white'=> $v['total_white'],
+                'used_white' => $v['used_white'],
+            ));
+        }
     }
 
 
@@ -118,10 +156,22 @@ class AutocheckApp extends BackendApp
     function loop()
     {
         $members = $this->mod_member->findAll();
+        $members2 = $this->mod_epay2->findAll();
+
+
         echo "共" . count($members) . "个账户<br>";
+        echo "处理".count($members2)."个账户<br>";
 
         foreach ($members as $k => $v) {
-            $this->parse($v);
+
+            $user_name = $v['user_name'];
+            $epay2 = $this->mod_epay2->get(array(
+                'conditions'=>"user_name='{$user_name}'",
+            ));
+
+            if (empty($epay2)){
+                $this->parse($v);
+            }
         }
     }
 
@@ -129,6 +179,23 @@ class AutocheckApp extends BackendApp
     function parse($member)
     {
         $white = new white($member['user_name'],gmtime());
+
+        $user_name = $member['user_name'];
+        $epay2 = $this->mod_epay2->get(array(
+            'conditions'=>"user_name='{$user_name}'",
+        ));
+
+        if (empty($epay2)){
+            $data = array(
+              'user_id' => $member['user_id'],
+                'user_name'=>$member['user_name'],
+                'total_white'=>$white->total_white,
+                'used_white'=>$white->used_white,
+                'add_time'=>gmtime(),
+            );
+
+            $this->mod_epay2->add($data);
+        }
 
         echo "用户:".$member['user_name']."---全部白积分:".$white->total_white."---消耗白积分:".$white->used_white."---白积分资金差:".($white->total_white-$white->used_white-$member['integral'])."<br>";
     }

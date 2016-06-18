@@ -62,18 +62,6 @@ class Tuijian {
                     . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'],
                 )
         );
-        $this->change_integral_power(array(
-            'user_id' => $referinfo_1['user_id'],
-            'add_time' => $add_time,
-            'user_name' => $referinfo_1['user_name'],
-            'order_sn' => $order['order_sn'],
-            'type' => EPAY_TUIJIAN_SELLER,
-            'integral' => round($order['goods_amount'] * $tuijian_seller_ratio1, 3) * 100, #一级推荐人应该获取的佣金
-            'integral_flow' => 'income', #流入佣金
-            'complete' => '1',
-            'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_seller_ratio1, 2) * 100 . '白积分,1级佣金比例为' . $tuijian_seller_ratio1
-                . ',推荐关系为:' . $seller_info['user_name'] . '<<--' . $referinfo_1['user_name'],
-        ));
         /* 第1级 佣金操作  查看卖家是否有推荐人  END */
 
 
@@ -210,21 +198,6 @@ class Tuijian {
                     . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'],
                 )
         );
-
-        $this->change_integral_power(
-            array(
-                'user_id' => $referinfo_1['user_id'],
-                'add_time' => $add_time,
-                'user_name' => $referinfo_1['user_name'],
-                'order_sn' => $order['order_sn'],
-                'type' => EPAY_TUIJIAN_BUYER,
-                'integral' => round($order['goods_amount'] * $tuijian_buyer_ratio1, 2) * 100, #一级推荐人应该获取的佣金
-                'integral_flow' => 'income', #流入佣金
-                'complete' => '1',
-                'log_text' => '恭喜你获得' . round($order['goods_amount'] * $tuijian_buyer_ratio1, 2) * 100 . '白积分,1级佣金比例为' . $tuijian_buyer_ratio1
-                    . ',推荐关系为:' . $buyer_info['user_name'] . '<<--' . $referinfo_1['user_name'],
-            )
-        );
         /* 第1级 佣金操作  查看卖家是否有推荐人  END */
 
 
@@ -347,49 +320,25 @@ class Tuijian {
     }
 
 
-    /**
-     * @param $data
-     * 作用:积分赠送权
-     * Created by QQ:710932
-     */
-    function change_integral_power($data)
-    {
-
-        $member = $this->_member_mod->get('user_id=' . $data['user_id']);
-        $epay = $this->_epay_mod->get('user_id=' . $data['user_id']);
-
-        if ($data['integral_flow'] == 'income') {
-            $epay['integral_power'] = $epay['integral_power'] + $data['integral'];
-
-
-        } else {
-            $epay['integral_power'] = $epay['integral_power'] - $data['integral'];
-        }
-
-
-        $this->_epay_mod->edit('user_id=' . $data['user_id'], $epay);
-
-        //todo 积分赠送权日志
-    }
 
     /**
      * @param $data
-     * 作用:白积分
+     * 作用:白积分总量发生变化
      * Created by QQ:710932
      */
     function change_integral($data)
     {
-        $member = $this->_member_mod->get('user_id=' . $data['user_id']);
+        $epay = $this->_epay_mod->get('user_id=' . $data['user_id']);
         if ($data['integral_flow'] == 'income') {
-            $new_member = array(
-                'integral' => $member['integral'] + $data['integral'],
+            $new_epay = array(
+                'total_white' => $epay['total_white'] + $data['integral'],
             );
         } else {
-            $new_member = array(
-                'integral' => $member['integral'] - $data['integral'],
+            $new_epay = array(
+                'total_white' => $epay['total_white'] - $data['integral'],
             );
         }
-        $this->_member_mod->edit('user_id=' . $data['user_id'], $new_member);
+        $this->_epay_mod->edit('user_id=' . $data['user_id'], $new_epay);
 
         $this->_integral_log_mod->add(array(
             'user_id' => $data['user_id'],
@@ -399,6 +348,7 @@ class Tuijian {
             'remark' => $data['log_text'],
             'integral_type' => $data['type'],
         ));
+
     }
 
 

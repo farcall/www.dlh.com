@@ -29,8 +29,6 @@ class Vip{
         //修改VIP标志
         $this->_member_mod->edit($user_id, $data);
 
-        //积分赠送权+1
-        $this->change_integral_power($user_id);
         //白积分加1000*100
         $this->change_integralwhite_vip($user_id);
         //金额减1000
@@ -71,22 +69,6 @@ class Vip{
     }
 
 
-    function change_integral_power($user_id)
-    {
-        $epay = $this->_epay_mod->get(array(
-            'conditions' => 'user_id=' . $user_id,
-        ));
-        if(empty($epay)){
-            return;
-        }
-
-        $new_epay = array(
-            'integral_power' => $epay['integral_power'] + 100000,
-        );
-        $this->_epay_mod->edit($epay['id'], $new_epay);
-
-        //todo 积分赠送权日志
-    }
 
     function change_integralwhite_vip($user_id){
         if(!intval($user_id)){
@@ -107,16 +89,16 @@ class Vip{
             return;
         }
 
-        $member['integral'] = $member['integral'] + 1000 * 100;
-        $member['total_integral'] = $member['total_integral'] + $member['integral'];
+
+        $epay['total_white'] = $epay['total_white'] + 100000;
         //插入记录
-        $this->_member_mod->edit($member['user_id'], $member);
+        $this->_epay_mod->edit('user_id='.$user_id, $epay);
 
         //操作记录入积分记录
         $integralpower_log = array(
             'user_id' => $user_id,
             'user_name' => $epay['user_name'],
-            'point' => 1000 * 100,
+            'point' => 100000,
             'add_time' => gmtime(),
             'remark' => '购买会员获得100000白积分',
             'integral_type' => EPAY_INTEGRAL_WHITE_BUY,
