@@ -127,7 +127,6 @@ class AutocheckApp extends BackendApp
         $user_name = $_GET['user_name'];
         $white = new white($user_name,gmtime());
 
-
         echo "用户:".$user_name."---全部白积分:".$white->total_white."---消耗白积分:".$white->used_white."---白积分资金差:".($white->total_white-$white->used_white-$member['integral'])."<br>";
     }
 

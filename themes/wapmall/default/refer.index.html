@@ -4,8 +4,7 @@
     <div class="tit">我的推广</div>
     <a href="javascript" class="r_b"></a>
 </div>
-{include file=member.submenu.html}
-<br/>
+
 <input type="text" class="text" name="real_name" value="{$site_url}/index.php?app=member&act=register&referid={$member_info.user_id}" />
 <div style="padding:10px 0px 10px 100px;" >
     复制链接推广
@@ -20,6 +19,7 @@
     我的推荐人：<!--{if $parent_refers}-->{$parent_refers.user_name}<!--{else}-->自行注册<!--{/if}-->
     <br/>
 </div>
-
+{include file=member.submenu.html}
+<br/>
 
 {include file=member.footer.html}

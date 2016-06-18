@@ -10,11 +10,9 @@ require(ROOT_PATH . '/app/paycenterbase.app.php');
 class PaycenterApp extends PaycenterbaseApp{
     function __construct(){
         parent::__construct();
-        $this->PaycenterApp();
     }
 
-    function  PaycenterApp(){
-    }
+
 
     /**
      * 作用:账户预览
@@ -46,6 +44,15 @@ class PaycenterApp extends PaycenterbaseApp{
         $data['integral_white'] = $epay_data['total_white']-$epay_data['used_white'];
         //红积分:  0
         $data['integral_red'] = $epay_data['integral_red'];
+
+
+        //是否是商家
+        if (!$this->visitor->get('has_store')) {
+            $this->assign('store',0);
+        } else {
+            $this->assign('store',1);
+        }
+        
         
         $this->assign('member',$data);
         $this->display('paycenter/index.html');
