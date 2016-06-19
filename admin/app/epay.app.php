@@ -526,14 +526,21 @@ class EpayApp extends BackendApp {
 //            'count' => true
         ));
 
-        $lang_title = array(
-            'order_sn'          => '订单号',
-            'user_name'         => '会员名称',
-            'money'             => '提现金额',
-            'add_time' 			=> '申请时间',
-            'log_text'          => '账户信息',
-            'to_id'             => '转账单号',
 
+
+        //正则表达式拆分提现信息
+        //15653954865 申请提现金额200元开户银行:中国建设银行,开户行地址:银雀山路,户名:胡文涛,卡号:6217002290005033211
+        //开户银行  开户行地址  户名  卡号
+        $lang_title = array(
+                'order_sn'          => '订单号',
+                'user_name'         => '会员名称',
+                'money'             => '提现金额',
+                'add_time' 			=> '申请时间',
+                'bank'          => '开户银行',
+                'bank_address'  =>  '开户银行地址',
+                'bank_name'    =>'持卡人姓名',
+                'bank_card'     =>'卡号',
+                'to_id'             => '转账单号',
         );
 
         /* xls文件数组 */
@@ -548,7 +555,22 @@ class EpayApp extends BackendApp {
             $record_value['user_name']   	= $record['user_name'];
             $record_value['money']			= $record['money'];
             $record_value['add_time']     	= local_date('Y-m-d H:i:s',$record['add_time']);
-            $record_value['log_text']       =$record['log_text'];
+           // $record_value['log_text']       =$record['log_text'];
+            //log_text通过正则拆分˚
+
+            $log_text = $record['log_text'];
+            $kaihuyinhang = strpos($log_text,"开户银行:");
+            $kaihuhangdizhi = strpos($log_text,",开户行地址:");
+            $huming = strpos($log_text,",户名:");
+            $kahao = strpos($log_text,",卡号:");
+
+
+
+            $record_value['bank'] = substr($log_text,$kaihuyinhang+strlen("开户银行:"),($kaihuhangdizhi-$kaihuyinhang-strlen("开户银行:"))).'<br>';
+            $record_value['bank_address'] = substr($log_text,$kaihuhangdizhi+strlen(",开户行地址:"),($huming-$kaihuhangdizhi-strlen(",开户行地址:"))).'<br>';
+            $record_value['bank_name'] = substr($log_text,$huming+strlen(",户名:"),($kahao-$huming-strlen(",户名:"))).'<br>';
+            $record_value['bank_card'] = substr($log_text,$kahao+strlen(",卡号:"),($kahao+strlen(",卡号:"))).'<br>';
+
             $record_value['to_id']			= $record['to_id'];
 
             $record_xls[] = $record_value;

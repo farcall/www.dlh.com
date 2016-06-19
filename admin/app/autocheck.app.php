@@ -199,7 +199,20 @@ class AutocheckApp extends BackendApp
         echo "用户:".$member['user_name']."---全部白积分:".$white->total_white."---消耗白积分:".$white->used_white."---白积分资金差:".($white->total_white-$white->used_white-$member['integral'])."<br>";
     }
 
+    function test(){
+        //正则表达式测试
+        $log_text = "15653954865 申请提现金额200元开户银行:中国建设银行,开户行地址:银雀山路,户名:胡文涛,卡号:6217002290005033211";
+        $kaihuyinhang = strpos($log_text,"开户银行:");
+        $kaihuhangdizhi = strpos($log_text,",开户行地址:");
+        $huming = strpos($log_text,",户名:");
+        $kahao = strpos($log_text,",卡号:");
 
+
+        echo substr($log_text,$kaihuyinhang+strlen("开户银行:"),($kaihuhangdizhi-$kaihuyinhang-strlen("开户银行:"))).'<br>';
+        echo substr($log_text,$kaihuhangdizhi+strlen(",开户行地址:"),($huming-$kaihuhangdizhi-strlen(",开户行地址:"))).'<br>';
+        echo substr($log_text,$huming+strlen(",户名:"),($kahao-$huming-strlen(",户名:"))).'<br>';
+        echo substr($log_text,$kahao+strlen(",卡号:"),($kahao+strlen(",卡号:"))).'<br>';
+    }
 
 
 

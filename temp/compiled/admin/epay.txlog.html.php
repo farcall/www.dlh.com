@@ -3,6 +3,13 @@
     $(function () {
         $('#add_time_from').datepicker({dateFormat: 'yy-mm-dd'});
         $('#add_time_to').datepicker({dateFormat: 'yy-mm-dd'});
+
+        $('.J_ExportDraw').click(function(){
+            $('#tx_list').find('input[name="act"]').val('export_txlog');
+            $('#tx_list').submit();
+            $('#tx_list').find('input[name="act"]').val('txlog');
+        });
+
     });
 </script>
 
@@ -19,7 +26,7 @@
 
 <div class="mrightTop">
     <div class="fontl">
-        <form method="get">
+        <form method="get" id="tx_list">
             <div class="left">
                 <input name="app" type="hidden" id="app" value="epay" />
                 <input name="act" type="hidden" id="act" value="txlog" />
@@ -34,7 +41,6 @@
                 金额从:<input class="queryInput2" type="text" value="<?php echo $this->_var['query']['order_amount_from']; ?>" name="order_amount_from" />
                 至:<input class="queryInput2" type="text" style="width:60px;" value="<?php echo $this->_var['query']['order_amount_to']; ?>" name="order_amount_to" class="pick_date" />
                 <input type="submit" class="formbtn" value="查询" />
-                <input type="submit" class="formbtn" value="导出" onclick="$('[name=act]').val('export');" />
             </div>
             <?php if ($this->_var['filtered']): ?>
             <a class="left formbtn1" href="index.php?app=epay&act=txlog">撤销检索</a>
@@ -50,7 +56,7 @@
     <table width="100%" cellspacing="0">
 
         <tr class="tatr1">
-            <td width="20" class="firstCell">&nbsp;</td>
+            <td width="20" class="firstCell"><input type="checkbox" class="checkall" /></td>
             <td width="140">订单号</td>
             <td>会员名称</td>
             <td>提现金额</td>
@@ -67,11 +73,11 @@
     foreach ($_from AS $this->_var['key'] => $this->_var['val']):
 ?>
         <tr class="tatr2">
-            <td width="20" class="firstCell">&nbsp;</td>
+            <td class="firstCell"><input type="checkbox" class="checkitem" value="<?php echo $this->_var['val']['id']; ?>" /></td>
             <td><?php echo $this->_var['val']['order_sn']; ?></td>
             <td><b><?php echo $this->_var['val']['user_name']; ?></b></td>
             <td><font color="#FF0000"><?php echo $this->_var['val']['money']; ?></font></td>
-            <td><?php echo local_date("y-m-d H:i",$this->_var['val']['add_time']); ?></td>        
+            <td><?php echo local_date("y-m-d H:i",$this->_var['val']['add_time']); ?></td>
             <td><?php if ($this->_var['val']['add_time']): ?><?php echo local_date("y-m-d H:i",$this->_var['val']['add_time']); ?><?php else: ?>未审核<?php endif; ?></td>
             <td class="table_center">
                 <?php if ($this->_var['val']['states'] == 71): ?>
@@ -81,7 +87,7 @@
                 <img src="<?php echo $this->res_base . "/" . 'style/images/positive_disabled.gif'; ?>">
                 <?php endif; ?>
             </td>
-            <td><?php echo $this->_var['val']['to_id']; ?></td>  
+            <td><?php echo $this->_var['val']['to_id']; ?></td>
             <td class="handler">
                 <?php if ($this->_var['val']['states'] == 70): ?>
                 <a href="index.php?app=epay&act=tx_view&user_id=<?php echo $this->_var['val']['user_id']; ?>&log_id=<?php echo $this->_var['val']['id']; ?>">审核</a>
@@ -98,6 +104,10 @@
     </table>
     <?php if ($this->_var['index']): ?>
     <div id="dataFuncs">
+        <div id="batchAction" class="left paddingT15"> &nbsp;&nbsp;
+            <input class="formbtn batchButton" type="button" value="删除" name="id" uri="index.php?app=epay&act=drop_txlog" presubmit="confirm('您确定要删除它吗？');" />
+            <a class="formbtn J_ExportDraw" style="display:inline-block; text-align:center; text-decoration:none; line-height:20px;" href="javascript:;">批量导出</a>
+        </div>
         <div class="pageLinks"><?php echo $this->fetch('page.bottom.html'); ?></div>
         <div class="clear"></div>
     </div>
