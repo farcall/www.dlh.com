@@ -64,16 +64,16 @@ class Integral_redApp extends MallbaseApp
             $this->_integral_log_mod->add(array(
                 'user_id' => $this->visitor->get('user_id'),
                 'user_name' => $this->visitor->get('user_name'),
-                'point' => $data['money_tax'],
+                'point' => $red,
                 'add_time' => gmtime(),
-                'remark' => '红积分兑换支出' . $data['integral_red'],
+                'remark' => '红积分兑换支出' . $red,
                 'integral_type' => EPAY_INTEGRAL_RED_EXCHANGE_RED,
             ));
 
             $this->_integral_log_mod->add(array(
                 'user_id' => $this->visitor->get('user_id'),
                 'user_name' => $this->visitor->get('user_name'),
-                'point' => $data['integral_red'],
+                'point' => $data['money_tax'],
                 'add_time' => gmtime(),
                 'remark' => '红积分兑换缴纳' . $data['money_tax'] . '元税费',
                 'integral_type' => EPAY_INTEGRAL_RED_EXCHANGE_MONEYTAX,

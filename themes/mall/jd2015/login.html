@@ -89,7 +89,7 @@
                                 <dt>&nbsp;</dt>
                                 <dd class="clearfix">
                                     <input type="submit" class="login-submit" name="Submit" value="{$lang.login}" title="{$lang.login}" />
-                                    <a href="{url app=find_password}" class="find-password">{$lang.forget_password}</a>
+                                    <a href="index.php?app=find_password&act=mobile" style="color: #0081EF;">手机找回密码</a>
                                     <input type="hidden" name="ret_url" value="{$ret_url}" />
                                 </dd>
                             </dl>
@@ -99,10 +99,7 @@
                                     {$lang.not_member}<a href="{url app=member&act=register&ret_url=$ret_url}" title="{$lang.register}">{$lang.register}</a>
                                 </dd>
                             </dl>
-                            <div class="partner-login">
-                                <h3>{$lang.use_partner_account_login}</h3>
-                                <p><a class="qq-login" href="{url app=third_login&act=qq}"></a><a class="weibo-login" href="{url app=third_login&act=sina}"></a></p>
-                            </div>
+
                         </form>
                     </div>
                 </div>

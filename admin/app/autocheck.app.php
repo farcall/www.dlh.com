@@ -32,8 +32,8 @@ class white{
         $this->total_white = $this->_vip() + $this->_tuijian()+$this->_xiaofei()+$this->_xiaoshou();
         echo '购买vip:'.$this->_vip().'<br>';
         echo '推荐他人:'.$this->_tuijian().'<br>';
-        echo '消费得到:'.$this->_xiaoshou().'<br>';
-        echo '销售得到:'.$this->_xiaofei().'<br>;';
+        echo '销售返佣:'.$this->_xiaoshou().'<br>';
+        echo '消费返现:'.$this->_xiaofei().'<br>;';
         $this->used_white = $this->setUsedWhite();
     }
 
@@ -106,6 +106,10 @@ class AutocheckApp extends BackendApp
      var $mod_member;
      var $mod_epay2;
      var $mod_epay;
+
+    var $mod_epaylog;
+    var $mod_order;
+    var $mod_integral_log;
     function __construct()
     {
         $this->AutocheckApp();
@@ -119,15 +123,35 @@ class AutocheckApp extends BackendApp
         $this->mod_member = &m('member');
         $this->mod_epay2 = &m('epay2');
         $this->mod_epay  = &m('epay');
-
+        $this->mod_order = &m('order');
+        $this->mod_epaylog = &m('epaylog');
+        $this->mod_integral_log = &m('integral_log');
     }
 
     function info()
     {
         $user_name = $_GET['user_name'];
         $white = new white($user_name,gmtime());
-
         echo "用户:".$user_name."---全部白积分:".$white->total_white."---消耗白积分:".$white->used_white."---白积分资金差:".($white->total_white-$white->used_white-$member['integral'])."<br>";
+
+
+        echo "--------资金流入-----<br>";
+        //管理员充值
+        echo "管理员充值:".$this->mod_epaylog->getOne("select sum(money) from ecm_epaylog where user_name='{$user_name}' and complete=1 AND type=10")."<br>";
+        //其他账户转入
+        echo "转入资金:".$this->mod_epaylog->getOne("select sum(money) from ecm_epaylog where user_name='{$user_name}' and complete=1 AND type=40")."<br>";
+        //系统奖励
+        echo "系统奖励:".$this->mod_epaylog->getOne("select sum(used_white) from ecm_epay WHERE user_name='{$user_name}'")/100*0.95.'<br>';
+        echo "--------资金收入-----<br>";
+        //资金转出
+        echo "转出资金:".$this->mod_epaylog->getOne("select sum(money) from ecm_epaylog where user_name='{$user_name}' and complete=1 AND type=50")."<br>";
+        //已提现
+        echo "已提现:".$this->mod_epaylog->getOne("select sum(money) from ecm_epaylog where user_name='{$user_name}' and complete=1 AND type=70 AND ecm_epaylog.states=71")."<br>";
+        //未体现
+        echo "账户余额:".$this->mod_epay->getOne("select money from ecm_epay WHERE user_name='{$user_name}'").'<br>';
+        echo "冻结资金:".$this->mod_epay->getOne("select money_dj from ecm_epay WHERE user_name='{$user_name}'").'<br>';
+        //做单
+        echo "做单资金:". $this->mod_order->getOne("select sum(order_amount) from ecm_order WHERE status=40 and seller_name = '{$user_name}'")/10;
     }
 
 
@@ -199,20 +223,6 @@ class AutocheckApp extends BackendApp
         echo "用户:".$member['user_name']."---全部白积分:".$white->total_white."---消耗白积分:".$white->used_white."---白积分资金差:".($white->total_white-$white->used_white-$member['integral'])."<br>";
     }
 
-    function test(){
-        //正则表达式测试
-        $log_text = "15653954865 申请提现金额200元开户银行:中国建设银行,开户行地址:银雀山路,户名:胡文涛,卡号:6217002290005033211";
-        $kaihuyinhang = strpos($log_text,"开户银行:");
-        $kaihuhangdizhi = strpos($log_text,",开户行地址:");
-        $huming = strpos($log_text,",户名:");
-        $kahao = strpos($log_text,",卡号:");
-
-
-        echo substr($log_text,$kaihuyinhang+strlen("开户银行:"),($kaihuhangdizhi-$kaihuyinhang-strlen("开户银行:"))).'<br>';
-        echo substr($log_text,$kaihuhangdizhi+strlen(",开户行地址:"),($huming-$kaihuhangdizhi-strlen(",开户行地址:"))).'<br>';
-        echo substr($log_text,$huming+strlen(",户名:"),($kahao-$huming-strlen(",户名:"))).'<br>';
-        echo substr($log_text,$kahao+strlen(",卡号:"),($kahao+strlen(",卡号:"))).'<br>';
-    }
 
 
 

@@ -2,7 +2,7 @@
 
 class EpayApp extends MemberbaseApp {
 
-    
+     
     function EpayApp() {
         parent::__construct();
         $this->mod_epay = & m('epay');

@@ -74,10 +74,11 @@ class PaycenterApp extends BackendApp
 
 
 
+
     function todayfanli()
     {
-        echo '2016年06月15日18:07:24';
-        return;
+//        echo '2016年06月15日18:07:24';
+//        return;
 
         $operate = $this->_get_last_operate();
         
@@ -88,14 +89,14 @@ class PaycenterApp extends BackendApp
 
 
         $epay_members = $this->_epay_mod->find(array(
-            // and user_name  not in  ('18265180291','13305393569','13475391355')
             'conditions' => "total_white>=100000",
-           // 'conditions' => "integral_power>=100000 and integral_power<11000000",
             'count' => true,
             'order' => 'total_white DESC',
         ));
 
         $epay_used_members = $this->_epay_mod->getAll("SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =  {$operate_id}");
+
+
 
         foreach($epay_members as $key=>$epay){
             foreach($epay_used_members as $key2=>$epay2)
@@ -105,6 +106,7 @@ class PaycenterApp extends BackendApp
                 }
             }
         }
+
 
         //今日操作日志
         foreach ($epay_members as $key => $epay) {
@@ -214,13 +216,60 @@ class PaycenterApp extends BackendApp
 
 
         //todo 短信提醒
-        $msgtext = '今日赠送的红积分数量为：' . $red . '，请登录平台查看！';
-        $to_mobile = trim($member['phone_mob']);
-        if ($this->mobile_msg->isMobile($to_mobile)) {
-            $this->mobile_msg->send_msg(0, 'admin', $to_mobile, $msgtext);
-        }
+//        $msgtext = '今日赠送的红积分数量为：' . $red . '，请登录平台查看！';
+//        $to_mobile = trim($member['phone_mob']);
+//        if ($this->mobile_msg->isMobile($to_mobile)) {
+//            $this->mobile_msg->send_msg(0, 'zengsong', $to_mobile, $msgtext);
+//        }
     }
 
+    function sendmsg(){
+        $mod_member = &m('member');
+        $mod_operate_log = &m('operate_change_log');
+        
+        $operate = $this->_get_last_operate();
+
+        //金币汇率
+        $operate_id = $operate['id'];
+
+        $members = $this->_operate_change_log_mod->getAll("select * from ecm_operate_change_log WHERE operate_id={$operate_id}");
+
+        $mod_msglog = &m("msglog");
+
+        $msg_members = $mod_msglog->getAll("select * from ecm_msglog WHERE user_id={$operate_id}");
+
+        foreach ($members as $key=>$user){
+            foreach ($msg_members as $k2=>$v2)
+            {
+                if ($user['user_name'] == $v2['user_name'])
+                {
+                    unset($members[$key]);
+                }
+            }
+        }
+
+
+        echo "全部".sizeof($members);
+        echo "完成".sizeof($msg_members);
+
+        foreach ($members as $k =>$v){
+
+            $red = floor($v['change_integral_white']*100)/10000;
+
+            $msgtext = '今日赠送的红积分数量为：' . $red . '，请登录平台查看！';
+
+            $phone_mob = $mod_member->getOne("select phone_mob from ecm_member WHERE user_name = '{$v['user_name']}'");
+
+            $to_mobile = trim($phone_mob);
+
+
+            if ($this->mobile_msg->isMobile($to_mobile)) {
+                $this->mobile_msg->send_msg($operate_id, $v['user_name'], $to_mobile, $msgtext);
+            }
+        }
+
+        echo 'ok';
+    }
     /**
      * 作用:平台今日流水（距离上次返利时间截至）
      * Created by QQ:710932
@@ -251,7 +300,6 @@ class PaycenterApp extends BackendApp
     function _get_integral_power_count()
     {
         //  var $integral_power;
-
         $epay_members = $this->_epay_mod->find(array(
             'conditions' => "('total_white'-'used_white')>100000",
             'count' => true,
@@ -260,7 +308,7 @@ class PaycenterApp extends BackendApp
 
         $integral_power = 0;
         foreach ($epay_members as $key => $member) {
-            $integral_power = $integral_power + (floor($epay_members[$key]['total_white'] / 100000)-floor($epay_members[$key]['used_white'] / 100000));
+            $integral_power = $integral_power + (floor($member['total_white'] / 100000)-floor($member['used_white'] / 100000));
         }
 
         return $integral_power;

@@ -267,7 +267,11 @@ class MemberApp extends MemberbaseApp {
                 $this->show_warning('user_already_taken');
                 return;
             }
-    
+
+            if (($_POST['confirm_code'] == null)||($_SESSION['MobileConfirmCode']==null)){
+                $this->show_warning('验证码不能为空');
+                return;
+            }
             if (Conf::get('msg_enabled') && $_SESSION['MobileConfirmCode'] != $_POST['confirm_code']) {
                 $this->show_warning('mobile_code_error');
                 return;
