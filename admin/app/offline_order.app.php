@@ -45,7 +45,7 @@ class Offline_orderApp extends BackendApp
             'conditions' => "{$conditions}",
             'count' => true,
             'limit' => $page['limit'],
-            'order' => 'add_time DESC',
+            'order' => 'add_time asc',
         ));
 
         if (empty($orders)) {
