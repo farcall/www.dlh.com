@@ -116,9 +116,7 @@
             <a target="_blank" href="http://www.bj.cyberpolice.cn/index.do">
                 <img width="103" height="32" alt="朝阳网络警察" src="http://img11.360buyimg.com/da/jfs/t559/186/1172042286/2795/7d90b036/54b8874bN694454a5.png" class="err-product">
             </a>
-            <a target="_blank" href="https://search.szfw.org/cert/l/CX20120111001803001836">
-                <img width="103" height="32" src="http://img11.360buyimg.com/da/jfs/t451/173/1189513923/1992/ec69b14a/54b8875fNad1e0c4c.png" class="err-product">
-            </a>
+
             <a target="_blank" href="http://jubao.china.cn:13225/reportform.do">
                 <img width="185" height="32" src="http://img10.360buyimg.com/da/jfs/t520/303/1151687373/1180/2f8340fc/54b8863dN8d2c61ec.png" class="err-product">
             </a>

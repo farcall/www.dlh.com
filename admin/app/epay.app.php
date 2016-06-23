@@ -332,12 +332,24 @@ class EpayApp extends BackendApp {
                 'type' => 'numeric',
             ),
         ));
+
+
         $page = $this->_get_page(10);
-        $index = $this->mod_epaylog->find(array(
-            'conditions' => 'type='.EPAY_TX . $conditions,
-            'limit' => $page['limit'],
-            'order' => "id desc",
-            'count' => true));
+
+        if ($_GET['status'] == 70){
+            $index = $this->mod_epaylog->find(array(
+                'conditions' => 'type='.EPAY_TX . $conditions,
+                'limit' => $page['limit'],
+                'order' => "id asc",
+                'count' => true));
+        }else{
+            $index = $this->mod_epaylog->find(array(
+                'conditions' => 'type='.EPAY_TX . $conditions,
+                'limit' => $page['limit'],
+                'order' => "id desc",
+                'count' => true));
+        }
+
         $page['item_count'] = $this->mod_epaylog->getCount();
         $this->_format_page($page);
         $this->assign('search_options', $search_options);
@@ -353,7 +365,56 @@ class EpayApp extends BackendApp {
         $this->display('epay.txlog.html');
     }
 
-    //审核操作	
+    //提现通过批量处理
+    function txs_ok(){
+        $ids = $_GET['id'];
+
+        $ids = explode(',',$ids);
+
+        foreach ($ids as $id){
+           $this->_tx($id);
+        }
+
+
+
+        $this->show_message("审核完成","立即跳转","/admin/index.php?app=epay&act=txlog&status=70");
+    }
+
+    /**
+     * @param $id epaylog['id']
+     * id为$id的给审核通过
+     */
+    function _tx($log_id){
+        $txlog = $this->mod_epaylog->get(array(
+             'conditions'=>"id={$log_id}",
+        ));
+
+
+        $user_id = $txlog['user_id'];
+        $money_row = $this->mod_epay->getrow("select money_dj from " . DB_PREFIX . "epay where user_id='{$user_id}'");
+        $row_money_dj = $money_row['money_dj'];
+
+        if ($row_money_dj < $txlog['money']) {
+            $this->show_warning('非法参数,请联系管理员');
+            return false;
+        }
+
+        $new_money_dj = $row_money_dj - $txlog['money'];
+        $new_money = array(
+            'money_dj' => $new_money_dj,
+        );
+        $this->mod_epay->edit('user_id=' . $user_id, $new_money); //读取所有数据库
+
+        $edit_log = array(
+            //  'add_time' => $add_time,
+            'states' => 71, //改变状态为已审核
+            'complete'=>'1'
+        );
+        $this->mod_epaylog->edit('id=' . $log_id, $edit_log);
+        return true;
+
+    }
+    //审核操作
     function tx_view() {
         $log_id = $_GET['log_id'];
         $user_id = $_GET['user_id'];
@@ -389,7 +450,7 @@ class EpayApp extends BackendApp {
                 $this->mod_epay->edit('user_id=' . $user_id, $new_money); //读取所有数据库
 
                 $edit_log = array(
-                    'add_time' => $add_time,
+                  //  'add_time' => $add_time,
                     'states' => 71, //改变状态为已审核
                     'to_id' => $order_id,
                     'complete'=>'1'

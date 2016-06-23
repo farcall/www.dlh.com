@@ -105,7 +105,8 @@
     <?php if ($this->_var['index']): ?>
     <div id="dataFuncs">
         <div id="batchAction" class="left paddingT15"> &nbsp;&nbsp;
-            <input class="formbtn batchButton" type="button" value="删除" name="id" uri="index.php?app=epay&act=drop_txlog" presubmit="confirm('您确定要删除它吗？');" />
+            <input class="formbtn batchButton" type="button" value="审核" name="id" uri="index.php?app=epay&act=txs_ok" presubmit="confirm('确定审核?');" />
+
             <a class="formbtn J_ExportDraw" style="display:inline-block; text-align:center; text-decoration:none; line-height:20px;" href="javascript:;">批量导出</a>
         </div>
         <div class="pageLinks"><?php echo $this->fetch('page.bottom.html'); ?></div>
