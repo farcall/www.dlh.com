@@ -18,10 +18,11 @@
                         <th>买家</th>
                         <th>卖家</th>
                         <th>价格</th>
+
+                        <th>状态</th>
+                        <th>操作</th>
                         <th>商品</th>
                         <th>完成时间</th>
-                        <th style="width: 40px">状态</th>
-                        <th>操作</th>
                     </tr>
                     <!--{foreach from=$orders item=order name=fe_order}-->
                     <tr>
@@ -30,8 +31,7 @@
                         <td>{$order.buyer_username}</td>
                         <td>{$order.seller_username}</td>
                         <td>{$order.money}</td>
-                        <td>{$order.goods_name}</td>
-                        <td>{$order.add_time|date:Y-m-d H:i}</td>
+
                         <td>
                             <!--{if $order.status eq 31}-->
                             <span class="label label-danger">等待审核</span>
@@ -46,6 +46,8 @@
                         <td>
                             <a href="index.php?app=offline_order&act=log&id={$order.order_id}">查看</a>
                         </td>
+                        <td>{$order.goods_name}</td>
+                        <td>{$order.add_time|date:Y-m-d H:i}</td>
                     </tr>
 
                     <!--{/foreach}-->

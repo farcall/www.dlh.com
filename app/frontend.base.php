@@ -933,12 +933,12 @@ class MemberbaseApp extends MallbaseApp {
             'name' => 'im_buyer',
             'text' => Lang::get('im_buyer'),
             'submenu' => array(
-                'my_order' => array(
-                    'text' => Lang::get('my_order'),
-                    'url' => 'index.php?app=buyer_order',
-                    'name' => 'my_order',
-                    'icon' => 'ico5',
-                ),
+//                'my_order' => array(
+//                    'text' => Lang::get('my_order'),
+//                    'url' => 'index.php?app=buyer_order',
+//                    'name' => 'my_order',
+//                    'icon' => 'ico5',
+//                ),
 //                'my_groupbuy' => array(
 //                    'text' => Lang::get('my_groupbuy'),
 //                    'url' => 'index.php?app=buyer_groupbuy',
@@ -1022,15 +1022,15 @@ class MemberbaseApp extends MallbaseApp {
                 'name' => 'my_goods',
                 'icon' => 'ico8',
             );
-            $menu['im_seller']['submenu']['order_manage'] = array(
-                'text' => Lang::get('order_manage'),
-                'url' => 'index.php?app=seller_order',
-                'name' => 'order_manage',
-                'icon' => 'ico10',
-            );
+//            $menu['im_seller']['submenu']['order_manage'] = array(
+//                'text' => Lang::get('order_manage'),
+//                'url' => 'index.php?app=seller_order',
+//                'name' => 'order_manage',
+//                'icon' => 'ico10',
+//            );
             $menu['im_seller']['submenu']['my_category'] = array(
                 'text' => Lang::get('my_category'),
-                'url' => 'index.php?app=my_category',
+                'url' => 'index.php?app=ƒ',
                 'name' => 'my_category',
                 'icon' => 'ico9',
             );

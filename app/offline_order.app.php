@@ -194,7 +194,6 @@ class Offline_orderApp extends PaycenterbaseApp
      */
     function log()
     {
-
         $id = $_GET['id'];
 
         if (empty($id)) {

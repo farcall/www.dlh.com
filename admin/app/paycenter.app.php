@@ -248,7 +248,6 @@ class PaycenterApp extends BackendApp
             }
         }
 
-
         echo "全部".sizeof($members);
         echo "完成".sizeof($msg_members);
 

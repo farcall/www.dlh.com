@@ -117,7 +117,7 @@ class My_themeApp extends StoreadminbaseApp {
         /* 获取当前所使用的风格 */
         $model_store = & m('store');
         $store_info = $model_store->get($this->visitor->get('manage_store'));
-        $theme = !empty($store_info['theme']) ? $store_info['theme'] : 'default|default';
+        $theme = !empty($store_info['theme']) ? $store_info['theme'] : 'mmall|default';
         list($curr_template_name, $curr_style_name) = explode('|', $theme);
 
         /* 获取待选主题列表 */

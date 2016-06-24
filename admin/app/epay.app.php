@@ -152,6 +152,7 @@ class EpayApp extends BackendApp {
     //增加用户资金   
     function money_add() {
         if ($_POST) {
+
             $user_name = trim($_POST['user_name']);
             $post_money = trim($_POST['post_money']);
             $jia_or_jian = trim($_POST['jia_or_jian']);
