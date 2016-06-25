@@ -198,7 +198,7 @@
                         alert("短信已发送至:" + sendaddress + " 请注意查收！");
                     } else {
                         canSend = true;
-                        alert("短信发送失败，请检查手机号码是否正确！");
+                        alert("短信发送失败，请输入正确的验证码或检查手机号码是否正确！");
                     }
                 }
             });
@@ -260,22 +260,7 @@
                                     <div class="clr"></div><label></label>
                                 </dd>
                             </dl>
-                            <!--{if $msg_enabled}-->
-                            <dl class="clearfix">
-                                <dt>{$lang.confirm_code}</dt>
-                                <dd>
-                                    <input class="input" type="text" id="confirm_code" name="confirm_code" value=""/>
-                                    <br /><label></label>
-                                </dd>
-                            </dl>
-                            <dl class="clearfix">
-                                <dt>&nbsp;</dt>
-                                <dd>
-                                    <input type="button" id="sendsms" value="{$lang.send_code}"/>
-                                    <br /><label></label>
-                                </dd>
-                            </dl>
-                            <!--{/if}-->
+
                             <!--{if $captcha}-->
                             <dl class="clearfix">
                                 <dt>{$lang.captcha}</dt>
@@ -287,6 +272,24 @@
                                 </dd>
                             </dl>
                             <!--{/if}-->
+
+                            <!--{if $msg_enabled}-->
+                            <dl class="clearfix">
+                                <dt>&nbsp;</dt>
+                                <dd>
+                                    <input type="button" id="sendsms" value="{$lang.send_code}"/>
+                                    <br /><label></label>
+                                </dd>
+                            </dl>
+                            <dl class="clearfix">
+                                <dt>短信验证码</dt>
+                                <dd>
+                                    <input class="input" type="text" id="confirm_code" name="confirm_code" value=""/>
+                                    <br /><label></label>
+                                </dd>
+                            </dl>
+                            <!--{/if}-->
+
                             <dl class="clearfix">
                                 <dt>&nbsp;</dt>
                                 <dd class="mall-eula">
@@ -295,6 +298,8 @@
                                     <div class="clr"></div><label></label>
                                 </dd>
                             </dl>
+
+
                             <dl class="clearfix">
                                 <dt>&nbsp;</dt>
                                 <dd>

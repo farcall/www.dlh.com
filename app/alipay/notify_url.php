@@ -93,9 +93,6 @@ if ($verify_result) {//验证成功
         );
         $mod_epaylog->edit('order_sn=' . '"' . $dingdan . '"', $edit_epaylog);
         
-        
-        
-        
                 //---------------------  以下是判断  是否启用 自动付款----------------------
                 
                 $mod_order = & m('order');
@@ -186,17 +183,6 @@ if ($verify_result) {//验证成功
                     );
                     $mod_order->edit($order_id, $order_edit_array);
                 }
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
 
     //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——

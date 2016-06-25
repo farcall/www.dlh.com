@@ -147,5 +147,10 @@ return array (
   'epay_wxjs_enabled' => '1',
   'epay_wxnative_enabled' => '1',
   'store_allow' => '1',
+  'captcha_status' => 
+  array (
+    'login' => '1',
+    'register' => '1',
+  ),
 );
 ?>

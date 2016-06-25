@@ -21,14 +21,17 @@ class Epay {
         }
         $epay_trade_charges_ratio = Conf::get('epay_trade_charges_ratio');
         //当前佣金
+        echo 'epay_ratio'.$epay_trade_charges_ratio.'<br>';
         $epay_trade_charges = round($order_info['goods_amount'] * $epay_trade_charges_ratio, 2);
+        echo 'epay_trade_charges'.$epay_trade_charges.'<br>';
+
         if (empty($epay_trade_charges)) {
             return;
         }
 
         $order_sn = EPAY_TRADE_CHARGES . date('YmdHis',gmtime()+8*3600).rand(1000,9999);
         //卖家当前信息
-        $seller_epay = $this->_epay_mod->get($order_info['seller_id']);
+        $seller_epay = $this->_epay_mod->get('user_id=' . $order_info['seller_id']);
 
 
         $add_epaylog = array(
@@ -48,6 +51,7 @@ class Epay {
         $new_seller_epay = array(
             'money' => $seller_epay['money'] - $epay_trade_charges,
         );
+
         $this->_epay_mod->edit('user_id=' . $order_info['seller_id'], $new_seller_epay);
     }
 

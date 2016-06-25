@@ -671,6 +671,7 @@ class MemberApp extends MemberbaseApp {
         if (!Conf::get('msg_enabled')) {
             return;
         }
+
         $mobile = empty($_GET['mobile']) ? '' : trim($_GET['mobile']);
         if (!$mobile) {
             echo ecm_json_encode(false);

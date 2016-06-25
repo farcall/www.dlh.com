@@ -20,10 +20,7 @@
                     <span>{$lang.store_owner}: </span>{$store.store_owner.user_name|escape}
                     <a target="_blank" href="{url app=message&act=send&to_id=$store.store_owner.user_id|escape}"><img src="{res file=images/web_mail.gif}" alt="{$lang.send_pm}" /></a>
                 </p>
-                <p>
-                    <span>{$lang.credit_value}: </span><span class="fontColor1">{$store.credit_value}</span>
-                    <!--{if $store.credit_value ge 0}--><img src="{$store.credit_image}" alt="" /><!--{/if}-->
-                </p>
+
                 <p>{$lang.store_grade}: {$store.sgrade}</p>
                 <p>{$lang.goods_count}: {$store.goods_count}</p>
                 <p>{$lang.region}: {$store.region_name|escape}</p>

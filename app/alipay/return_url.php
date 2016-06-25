@@ -48,7 +48,6 @@ require_once("lib/alipay_notify.class.php");
             $out_trade_no = $_GET['out_trade_no'];
 
             //支付宝交易号
-
             $trade_no = $_GET['trade_no'];
 
             //交易状态
