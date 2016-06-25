@@ -1,7 +1,7 @@
 <?php
 /**
  *  @Created By  PhpCacheServer
- *  @Time:2016-06-23 14:14:14
+ *  @Time:2016-06-25 10:24:08
  */
 
 if(filemtime(__FILE__) + 86400 < time())return false;

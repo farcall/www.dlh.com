@@ -89,7 +89,7 @@
                                 <dt>&nbsp;</dt>
                                 <dd class="clearfix">
                                     <input type="submit" class="login-submit" name="Submit" value="请登录" title="请登录" />
-                                    <a href="<?php echo url('app=find_password'); ?>" class="find-password">忘记密码？</a>
+                                    <a href="index.php?app=find_password&act=mobile" style="color: #0081EF;">手机找回密码</a>
                                     <input type="hidden" name="ret_url" value="<?php echo $this->_var['ret_url']; ?>" />
                                 </dd>
                             </dl>
@@ -99,10 +99,7 @@
                                     如果您还不是会员，请<a href="<?php echo url('app=member&act=register&ret_url=' . $this->_var['ret_url']. ''); ?>" title="注册">注册</a>
                                 </dd>
                             </dl>
-                            <div class="partner-login">
-                                <h3>你可以用合作伙伴账号登陆</h3>
-                                <p><a class="qq-login" href="<?php echo url('app=third_login&act=qq'); ?>"></a><a class="weibo-login" href="<?php echo url('app=third_login&act=sina'); ?>"></a></p>
-                            </div>
+
                         </form>
                     </div>
                 </div>

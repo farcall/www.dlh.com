@@ -41,12 +41,22 @@ class Offline_orderApp extends BackendApp
             $conditions = "1=1 and status={$status}";
         }
 
-        $orders = $this->_order_offline_mod->findAll(array(
-            'conditions' => "{$conditions}",
-            'count' => true,
-            'limit' => $page['limit'],
-            'order' => 'add_time asc',
-        ));
+        if ($status == 31){
+            $orders = $this->_order_offline_mod->findAll(array(
+                'conditions' => "{$conditions}",
+                'count' => true,
+                'limit' => $page['limit'],
+                'order' => 'add_time asc',
+            ));
+        }else{
+            $orders = $this->_order_offline_mod->findAll(array(
+                'conditions' => "{$conditions}",
+                'count' => true,
+                'limit' => $page['limit'],
+                'order' => 'add_time desc',
+            ));
+        }
+
 
         if (empty($orders)) {
             $this->display('paycenter/offline_order.html');
