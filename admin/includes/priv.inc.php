@@ -33,6 +33,7 @@ $menu_data = array
         'sgrade'    => 'sgrade|all',//店铺等级
         'scategory'     => 'scategory|all',//店铺分类
         'store'   => 'store|all',//店铺管理
+        'store_wait_verify'=>'store|wait_verify',//店铺审核
     ),
     'member' => array
     (
@@ -72,6 +73,13 @@ $menu_data = array
     'clear_cache' =>array
     (
         'clear_cache' => 'clear_cache|all',//清空缓存
+    ),
+    'offline_order' =>array(
+        'offline_order' => 'offline_order|all', //线下订单管理
+    ),
+    'proxy' => array(
+        'proxy' => 'proxy|all', //代理查询
     )
+
 );
 ?>

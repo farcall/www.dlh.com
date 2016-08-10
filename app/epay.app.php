@@ -111,6 +111,7 @@ class EpayApp extends MemberbaseApp {
         $this->assign('epay_alipay_enabled', Conf::get('epay_alipay_enabled'));
         $this->assign('epay_chinabank_enabled', Conf::get('epay_chinabank_enabled'));
         $this->assign('epay_tenpay_enabled', Conf::get('epay_tenpay_enabled'));
+        $this->assign('epay_jyt_enabled', Conf::get('epay_jyt_enabled'));
         $this->assign('epay_wxjs_enabled', Conf::get('epay_wxjs_enabled'));
         $this->assign('epay_wxnative_enabled', Conf::get('epay_wxnative_enabled'));
         
@@ -859,6 +860,9 @@ class EpayApp extends MemberbaseApp {
                 case 'tenpay':
                     $bank_name = "财付通";
                     break;
+                case 'jytpay' :
+                    $bank_name = "金运通";
+                    break;
                 default:
                     $bank_name = "支付宝";
             }
@@ -930,6 +934,22 @@ class EpayApp extends MemberbaseApp {
                             <input type="hidden" name="epay_alipay_key" value="<?php echo $epay_alipay_key; ?>">
                             <input type="hidden" name="site_url" value="<?php echo $site_url; ?>">
                         </form>
+                    </body>
+                    <?php
+                    break;
+                case 'jytpay':
+                    //充值金额格式化为xx.xx的格式
+                    $cz_money = sprintf("%.2f", $cz_money);
+                    ?>
+                    <body onLoad="javascript:document.JYT_FORM.submit()">
+                    <form method="post" name="JYT_FORM" action="app/jytpay/index.php">
+                        <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+                        <input type="hidden" name="user_name" value="<?php echo $user_name; ?>">
+                        <input type="hidden" name="dingdan" value="<?php echo $dingdan; ?>">
+                        <input type="hidden" name="money" value="<?php echo $cz_money; ?>">
+                        <input type="hidden" name="isWap" value="<?php echo $_POST['isWap']; ?>">
+                        <input type="hidden" name="site_url" value="<?php echo $site_url; ?>">
+                    </form>
                     </body>
                     <?php
                     break;

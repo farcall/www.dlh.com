@@ -177,3 +177,26 @@
 
 #page-sdemand .sdemand-detail .more h3{ font-weight:normal;font-size:14px; line-height:20px;}
 #page-sdemand .sdemand-detail .more h3 span{color:#999;}
+
+
+
+
+#page-search-nearby .shops-list{background:#FFF;}
+#page-search-nearby .each{padding-left:90px;padding-top:10px;}
+#page-search-nearby .each .pic{margin-left:-90px;}
+#page-search-nearby .bound-type li{width:25%; text-align:center;background:#ddd;height:40px; line-height:40px;}
+#page-search-nearby .bound-type li a{ display:inline-block; color:#000;}
+#page-search-nearby .bound-type li.current{ background:#FFF;}
+
+#page-travel .travel-type li{ width:33.3333333%; background:#ddd; height:40px; line-height:40px; text-align:center;}
+#page-travel .travel-type li a{ display:block; color:#000;vertical-align:middle}
+#page-travel .travel-type li.current{ background:#FFF;}
+#page-travel .travel-type a:hover,#page-travel .travel-type a:active,#page-travel .travel-type .current a{color:#0C88E8}
+#page-travel .travel-type a i{ background:url(../images/mo_banner_ba37b5d.png) no-repeat; display:inline-block;margin-right:2px;vertical-align:middle}
+#page-travel .travel-type .transit i{width:15px; height:18px; background-position:0 -193px;}
+#page-travel .travel-type .transit:hover i, #page-travel .travel-type .current .transit i{width:15px; height:18px; background-position:-14px -193px;}
+#page-travel .travel-type .driving i{width:15px; height:18px; background-position:-29px -193px;}
+#page-travel .travel-type .driving:hover i, #page-travel .travel-type .current .driving i{width:15px; height:18px; background-position:-45px -193px;}
+#page-travel .travel-type .walking i{width:15px; height:18px; background-position:-61px -191px;}
+#page-travel .travel-type .walking:hover i, #page-travel .travel-type .current .walking i{width:15px; height:18px; background-position:-80px -191px;}
+

@@ -21,6 +21,18 @@
             },
             onkeyup: false,
             rules: {
+                tuijiandaili:{
+                    maxlength: 40,
+                    remote : {
+                        url  : 'index.php?app=apply&act=check_tuijandaili',
+                        type : 'get',
+                        data : {
+                            tuijiandaili : function(){
+                                return $('#tuijiandaili').val();
+                            }
+                        }
+                    },
+                },
                 owner_name: {
                     required: true
                 },
@@ -57,6 +69,10 @@
                 }
             },
             messages: {
+                tuijiandaili:{
+                    maxlength: '推荐代理账号不能超过40字',
+                    remote: '推荐代理不存在',
+                },
                 owner_name: {
                     required: '{$lang.input_owner_name}'
                 },
@@ -98,6 +114,10 @@
 <div class="apply_form">
     <form method="post" enctype="multipart/form-data" id="apply_form">
         <ul>
+            <li>
+                <h2>推荐代理账号:</h2>
+                <div class="arrange"><input type="text" class="text" name="tuijiandaili" id="tuijiandaili" value="自由商户"/></div>
+            </li>
             <li>
                 <h2>{$lang.owner_name}</h2>
                 <div class="arrange"><input type="text" class="text" name="owner_name" value="{$store.owner_name|escape}"/></div>

@@ -63,14 +63,14 @@ class AlipayNotify {
 			$isSign = $this->getSignVeryfy($decrypt_post_para, $_POST["sign"],false);
 			
 			//写日志记录
-			//if ($isSign) {
-			//	$isSignStr = 'true';
-			//}
-			//else {
-			//	$isSignStr = 'false';
-			//}
-			//$log_text = "responseTxt=".$responseTxt."\n notify_url_log:isSign=".$isSignStr.",";
-			//$log_text = $log_text.createLinkString($_POST);
+			if ($isSign) {
+				$isSignStr = 'true';
+			}
+			else {
+				$isSignStr = 'false';
+			}
+			$log_text = "responseTxt=".$responseTxt."\n notify_url_log:isSign=".$isSignStr.",";
+			$log_text = $log_text.createLinkString($_POST);
 			//logResult($log_text);
 			
 			//验证
@@ -97,14 +97,14 @@ class AlipayNotify {
 			$isSign = $this->getSignVeryfy($_GET, $_GET["sign"],true);
 			
 			//写日志记录
-			//if ($isSign) {
-			//	$isSignStr = 'true';
-			//}
-			//else {
-			//	$isSignStr = 'false';
-			//}
-			//$log_text = "return_url_log:isSign=".$isSignStr.",";
-			//$log_text = $log_text.createLinkString($_GET);
+			if ($isSign) {
+				$isSignStr = 'true';
+			}
+			else {
+				$isSignStr = 'false';
+			}
+			$log_text = "return_url_log:isSign=".$isSignStr.",";
+			$log_text = $log_text.createLinkString($_GET);
 			//logResult($log_text);
 			
 			//验证

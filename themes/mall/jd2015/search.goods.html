@@ -284,11 +284,13 @@ $(".sub_category .item").click(function(){
                                     <!--{/foreach}-->
                                 </dd>
                                 <dd class="desc"><a href="{url app=goods&id=$goods.goods_id}" target="_blank">{$goods.goods_name|escape|truncate:48}</a></dd>
-                                <dd class="price twofloat clearfix"><em>{$goods.price|price}</em><span>{$lang.zjcj}<b>{$goods.sales}</b>{$lang.bi}</span></dd>
+                                <dd class="price twofloat clearfix"><em>{$goods.price|price}</em>
+                                    <!--<span>{$lang.zjcj}<b>{$goods.sales}</b>{$lang.bi}</span>-->
+                                </dd>
                                 <dd><a href="{url app=store&id=$goods.store_id}" target="_blank">{$goods.store_name}</a></dd>
                                 <dd class="status clearfix">
-                                    <span>成交<em>{$goods.sales|escape}笔</em></span>
-                                    <span>评价<a href="{url app=goods&act=comments&id=$goods.goods_id}">{$goods.comments|escape}笔</a></span>
+                                    <!--<span>成交<em>{$goods.sales|escape}笔</em></span>-->
+                                    <!--<span>评价<a href="{url app=goods&act=comments&id=$goods.goods_id}">{$goods.comments|escape}笔</a></span>-->
                                     <!--{if $goods.im_ww}-->
                                     <a title="与{$goods.store_name}店主交谈" href="http://amos.im.alisoft.com/msg.aw?v=2&uid={$goods.im_ww|escape:url}&site=cntaobao&s=2&charset={$charset}" target="_blank"><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid={$goods.im_ww|escape:url}&site=cntaobao&s=2&charset={$charset}" alt="与{$goods.store_name}店主交谈" align="absmiddle"/></a>
                                     <!--{/if}-->

@@ -1,0 +1,84 @@
+{include file="header.html"}
+<script type="text/javascript">
+    $(function () {
+        $('#add_time_from').datepicker({dateFormat: 'yy-mm-dd'});
+        $('#add_time_to').datepicker({dateFormat: 'yy-mm-dd'});
+    });
+</script>
+
+<div class="mrightTop">
+    <div class="fontl">
+        <form method="get">
+            <div class="left">
+                <input name="app" type="hidden" id="app" value="data" />
+                <input name="act" type="hidden" id="act" value="index" />
+                {$lang.add_time_from}:<input class="queryInput2" type="text" value="{$query.add_time_from}" id="add_time_from" name="add_time_from" class="pick_date" />
+                {$lang.add_time_to}:<input class="queryInput2" type="text" value="{$query.add_time_to}" id="add_time_to" name="add_time_to" class="pick_date" />
+                <input type="submit" class="formbtn" value="{$lang.query}" />
+            </div>
+            <!--{if $filtered}-->
+            <a class="left formbtn1" href="index.php?app=epay&act=index">{$lang.cancel_query}</a>
+            <!--{/if}-->
+        </form>
+    </div>
+    <div class="fontr">
+
+    </div>
+</div>
+
+<dl id="rightCon">
+<dt>新增信息</dt>
+    <dd>
+        <table>
+            <tr>
+                <th>新增商品数</th>
+                <td>{$news_info.new_goods_qty}</td>
+                <th>新增会员数</th>
+                <td>{$news_info.new_user_qty}</td>
+            </tr>
+            <tr>
+                <th>新增待审核商家</th>
+                <td>{$news_info.new_apply_qty}</td>
+                <th>新增商家数</th>
+                <td>{$news_info.new_store_qty}</td>
+            </tr>
+            <tr>
+                <th>新增订单数</th>
+                <td>{$news_info.new_order_qty}</td>
+            </tr>
+            <tr>
+                <th>管理员增加</th>
+                <td>{$news_info.new_adminchongzhi_qty}</td>
+                <th>管理员减少</th>
+                <td>{$news_info.new_adminjianshao_qty}</td>
+            </tr>
+
+        </table>
+    </dd>
+
+<dt>总数统计</dt>
+    <dd>
+        <table>
+            <tr>
+                <th>商品数</th>
+                <td>{$all_info.goods_qty}</td>
+                <th>会员数</th>
+                <td>{$all_info.user_qty}</td>
+            </tr>
+            <tr>
+                <th>待审核商家</th>
+                <td>{$all_info.apply_qty}</td>
+                <th>商家总数</th>
+                <td>{$all_info.store_qty}</td>
+            </tr>
+            <tr>
+                <th>VIP商家</th>
+                <td>{$all_info.vip_store_qty}</td>
+                <th>VIP会员</th>
+                <td>{$all_info.vip_user_qty}</td>
+            </tr>
+        </table>
+    </dd>
+
+</dl>
+{include file="footer.html"}

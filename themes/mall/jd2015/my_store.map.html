@@ -1,0 +1,53 @@
+{include file=member.header.html} 
+<script>
+$(function(){
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	<!--{if $store.latlng}-->
+	var point = new BMap.Point({$store.lng},{$store.lat});
+	<!--{else}-->
+	var point = new BMap.Point(116.400244,39.92556);
+	<!--{/if}-->
+	map.centerAndZoom(point, 15);
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+	map.addControl(new BMap.NavigationControl());// 左上角，添加比例尺   
+	var marker = new BMap.Marker(point);// 创建标注
+	map.addOverlay(marker);             // 将标注添加到地图中
+	marker.enableDragging();
+	marker.addEventListener("dragend", function(e){    
+	//alert("当前位置：" + e.point.lng + ", " + e.point.lat); 
+		$("input[name='latlng']").val(e.point.lat + "," + e.point.lng);   
+	})
+});
+</script>
+<div class="content">
+	<div class="totline"></div>
+	<div class="botline"></div>
+	{include file=member.menu.html}
+	<div id="right"> {include file=member.curlocal.html}
+		{include file=member.submenu.html}
+		<div class="wrap">
+			<div class="public">
+				<div class="information">
+					<div class="notice-word">
+						<p>将标注拖放到您店铺所在的位置（点击标注可拖动）</p>
+					</div>
+					<div class="info">
+						<form method="post">
+							<input type="hidden" name="latlng" value="{$store.latlng}" />
+							<div id="allmap" style="height:400px;border:3px #ddd solid;"></div>
+							<div class="mt20"><input type="submit" class="btn" value="{$lang.submit}" /></div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<div class="adorn_right1"></div>
+		<div class="adorn_right2"></div>
+		<div class="adorn_right3"></div>
+		<div class="adorn_right4"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+{include file=footer.html}

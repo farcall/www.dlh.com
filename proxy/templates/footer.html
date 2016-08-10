@@ -13,15 +13,17 @@
 </div>
 <!-- ./wrapper -->
 
+<!--{if $smarty.get.app neq 'proxy'} 2.2.0 版本影响ECMall日期组件-->
 <!-- jQuery 2.2.0 -->
-<script src="proxy/templates/AdminLTE/plugins/jQuery/jQuery-2.2.0.min.js}"></script>
+<script src="{res file=style/AdminLTE/plugins/jQuery/jQuery-2.2.0.min.js}"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="proxy/templates/AdminLTE/bootstrap/js/bootstrap.min.js"></script>
+<script src="{res file=style/AdminLTE/bootstrap/js/bootstrap.min.js}"></script>
 <!-- SlimScroll -->
-<script src="proxy/templates/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="{res file=style/AdminLTE/plugins/slimScroll/jquery.slimscroll.min.js}"></script>
 <!-- FastClick -->
-<script src="proxy/templates/AdminLTE/plugins/fastclick/fastclick.js"></script>
+<script src="{res file=style/AdminLTE/plugins/fastclick/fastclick.js}"></script>
 <!-- AdminLTE App -->
-<script src="proxy/templates/AdminLTE/dist/js/app.min.js"></script>
+<script src="{res file=style/AdminLTE/dist/js/app.min.js}"></script>
+<!--{/if}-->
 </body>
 </html>

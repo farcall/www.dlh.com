@@ -24,6 +24,18 @@ $(function(){
         },
         onkeyup: false,
         rules: {
+            tuijiandaili:{
+                maxlength: 40,
+                remote : {
+                    url  : 'index.php?app=apply&act=check_tuijandaili',
+                    type : 'get',
+                    data : {
+                        tuijiandaili : function(){
+                            return $('#tuijiandaili').val();
+                        }
+                    }
+                },
+            },
             owner_name: {
                 required: true
             },
@@ -60,6 +72,10 @@ $(function(){
             }
         },
         messages: {
+            tuijiandaili:{
+                maxlength: '推荐代理账号不能超过40字',
+                remote: '推荐代理不存在',
+            },
             owner_name: {
                 required: '{$lang.input_owner_name}'
             },
@@ -98,6 +114,11 @@ $(function(){
    <div class="content border border-t-0 padding10 apply2">
       <form method="post" enctype="multipart/form-data" id="apply_form">
          <table>
+             <tr>
+                 <th>推荐代理账号:</th>
+                 <td class="width7"><input type="text" class="input border" name="tuijiandaili" id="tuijiandaili" value="自由商户"/></td>
+                 <td class="padding3"><span class="fontColor3">*</span> <span class="field_notice">推荐开店的代理的账号,没有则不用修改</span></td>
+             </tr>
            <tr>
               <th>{$lang.owner_name}{$lang.colon}</th>
               <td class="width7"><input type="text" class="input border" name="owner_name" value="{$store.owner_name|escape}"/></td>

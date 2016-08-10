@@ -10,6 +10,10 @@ return array(
                 'text' => ' 核心管理',
                 'url' => 'index.php?app=paycenter',
             ),
+            'proxy' => array(
+              'text' => '代理业绩',
+              'url' => 'index.php?app=proxy',
+            ),
             'welcome' => array(
                 'text' => Lang::get('welcome_page'),
                 'url' => 'index.php?act=welcome',
@@ -42,6 +46,10 @@ return array(
                 'text' => Lang::get('order_manage'),
                 'parent' => 'trade',
                 'url' => 'index.php?app=order'
+            ),
+            'data_statistics'=>array(
+                'text'=>'数据统计',
+                'url'=>'index.php?app=data&act=index'
             ),
         ),
     ),
@@ -195,6 +203,10 @@ return array(
             'order_manage' => array(
                 'text' => Lang::get('order_manage'),
                 'url' => 'index.php?app=order'
+            ),
+            'offline_order'=>array(
+                'text'=>'线下订单待审核',
+                'url' => 'index.php?app=offline_order&status=31'
             ),
             'evaluation_manage' => array(
                 'text'  => Lang::get('evaluation_manage'),

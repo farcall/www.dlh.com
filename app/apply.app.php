@@ -71,6 +71,7 @@ class ApplyApp extends MallbaseApp {
                     exit;
                 }
 
+
                 if (!IS_POST) {
                     $region_mod = & m('region');
                     $this->assign('site_url', site_url());
@@ -93,6 +94,7 @@ class ApplyApp extends MallbaseApp {
 
                     $store_id = $this->visitor->get('user_id');
                     $data = array(
+                        'tuijiandaili'=>$_POST['tuijiandaili'],
                         'store_id' => $store_id,
                         'store_name' => $_POST['store_name'],
                         'owner_name' => $_POST['owner_name'],
@@ -153,6 +155,23 @@ class ApplyApp extends MallbaseApp {
                 header("Location:index.php?app=apply&step=1");
                 break;
         }
+    }
+
+    function check_tuijandaili(){
+        $proxy_mod = &m('proxy');
+        $tuijiandaili = $_GET['tuijiandaili'];
+
+        if ($tuijiandaili == "自由商户"){
+            echo ecm_json_encode(true);
+            return;
+        }
+        $proxy = $proxy_mod->find("user_name= '$tuijiandaili'");
+
+        if (!$proxy){
+            echo ecm_json_encode(false);
+            return;
+        }
+        echo ecm_json_encode(true);
     }
 
     function check_name() {

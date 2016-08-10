@@ -1022,6 +1022,14 @@ class MemberbaseApp extends MallbaseApp {
                 'name' => 'my_goods',
                 'icon' => 'ico8',
             );
+
+
+            $menu['im_seller']['submenu']['tuijiandaili_setting'] = array(
+                'text' => Lang::get('tuijiandaili_setting'),
+                'url' => 'index.php?app=my_tuijiandaili',
+                'name' => 'my_tuijiandaili',
+                'icon' => 'ico8',
+            );
 //            $menu['im_seller']['submenu']['order_manage'] = array(
 //                'text' => Lang::get('order_manage'),
 //                'url' => 'index.php?app=seller_order',
@@ -1030,7 +1038,7 @@ class MemberbaseApp extends MallbaseApp {
 //            );
             $menu['im_seller']['submenu']['my_category'] = array(
                 'text' => Lang::get('my_category'),
-                'url' => 'index.php?app=ƒ',
+                'url' => 'index.php?app=my_category',
                 'name' => 'my_category',
                 'icon' => 'ico9',
             );

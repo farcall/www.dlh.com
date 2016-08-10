@@ -1,9 +1,23 @@
 {include file="header.html"}
+<script type="text/javascript">
+$(function(){
+    $('#add_time_from').datepicker({dateFormat: 'yy-mm-dd'});
+    $('#add_time_to').datepicker({dateFormat: 'yy-mm-dd'});
+	
+	$('.J_Export').click(function(){
+        $('input[name="app"]').val('default');
+		$('input[name="act"]').val('export_area');
+		$('.J_Form').submit();
+	});
+	$('.J_ShowList').click(function(){
+		$('input[name="act"]').val('index');
+	});
+});
+</script>
 {include file="left.html"}
+
+<div class="content-wrapper fixed">
 <!-- Main content -->
-        <div class="content-wrapper">
-
-
 <section class="content">
     <div class="row">
         <div class="col-md-6">
@@ -21,15 +35,15 @@
 
 
                         {foreach from=$regions item=region}
-                            <tr>
-                                <td>{$region.region_id}</td>
-                                <th>{$region.region_name}</th>
-                                <th>{$region.count}</th>
-                                <th>{$region.amount}</th>
-                                <td>
-                                    <a href="proxy/index.php?app=default&act=region&id={$region.region_id}">查看明细</a>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>{$region.region_id}</td>
+                            <th>{$region.region_name}</th>
+                            <th>{$region.count}</th>
+                            <th>{$region.amount}</th>
+                            <td>
+                                <a href="proxy/index.php?app=default&act=region&id={$region.region_id}&add_time_from={$smarty.get.add_time_from}&add_time_to={$smarty.get.add_time_to}<!--{if $hastuijian}-->&hastuijian={$hastuijian}<!--{/if}-->">查看明细</a>
+                            </td>
+                        </tr>
                         {/foreach}
 
 
@@ -49,9 +63,7 @@
 
                             <p>历史销售额</p>
                         </div>
-                        <div class="icon">
-                            <i class="ion ion-card"></i>
-                        </div>
+
                     </div>
                 </div>
                 <!-- ./col -->
@@ -63,9 +75,7 @@
 
                             <p>店铺数量</p>
                         </div>
-                        <div class="icon">
-                            <i class="ion ion-social-yen"></i>
-                        </div>
+
                     </div>
                 </div>
                 <!-- ./col -->
@@ -81,9 +91,7 @@
 
                             <p>佣金</p>
                         </div>
-                        <div class="icon">
-                            <i class="ion ion-card"></i>
-                        </div>
+
                     </div>
                 </div>
                 <!-- ./col -->
@@ -95,9 +103,7 @@
 
                             <p>代理奖励</p>
                         </div>
-                        <div class="icon">
-                            <i class="ion ion-social-yen"></i>
-                        </div>
+
                     </div>
                 </div>
                 <!-- ./col -->
@@ -109,18 +115,47 @@
                         <div class="inner">
                             <h3 class="info-box-number" id="show_shijiedu">地区:{$area}</h3>
                         </div>
-                        <div class="icon">
-                            <i class="ion ion ion-checkmark-circled"></i>
-                        </div>
+
                     </div>
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-6" id="querenfenpei">
+                    <div class="box box-info">
+                        <div class="box-contenty">
+                            <form method="get" class="J_Form">
+                                <div class="box-body">
+                                    <input type="hidden" name="app" value="default"/>
+                                    <input type="hidden" name="act" value="index"/>
+
+                                    <div class="form-group has-success">
+                                        <div class="input-group">
+
+                                            <input type="hidden" name="hastuijian" value="{$hastuijian}">
+                                             <input class="form-control" style="margin-bottom:5px;" type="text" value="{$smarty.get.add_time_from}" id="add_time_from" name="add_time_from" class="pick_date" placeholder="起始时间" />
+                                        
+               						    	<input class="form-control" style="margin-bottom:5px;" type="text" value="{$smarty.get.add_time_to}" id="add_time_to" name="add_time_to" class="pick_date"  placeholder="结束时间"/>
+                                        </div>
+                                    </div>
+                                    <button type="submit" name="method" value="submit" 
+                                            class="btn  btn-warning pull-left J_ShowList">立即提交</button>
+                                            
+                                            <button type="button" name="method" value="submit"
+                                            class="btn  btn-warning pull-right J_Export">导出结果</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
 
 </section><!-- /.content -->
+</div>
 
-        </div>
 {include file="footer.html"}

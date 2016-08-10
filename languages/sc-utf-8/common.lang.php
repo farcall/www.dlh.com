@@ -84,6 +84,7 @@ return array(
     'i_want_sell' => '我要卖',
     'im_buyer' => '我是买家',
     'im_seller' => '我是卖家',
+    'tuijiandaili_setting'=>'推荐代理设置',
     'im_weixin' => '微信设置',
     'im_wap' => 'WAP设置',
     'im_market' => '营销中心',
@@ -493,5 +494,11 @@ return array(
     'ju_manage' => '聚划算管理',
     'edit_price_note' => '注意：如果该商品参加了促销或者聚划算，则修改价格后会使其活动暂时失效，待您重新编辑聚划算活动后才生效！您确定要修改么？',
     'edit_ju_goods_price_note' => '注意：该商品已经加入了聚划算，修改价格后将会使其活动暂时失效，待您重新编辑聚划算活动后才生效，您确定要修改么？',
+
+
+    'store_map'    => '店铺地图',
+    'view_store_map'  => '查看店铺地图',
+    'not_config_position' => '商家没有标注地理位置',
+    'nearby_store' => '附近商家',
 );
 ?>

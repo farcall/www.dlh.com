@@ -1,7 +1,9 @@
 {include file="header.html"}
+
 {include file="left.html"}
 
-<div class="content-wrapper">
+<div class="content-wrapper fixed">
+
 <!-- Main content -->
 <section class="content">
     <div class="row">
@@ -22,28 +24,30 @@
 
 
                         {foreach from=$orders item=order}
-                            <tr>
-                                <th>{$order.order_id}</th>
-                                <th>{$order.order_sn}</th>
-                                <th>{$order.seller_name}</th>
-                                <th>{$order.buyer_id}</th>
-                                <th>{$order.buyer_name}</th>
-                                <th>{$order.order_amount}</th>
-                                <th>{$order.finished_time|date:complete}</th>
-                            </tr>
+                        <tr>
+                            <th>{$order.order_id}</th>
+                            <th>{$order.order_sn}</th>
+                            <th>{$order.seller_name}</th>
+                            <th>{$order.buyer_id}</th>
+                            <th>{$order.buyer_name}</th>
+                            <th>{$order.order_amount}</th>
+                            <th>{$order.finished_time|date:complete}</th>
+                        </tr>
                         {/foreach}
 
 
                     </table>
                 </div>
             </div>
-            {include file="paycenter/page.bottom.html"}
-
+            <div style="padding:10px;"><a style="display:inline-block; color:#fff; background:#f60; padding:0 5px;"  href="proxy/index.php?app=default&act=export_store&id={$smarty.get.id}&add_time_from={$smarty.get.add_time_from}&add_time_to={$smarty.get.add_time_to}">导出EXCEL</a></div>
+            {include file="page.bottom.html"}
+				
         </div>
     </div>
 
 
 </section><!-- /.content -->
+
 </div>
 
 {include file="footer.html"}

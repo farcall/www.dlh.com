@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -30,6 +30,20 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    <script type="text/javascript">
+	//<!CDATA[
+	var SITE_URL = "{$site_url}";
+	var REAL_SITE_URL = "{$real_site_url}";
+	var REAL_BACKEND_URL = "{$real_backend_url}";
+	//]]>
+	</script>
+    <!--{if $smarty.get.app eq 'proxy'}-->
+    <script type="text/javascript" src="{lib file=jquery.js}" charset="utf-8"></script>
+	<!--{/if}-->
+    
+	<script type="text/javascript" src="index.php?act=jslang"></script>
+	{$_head_tags}
 </head>
 <!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
 <!-- the fixed layout is not compatible with sidebar-mini -->

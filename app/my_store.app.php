@@ -253,6 +253,11 @@ class My_storeApp extends StoreadminbaseApp {
                 'name' => 'location',
                 'url' => 'index.php?app=my_store&amp;act=location',
             ),
+            array(
+                'name' => 'map',
+                'url'  => 'index.php?app=my_store&act=map',
+                'text'=>  Lang::get('store_map'),
+            ),
         );
     }
 
@@ -397,8 +402,39 @@ class My_storeApp extends StoreadminbaseApp {
             $this->show_message('edit_ok');
         }
     }
-    
-    
+
+
+    function map()
+    {
+        if(!IS_POST)
+        {
+            $store = $this->_store_mod->get(array('conditions'=>'store_id='.$this->_store_id, 'fields'=>'lat,lng'));
+            if(!empty($store['latlng'])) {
+                $latlng = explode(',', $store['latlng']);
+                $store['lat'] = $latlng[0];
+                $store['lng'] = $latlng[1];
+            }
+
+            /* 当前页面信息 */
+            $this->_curlocal(LANG::get('member_center'), 'index.php?app=member', LANG::get('my_store'),'index.php?app=my_store',LANG::get('store_map'));
+            $this->_curitem('my_store');
+            $this->_curmenu('map');
+
+            $this->assign('store', $store);
+            $this->headtag('<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak='.Conf::get('baidukey.browser').'"></script>');
+            $this->display('my_store.map.html');
+        }
+        else
+        {
+            if(!$this->_store_mod->edit($this->_store_id,  array('latlng' => trim($_POST['latlng'])))){
+                $this->show_warning('handle_fail');
+                return;
+            }
+            $this->show_message('handle_ok');
+        }
+
+    }
+
 
 }
 

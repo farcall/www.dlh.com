@@ -1153,6 +1153,81 @@ function get_all_category_tree($cate_id) {
         return $seo_info;
     }
 
+
+
+    /* 搜索附近商家 */
+    function nearby()
+    {
+        $this->headtag('<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak='.Conf::get('baidukey.browser').'"></script><script type="text/javascript" src="http://api.map.baidu.com/library/GeoUtils/1.2/src/GeoUtils_min.js"></script>');
+
+        $this->_get_curlocal_title('nearby_store');
+
+        /* 配置seo信息 */
+        $this->_config_seo('title', Lang::get('nearby_store') . ' - ' . Conf::get('site_title'));
+        $this->display('search.nearby.html');
+    }
+    function getstorelist()
+    {
+        $cache_server =& cache_server();
+        $key1 = 'nearby';
+        $data = $cache_server->get($key1);
+        if($data === false)
+        {
+            $step= intval(Conf::get('upgrade_required'));
+            $step < 1 && $step = 5;
+
+            $model_store =& m('store');
+            $stores = $model_store->find(array(
+                'conditions'  => 'latlng <> "" AND state = ' . STORE_OPEN,
+                'fields'  =>'store_name,user_name,sgrade,store_logo, latlng, address,business_scope, credit_value',
+                'join'    => 'belongs_to_user',
+            ));
+
+            $model_goods = &m('goods');
+            $order_mod=&m('order');
+            $sgrade_mod=&m('sgrade');
+
+            foreach ($stores as $key => $store)
+            {
+                $latlng = explode(',', $store['latlng']);
+                $stores[$key]['lat'] = $latlng[0];
+                $stores[$key]['lng'] = $latlng[1];
+
+                $address = file_get_contents("http://api.map.baidu.com/geocoder/v2/?ak=".Conf::get('baidukey.server')."&output=json&location=".$store['latlng']);
+                $address = json_decode($address,true);
+                if(!$address['status']){
+                    $stores[$key]['address'] = $address['result']['formatted_address'];
+                }
+
+                $order=$order_mod->find(array('conditions'=>'status=40 AND seller_id='.$store['store_id'],'fields'=>'order_id'));
+                $stores[$key]['store_sold']=count($order);
+
+
+                $sgrade=$sgrade_mod->get(array('conditions'=>'grade_id='.$store['sgrade'],'fields'=>'grade_name'));
+                $stores[$key]['sgrade_name']=$sgrade['grade_name'];
+
+                //店铺logo
+                empty($store['store_logo']) && $stores[$key]['store_logo'] = Conf::get('default_store_logo');
+
+                //商品数量
+                // $stores[$key]['goods_count'] = $model_goods->get_count_of_store($store['store_id']);
+
+                //等级图片
+                $stores[$key]['credit_image'] = site_url() .'/themes/mall/'.$this->_get_template_name().'/styles/'.$this->_get_style_name(). '/images/' . $model_store->compute_credit($store['credit_value'], $step);
+
+
+                //店铺动态评分
+                //$stores[$key]['industy_compare']=Psmb_init()->get_industry_avg_evaluation($store['store_id']);
+            }
+
+            $data = $stores;
+            $cache_server->set($key1, $data, 3600);
+        }
+
+        $this->json_result($data);
+    }
+
+
 }
 
 ?>

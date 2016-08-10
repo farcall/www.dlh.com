@@ -68,6 +68,7 @@ return array(
     'im_msn' => 'MSN',
     'system_manager' => '系统管理员',
     'input_user_name' => '首先输入您要添加的管理员会员名',
-);
+    'proxy' => '代理业绩管理',
+    );
 
 ?>

@@ -1,0 +1,34 @@
+.pagination{border-top:1px solid #ddd;border-bottom:1px solid #ddd;width:100%;background:#fff;padding:10px 0 10px 0;text-align: center; font-family:'Microsoft yehei'}     
+
+.pagination a {
+	
+    text-decoration: none;
+	border: 1px solid #ddd;
+	color: #15B;
+	height:25px; 
+	line-height:25px;
+}
+
+.pagination a, .pagination span {
+    display: inline-block;
+	padding: 0.1em 0.6em;
+    margin-right: 5px;
+	/*margin-bottom: 5px;*/
+}
+
+.pagination .current {
+    background: #26B;
+    color: #fff;
+	border: 1px solid #26B;
+	height:25px; 
+	line-height:25px;
+}
+
+.pagination .current.prev, .pagination .current.next{
+	color:#999;
+	border-color:#ddd;
+	background:#fff;
+	height:25px; 
+	line-height:25px;
+}
+

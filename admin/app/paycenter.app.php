@@ -5,7 +5,12 @@
  * Date: 2016/5/3
  * Time: 22:55
  */
+//重要sql语句
+//当日返还是否有重复账户
+//select `user_name` ,count(`user_name`) FROM `ecm_operate_change_log` WHERE  `operate_id` = 50 group by `user_name`  having count(`user_name`)> 1
 
+//重复短信
+//select `user_name` ,count(`user_name`) FROM `ecm_msglog` WHERE  `user_id` = 55 group by `user_name`  having count(`user_name`)> 1
 
 /**
  *    财富中心
@@ -24,6 +29,7 @@ class PaycenterApp extends BackendApp
 
     function __construct()
     {
+        ini_set("max_execution_time", "0");
         $this->PaycenterApp();
     }
 
@@ -39,10 +45,11 @@ class PaycenterApp extends BackendApp
         $this->mobile_msg = new Mobile_msg();
     }
 
+
+
     function index()
     {
         $page = $this->_get_page(20);
-
 
         $epay_members = $this->_epay_mod->find(array(
             'conditions' => "(total_white)>=100000",
@@ -50,7 +57,6 @@ class PaycenterApp extends BackendApp
             'limit' => $page['limit'],
             'order' => '(total_white) DESC',
         ));
-
 
         foreach ($epay_members as $key => $member) {
             $epay_members[$key]['integral_power'] = floor($epay_members[$key]['total_white'] / 100000)-floor($epay_members[$key]['used_white'] / 100000);
@@ -71,17 +77,13 @@ class PaycenterApp extends BackendApp
         $this->assign('members', $epay_members);
         $this->display('paycenter/index.html');
     }
-
-
-
-
-    function todayfanli()
+    /**
+ *获取没有进行奖励操作的账号进行处理
+ */
+    function goonfanli()
     {
-//        echo '2016年06月15日18:07:24';
-//        return;
-
         $operate = $this->_get_last_operate();
-        
+
         //金币汇率
 
         $power_rate = $operate['power_rate'];
@@ -94,26 +96,20 @@ class PaycenterApp extends BackendApp
             'order' => 'total_white DESC',
         ));
 
-        $epay_used_members = $this->_epay_mod->getAll("SELECT *  FROM `ecm_operate_change_log` WHERE `operate_id` =  {$operate_id}");
+        $epay_unused_members = $this->_epay_mod->getALL("SELECT * FROM `ecm_epay` WHERE ( `total_white` >= 100000) and `user_name` NOT IN (select `user_name`  FROM `ecm_operate_change_log` WHERE  `operate_id` = {$operate_id} )");
 
+        $epay_used_count = $this->_epay_mod->getOne("select count(*)  FROM `ecm_operate_change_log` WHERE  `operate_id` = {$operate_id}");
 
-
-        foreach($epay_members as $key=>$epay){
-            foreach($epay_used_members as $key2=>$epay2)
-            {
-                if($epay['user_name']==$epay2['user_name']){
-                    unset($epay_members[$key]);
-                }
-            }
-        }
-
+        echo "账户数量:".sizeof($epay_members)."个<br>";
+        echo "未处理量:".sizeof($epay_unused_members)."个<br>";
+        echo "已处理量:".$epay_used_count."个<br>";
 
         //今日操作日志
-        foreach ($epay_members as $key => $epay) {
+        foreach ($epay_unused_members as $key => $epay) {
             $this->_member_fanli($epay, $power_rate, $operate_id);
         }
 
-        echo '今日奖励工作已全部完成';
+        echo "本次操作结束<br>";
         return;
     }
 
@@ -122,16 +118,19 @@ class PaycenterApp extends BackendApp
      * Created by QQ:710932
      */
     function fanli_ratio(){
+        
+        //todo 检查今天是否已经提交
+        
         $power_rate = $_GET['ratio'];
-
         if (!is_numeric($power_rate) or $power_rate <= 0) {
             $this->show_warning('请输入合法汇率');
             return;
         }
 
 
+        //平台积分赠送权的和
         $power_count = $this->_get_integral_power_count();
-
+        //平台今日赠送额度
         $fanli_money = $power_count*$power_rate;
 
 
@@ -164,6 +163,52 @@ class PaycenterApp extends BackendApp
         return;
     }
 
+    /*********************************************************/
+    function callmsg(){
+        set_time_limit(0);
+
+        $page = empty($_GET['page']) ? 1 : intval($_GET['page']); // 当前页
+
+        //每页处理账户个数
+        $page_per = empty($_GET['pagesize']) ? 20 : intval($_GET['pagesize']); // 每页送数量
+
+        $total_count = empty($_GET['total']) ? 0 : intval($_GET['total']);
+        if (!$total_count){
+            //计算全部数量
+            $total_count = $this->_epay_mod->getOne("select count(*) from ecm_epay WHERE total_white>=100000");
+        }
+
+        //计算页码数
+        $totalpage = ceil($total_count / $page_per);
+
+        $start = ($page -1) * $page_per;
+
+        $epay_members = $this->_epay_mod->find(array(
+            'conditions'    => '1=1 ' . 'and total_white>=100000',
+            'limit'         => "{$start},{$page_per}",  //获取当前页的数据
+            'order'         => "total_white DESC",
+            'count'         => true             //允许统计
+        ));
+
+
+
+        foreach ($epay_members as $k => $member){
+            echo $member['user_name'].'<br>';
+
+            //  $this->_member_fanli($member, 1.2, 888);
+
+        }
+
+        if($page < $totalpage) {
+            $tip = "共{$totalpage}页,已完成{$page}页面,进行中，请稍后！";
+
+            $page = $page + 1;
+            $nurl = "index.php?app=paycenter&act=callmsg&total=$total_count&page=$page&page_per=$page_per";
+            $this->ShowMsg($tip, $nurl, 0, 100);
+        } else {
+            $this->ShowMsg("完成所有短信任务！","javascript:;");
+        }
+    }
 
     //给每个会员分配资金
     function _member_fanli($epay, $power_rate, $operate_id)
@@ -213,20 +258,14 @@ class PaycenterApp extends BackendApp
 
         $operate_change_log_mod = &m('operate_change_log');
         $operate_change_log_mod->add($operate_change_log);
-
-
-        //todo 短信提醒
-//        $msgtext = '今日赠送的红积分数量为：' . $red . '，请登录平台查看！';
-//        $to_mobile = trim($member['phone_mob']);
-//        if ($this->mobile_msg->isMobile($to_mobile)) {
-//            $this->mobile_msg->send_msg(0, 'zengsong', $to_mobile, $msgtext);
-//        }
     }
 
+
     function sendmsg(){
+
         $mod_member = &m('member');
         $mod_operate_log = &m('operate_change_log');
-        
+
         $operate = $this->_get_last_operate();
 
         //金币汇率
@@ -238,6 +277,8 @@ class PaycenterApp extends BackendApp
 
         $msg_members = $mod_msglog->getAll("select * from ecm_msglog WHERE user_id={$operate_id}");
 
+        echo "共需要给".sizeof($members)."个账户发送短信提醒<br>";
+        echo "已发送".sizeof($msg_members)."人<br>";
         foreach ($members as $key=>$user){
             foreach ($msg_members as $k2=>$v2)
             {
@@ -248,8 +289,8 @@ class PaycenterApp extends BackendApp
             }
         }
 
-        echo "全部".sizeof($members);
-        echo "完成".sizeof($msg_members);
+
+        echo "待发送".sizeof($members)."人<br>";
 
         foreach ($members as $k =>$v){
 
@@ -348,6 +389,55 @@ class PaycenterApp extends BackendApp
         $this->assign('operates',$operate_log);
 
         $this->display('paycenter/operate_history.html');
+    }
+
+    function ShowMsg($msg, $gourl, $onlymsg=0, $limittime=0) {
+        $htmlhead  = "<html>\r\n<head>\r\n<title>批量提示信息</title>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n";
+        $htmlhead .= "<base target='_self'/>\r\n<style>div{line-height:160%;}</style></head>\r\n<body leftmargin='0' topmargin='0' bgcolor='#FFFFFF'>\r\n<center>\r\n<script>\r\n";
+        $htmlfoot  = "</script>\r\n</center>\r\n</body>\r\n</html>\r\n";
+
+        $litime = ($limittime==0 ? 1000 : $limittime);
+        $func = '';
+
+        if($gourl=='-1') {
+            if($limittime==0) $litime = 5000;
+            $gourl = "javascript:history.go(-1);";
+        }
+
+        if($gourl=='' || $onlymsg==1) {
+            $msg = "<script>alert(\"".str_replace("\"","“",$msg)."\");</script>";
+        } else {
+            if(preg_match('/close::/',$gourl)) {
+                $tgobj = trim(preg_replace('/close::/', '', $gourl));
+                $gourl = 'javascript:;';
+                $func .= "window.parent.document.getElementById('{$tgobj}').style.display='none';\r\n";
+            }
+
+            $func .= "      var pgo=0;
+      function JumpUrl(){
+        if(pgo==0){ location='$gourl'; pgo=1; }
+      }\r\n";
+            $rmsg = $func;
+            $rmsg .= "document.write(\"<br /><div style='width:450px;padding:0px;border:1px solid #DADADA;'>";
+            $rmsg .= "<div style='padding:6px;font-size:14px; color:#990033; border-bottom:1px solid #DADADA;background:#DBEEBD url({$GLOBALS['cfg_plus_dir']}/img/wbg.gif)';'><b>批量提示信息！</b></div>\");\r\n";
+            $rmsg .= "document.write(\"<div style='height:130px;font-size:10pt;background:#F7FCFF'><br />\");\r\n";
+            $rmsg .= "document.write(\"".str_replace("\"","“",$msg)."\");\r\n";
+            $rmsg .= "document.write(\"";
+
+            if($onlymsg==0) {
+                if( $gourl != 'javascript:;' && $gourl != '') {
+                    $rmsg .= "<br /><a href='{$gourl}'>如果你的浏览器没反应，请点击这里...</a>";
+                    $rmsg .= "<br/></div>\");\r\n";
+                    $rmsg .= "setTimeout('JumpUrl()',$litime);";
+                } else {
+                    $rmsg .= "<br/></div>\");\r\n";
+                }
+            } else {
+                $rmsg .= "<br/><br/></div>\");\r\n";
+            }
+            $msg  = $htmlhead.$rmsg.$htmlfoot;
+        }
+        echo $msg;
     }
 }
 

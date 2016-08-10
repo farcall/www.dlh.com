@@ -23,5 +23,4 @@ return array(
     'edit_again'=>'再次编辑',
     
 );
-
 ?>

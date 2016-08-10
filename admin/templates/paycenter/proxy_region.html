@@ -15,11 +15,11 @@
                     <table class="table table-bordered">
                         <tr>
                             <th style="width: 80px">店铺ID</th>
+                            <th>推荐代理</th>
                             <th>店铺名称</th>
                             <th>店主名称</th>
                             <th>联系电话</th>
                             <th>开店时间</th>
-                            <th>服务专员</th>
                             <th>销售额</th>
                             <th>操作</th>
                         </tr>
@@ -28,20 +28,25 @@
                         {foreach from=$stores item=store}
                         <tr>
                             <th>{$store.store_id}</th>
+                            <!--{if $store.tuijiandaili}-->
+                            <th>{$store.tuijiandaili}</th>
+                            <!--{else}-->
+                            <th>自由商户</th>
+                            <!--{/if}-->
+
                             <th>{$store.store_name}</th>
                             <th>{$store.owner_name}</th>
                             <th>{$store.tel}</th>
                             <th>{$store.add_time|date:complete}</th>
-                            <th>{$store.fuwuzhuanyuan_name}</th>
-                            <th>{$store.amount}</th>
-                            <th><a href="admin/index.php?app=proxy&act=store&id={$store.store_id}">订单明细</a></th>
+                            <th>{$store.amount|default:0}</th>
+                            <th><a href="admin/index.php?app=proxy&act=store&id={$store.store_id}&add_time_from={$smarty.get.add_time_from}&add_time_to={$smarty.get.add_time_to}">订单明细</a></th>
                         </tr>
                         {/foreach}
 
 
                     </table>
                 </div>
-
+				<div style="padding:10px;"><a style="display:inline-block; color:#fff; background:#f60; padding:0 5px;"  href="admin/index.php?app=proxy&act=export_region&id={$smarty.get.id}&add_time_from={$smarty.get.add_time_from}&add_time_to={$smarty.get.add_time_to}">导出EXCEL</a></div>
             </div>
         </div>
     </div>

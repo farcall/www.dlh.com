@@ -27,7 +27,6 @@ $alipay_config['key'] = $settings['epay_alipay_key'];      //支付宝密钥
  * 可放入HTML等美化页面的代码、商户业务逻辑程序代码
  * 该页面可以使用PHP开发工具调试，也可以使用写文本函数logResult，该函数已被默认关闭，见alipay_notify_class.php中的函数verifyReturn
  */
-
 require_once("alipay.config.php");
 require_once("lib/alipay_notify.class.php");
 ?>
@@ -39,6 +38,9 @@ require_once("lib/alipay_notify.class.php");
 //计算得出通知验证结果
         $alipayNotify = new AlipayNotify($alipay_config);
         $verify_result = $alipayNotify->verifyReturn();
+         //logResult('return_url.php\r\n');
+         //logResult($verify_result);
+
         if ($verify_result) {//验证成功
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             //请在这里加上商户的业务逻辑程序代码

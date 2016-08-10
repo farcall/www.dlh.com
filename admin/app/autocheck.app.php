@@ -141,7 +141,7 @@ class AutocheckApp extends BackendApp
         //其他账户转入
         echo "转入资金:".$this->mod_epaylog->getOne("select sum(money) from ecm_epaylog where user_name='{$user_name}' and complete=1 AND type=40")."<br>";
         //系统奖励
-        echo "系统奖励:".$this->mod_epaylog->getOne("select sum(used_white) from ecm_epay WHERE user_name='{$user_name}'")/100*0.95.'<br>';
+        echo "系统奖励:".$this->mod_epaylog->getOne("select sum(used_white) from ecm_epay WHERE user_name='{$user_name}'")/100 .'<br>';
         echo "--------资金收入-----<br>";
         //资金转出
         echo "转出资金:".$this->mod_epaylog->getOne("select sum(money) from ecm_epaylog where user_name='{$user_name}' and complete=1 AND type=50")."<br>";
@@ -150,6 +150,8 @@ class AutocheckApp extends BackendApp
         //未体现
         echo "账户余额:".$this->mod_epay->getOne("select money from ecm_epay WHERE user_name='{$user_name}'").'<br>';
         echo "冻结资金:".$this->mod_epay->getOne("select money_dj from ecm_epay WHERE user_name='{$user_name}'").'<br>';
+        //缴纳税费
+        echo "缴纳税费".$this->mod_epay->getOne("select money_tax from ecm_epay WHERE user_name='{$user_name}'").'<br>';
         //做单
         echo "做单资金:". $this->mod_order->getOne("select sum(order_amount) from ecm_order WHERE status=40 and seller_name = '{$user_name}'")/10;
     }

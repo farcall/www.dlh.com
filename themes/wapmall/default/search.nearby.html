@@ -1,0 +1,165 @@
+{include file=header.html}
+<link type="text/css" href="{lib file=mobile/jquery.plugins/jquery.pagination/pagination.css}" rel="stylesheet" />
+<script src="{lib file=mobile/jquery.plugins/jquery.pagination/jquery.pagination.js}"></script> 
+<script type="text/javascript">
+// 数组排序
+function getSortFun(sortBy, order) {
+    var ordAlpah = (order == 'desc') ? '<' : '>';
+    var sortFun = new Function('a', 'b', 'return a.' + sortBy + ordAlpah + 'b.' + sortBy + '? 1:-1');
+    return sortFun;
+}
+function bindData(arrList)
+{
+	layer.closeAll();
+	if(arrList.length < 1) {
+		$('.J_StoreList').html('<div class="notice-word pt10"><p>附近没有你要寻找的商家</p></div>');
+		return false;
+	}	
+	
+	// 数组排序
+	arrList.sort(getSortFun('distance', 'asc'));
+	// 项目总数
+	var item_count = arrList.length;
+	// 每页显示数
+	var pageper   = 2;
+	// 总页数
+	var page_count = Math.ceil(item_count/pageper);
+					
+	$('.J_StoreList').parent().append('<div id="Pagination" class="pagination"><!-- 这里显示分页 --></div>');
+	// jquery分页
+	$("#Pagination").pagination(item_count, {
+		num_edge_entries: 1, //边缘页数
+		num_display_entries: 2, //主体页数
+		items_per_page:pageper, //每页显示项
+		prev_text: '上一页',
+		next_text: '下一页', 
+		callback: function(page_index, jq){
+			page_index++;// 页数从1开始
+			var item_start = (page_index - 1) * pageper + 1;
+			var item_end = item_start + pageper - 1;
+			if(item_end > item_count) item_end = item_count;
+			
+			var html = '';
+			for(var i = item_start; i <= item_end; i++){
+				
+				var v = arrList[i-1];
+				var credit_image = '';
+				if(v.credit_value > 0) {
+					credit_image = '<img align="absMiddle" src="'+v.credit_image+'" />';
+				}
+				
+				html += '<div class="each clearfix">'+
+                			'<div class="pic float-left"><a href="{$real_site_url}/index.php?app=store&id='+v.store_id+'"><img src="'+v.store_logo+'" width="70" height="70" /></a></div>'+
+                    		'<div class="info float-left">'+
+                    			'<p>'+v.store_name+'&nbsp;&nbsp;'+credit_image+'</p>'+
+								'<p><span class="icon-position">'+v.format_distance+'</span> <a class="f60" href="{$real_site_url}/index.php?app=travel&to='+v.latlng+'">前往该店</a></p>'+
+								'<p class="fs12 f66">地址：'+v.address+'</p>'+
+								'<p class="fs12 f66">主营：'+v.business_scope+'</p>'+
+                    		'</div>'+
+                		'</div>';
+				$('.J_StoreList').html(html);
+			}
+			return false;
+		}
+						
+	});
+}
+
+function getStoreList(center, bound)
+{
+	$.ajaxSettings.async = false;
+	
+	// 获取店铺列表
+	$.getJSON(REAL_SITE_URL + "/index.php?app=search&act=getstorelist", function(data) {
+		if(data.done) {
+			var arrList = [];
+			data = data.retval;
+			$.each(data, function(k, v) {
+				// 计算距离，并把距离大于bound的记录去掉
+				var start = center, end = new BMap.Point(v.lng, v.lat);
+				var distance = BMapLib.GeoUtils.getDistance(start, end).toFixed(2);
+				v['distance'] = Number(distance);
+				if(distance <= bound) {
+					if(distance >= 1000) {
+						dis = (distance/1000).toFixed(2) + '公里';
+					} else dis = distance + '米';
+					v['format_distance'] = dis;
+					
+					/*		
+					var geoc = new BMap.Geocoder();    
+					geoc.getLocation(end, function(rs){
+						var addComp = rs.addressComponents;
+						var address = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+						v['address'] = address;
+						
+					});					
+					*/
+					arrList.push(v);
+				}
+			});
+			
+			bindData(arrList);	
+		}
+		else
+		{
+			$('.J_StoreList').html('<div class="notice-word pt10"><p>附近没有你要寻找的商家</p></div>');
+		}
+	});
+}
+
+$(function(){
+
+	layer.open({type: 2,content: '请稍候，正在加载中...', shadeClose: false, time:30, end: function(){
+			$('.J_StoreList').html('<div class="notice-word pt10"><p>附近没有你要寻找的商家</p></div>');
+		}
+	});
+	
+	<!--{if $smarty.get.bound}-->
+	var bound = {$smarty.get.bound};
+	<!--{else}-->
+	var bound = 5000;
+	<!--{/if}-->
+	
+	//if($.getCookie('point')) {
+		//getStoreList($.getCookie('point'), bound);
+	if($.getCookie('pointLng') && $.getCookie('pointLat')){
+		//alert($.getCookie('pointLng')+','+$.getCookie('pointLat'));
+		getStoreList(new BMap.Point($.getCookie('pointLng'), $.getCookie('pointLat')), bound);
+		
+	}
+	else
+	{
+		var geolocation = new BMap.Geolocation();
+		geolocation.getCurrentPosition(function(r){
+			if(this.getStatus() == BMAP_STATUS_SUCCESS){
+				//alert(r.point.lng+','+r.point.lat);
+				$.setCookie('pointLng', r.point.lng);
+				$.setCookie('pointLat', r.point.lat);
+				//$.setCookie('point', new BMap.Point(r.point.lng, r.point.lat));
+				getStoreList(new BMap.Point(r.point.lng, r.point.lat), bound);
+			}
+			else {
+				layer.closeAll();
+				layer.open({content: this.getStatus(), time: 3});
+			}        
+		},{enableHighAccuracy: true})
+	}
+});
+</script>
+<style>
+body{ background:#FFF;}
+</style>
+<div id="main" class="w-full">
+	<div id="page-search-nearby" class="mb10">
+		<ul class="clearfix bound-type">
+			<li class="float-left {if !$smarty.get.bound || $smarty.get.bound eq 2000}current{/if}"><a href="{url app=search&act=nearby&bound=2000}"><i></i>2公里内</a></li>
+			<li class="float-left {if $smarty.get.bound eq 5000}current{/if}"><a href="{url app=search&act=nearby&bound=5000}"><i></i>5公里内</a></li>
+			<li class="float-left {if $smarty.get.bound eq 10000}current{/if}"><a href="{url app=search&act=nearby&bound=10000}"><i></i>10公里内</a></li>
+			<li class="float-left {if $smarty.get.bound eq 20000}current{/if}"><a href="{url app=search&act=nearby&bound=20000}"><i></i>20公里内</a></li>
+		</ul>
+		<div class="shops-list clearfix">
+			<div class="list-fields ml10 mr10 mb10 J_StoreList"></div>
+		</div>
+	</div>
+</div>
+{include file=footer.html}

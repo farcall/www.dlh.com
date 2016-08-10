@@ -364,6 +364,13 @@ class UserApp extends BackendApp {
             return;
         }
 
+        $epay_mod = &m('epay');
+        if (!$epay_mod->drop('user_id = '.$id)){
+            $this->show_warning('删除资金账户失败,记录账号后,立即联系超级管理员');
+
+            return;
+        }
+
         $this->show_message('drop_ok');
     }
 

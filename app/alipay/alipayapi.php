@@ -25,11 +25,6 @@ require_once("alipay.config.php");
 require_once("lib/alipay_submit.class.php");
 
 
-
-
-
-
-
 /**************************请求参数**************************/
 $site_url = $_POST['site_url'];
 

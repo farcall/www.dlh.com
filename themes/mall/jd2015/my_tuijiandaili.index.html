@@ -1,0 +1,44 @@
+{include file=member.header.html}
+<script language = "JavaScript">
+    /*修改密码表单*/
+    function set_tuijiandaili()
+    {
+
+        return true;
+    }
+</script>
+<div class="content">
+    <div class="totline"></div><div class="botline"></div>
+    {include file=member.menu.html}
+    <div id="right">
+        {include file=member.submenu.html}
+        <div class="wrap">
+            <div class="public table epay">
+
+                <!--{if $tuijiandaili and ($tuijiandaili neq '自由商户')}-->
+                <span>推荐代理是:{$tuijiandaili}</span>
+                <!--{else if}-->
+                <div class="form">
+                    <form name="set_tuijiandaili" onSubmit="return set_tuijiandaili()" method="post" action="index.php?app=my_tuijiandaili&act=index">
+                        <dl class="clearfix">
+                            <dt>推荐代理商账号：</dt>
+                            <dd><input name="tuijiandaili" type="text" id="tuijiandaili" value="{$tuijiandaili}"/><label class="field_notice">推荐您开通店铺的代理商的登录账号</label></dd>
+                        </dl>
+                        <dl class="clearfix">
+                            <dt>&nbsp;</dt>
+                            <dd class="submit">
+                                <span class="epay_btn">
+                                    <input type="submit" value="提交" />
+                                </span>
+                            </dd>
+                        </dl>
+                    </form>
+                </div>
+                <!--{/if}-->
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+{include file=footer.html}

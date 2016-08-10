@@ -19,6 +19,8 @@
         <li><a class="btn1" href="index.php?app=epay&act=money_add">{$lang.add_money}</a></li>
         <li><a class="btn1" href="index.php?app=epay&act=money_log">{$lang.moneylog}</a></li>
         <li><span>{$lang.txlog}</span></li>
+        <li><a class="btn1" href="index.php?app=epay&act=txsb">{$lang.txsb}</a></li>
+
         <li><a class="btn1" href="index.php?app=epay&act=setting">{$lang.setting}</a></li>
         <li><a class="btn1" href="index.php?app=epay&act=statistics">{$lang.statistics}</a></li>
     </ul>
@@ -106,6 +108,7 @@
             <input class="formbtn batchButton" type="button" value="审核" name="id" uri="index.php?app=epay&act=txs_ok" presubmit="confirm('确定审核?');" />
 
             <a class="formbtn J_ExportDraw" style="display:inline-block; text-align:center; text-decoration:none; line-height:20px;" href="javascript:;">批量导出</a>
+            <span>提现成功:{$all_log.succ_count}笔,合计:{$all_log.succ}---提现失败:{$all_log.fail_count}笔,合计{$all_log.fail}---未处理提现:{$all_log.ing_count}笔,共计:{$all_log.ing}</span>
         </div>
         <div class="pageLinks">{include file=page.bottom.html}</div>
         <div class="clear"></div>

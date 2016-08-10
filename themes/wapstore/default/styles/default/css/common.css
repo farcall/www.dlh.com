@@ -198,8 +198,8 @@ border-bottom: 1px solid #c8c7cc;}
 .store_info .info .store-block {display: block;position: relative;margin-right:10px;padding-bottom:10px;margin-left:10px;}
 .store_info .info .store-block .img {display: block;width:90px;height:50px;border: 1px solid #e0e0e0;float:left;}
 .store_info .info .store-block .store-text {height:20px;margin-left:10px;float:left;}
-.store_info .info .store-block .store-text .store-name {height:25px;font-size:14px;color: #fff;overflow: hidden;font-weight: bold;}
-.store_info .info .store-block .store-text .store-info {height:25px;font-size:12px;color: #e0e0e0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.store_info .info .store-block .store-text .store-name {height:18px;font-size:14px;color: #fff;overflow: hidden;font-weight: bold;}
+.store_info .info .store-block .store-text .store-info {height:18px;font-size:12px;color: #e0e0e0;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
 
 #nav{position: relative;height:48px;background-color: #000;}
 #nav li{line-height: 48px;color: #fff;width: 25%;float:left;text-align: center;font-size:15px;}

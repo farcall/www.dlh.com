@@ -262,6 +262,11 @@ class EpayApp extends BackendApp {
                 'type' => 'numeric',
             ),
         ));
+
+        if($_GET['type'] == 10) {
+            $conditions = $conditions.' and type=10 and states=40';
+        }
+
         $page = $this->_get_page(10);
         $index = $this->mod_epaylog->find(array(
             'conditions' => 'complete=1' . $conditions,
@@ -286,6 +291,7 @@ class EpayApp extends BackendApp {
             EPAY_TUIJIAN_SELLER=> Lang::get('epay_tuijian_seller'), // 用户推荐注册,注册者成为店主，卖出产品推荐人会获得佣金，店主会损失佣金。
             EPAY_TRADE_CHARGES=> Lang::get('epay_trade_charges'), // 扣除卖家交易佣金
         ));
+        
         $this->assign('page_info', $page);
         $this->assign('index', $index);
         $this->import_resource(array('script' => 'inline_edit.js,jquery.ui/jquery.ui.js,jquery.ui/i18n/' . i18n_code() . '.js',
@@ -341,13 +347,13 @@ class EpayApp extends BackendApp {
             $index = $this->mod_epaylog->find(array(
                 'conditions' => 'type='.EPAY_TX . $conditions,
                 'limit' => $page['limit'],
-                'order' => "id asc",
+                'order' => "add_time asc",
                 'count' => true));
         }else{
             $index = $this->mod_epaylog->find(array(
                 'conditions' => 'type='.EPAY_TX . $conditions,
                 'limit' => $page['limit'],
-                'order' => "id desc",
+                'order' => "add_time desc",
                 'count' => true));
         }
 
@@ -363,6 +369,22 @@ class EpayApp extends BackendApp {
         $this->assign('index', $index);
         $this->import_resource(array('script' => 'inline_edit.js,jquery.ui/jquery.ui.js,jquery.ui/i18n/' . i18n_code() . '.js',
                                       'style'=> 'jquery.ui/themes/ui-lightness/jquery.ui.css'));
+
+        //金额
+        $all_log = array(
+            'succ' => $this->mod_epaylog->getOne("select sum(money) from ecm_epaylog WHERE type =".EPAY_TX.$conditions." and states = 71 and complete=1"),
+            'succ_count' => $this->mod_epaylog->getOne("select count(money) from ecm_epaylog WHERE type =".EPAY_TX.$conditions." and states = 71 and complete=1"),
+
+            'fail' => $this->mod_epaylog->getOne("select sum(money) from ecm_epaylog WHERE type =".EPAY_TX.$conditions." and states = 72 and complete=1"),
+            'fail_count' => $this->mod_epaylog->getOne("select count(money) from ecm_epaylog WHERE type =".EPAY_TX.$conditions." and states = 72 and complete=1"),
+
+            'ing' => $this->mod_epaylog->getOne("select sum(money) from ecm_epaylog WHERE type =".EPAY_TX.$conditions." and complete=0"),
+            'ing_count' => $this->mod_epaylog->getOne("select count(money) from ecm_epaylog WHERE type =".EPAY_TX.$conditions." and complete=0"),
+
+
+        );
+
+        $this->assign('all_log',$all_log);
         $this->display('epay.txlog.html');
     }
 
@@ -415,6 +437,24 @@ class EpayApp extends BackendApp {
         return true;
 
     }
+
+    //提现失败日志查看
+    function txsb(){
+        $page = $this->_get_page(10);
+        $index = $this->mod_epaylog->find(array(
+            'conditions' => 'type=0 and states = 1 and complete=1',
+            'limit' => $page['limit'],
+            'order' => "id desc",
+            'count' => true));
+        $page['item_count'] = $this->mod_epaylog->getCount();
+        $this->_format_page($page);
+        
+        $this->assign('page_info', $page);
+        $this->assign('index', $index);
+        $this->import_resource(array('script' => 'inline_edit.js,jquery.ui/jquery.ui.js,jquery.ui/i18n/' . i18n_code() . '.js',
+            'style'=> 'jquery.ui/themes/ui-lightness/jquery.ui.css'));
+        $this->display('epay.txsb.html');
+    }
     //审核操作
     function tx_view() {
         $log_id = $_GET['log_id'];
@@ -461,7 +501,6 @@ class EpayApp extends BackendApp {
                 $money_row = $this->mod_epay->getrow("select money_dj,money from " . DB_PREFIX . "epay where user_id='$user_id'");
                 $row_money_dj = $money_row['money_dj'];
                 $row_money = $money_row['money'];
-
 
                 $new_money_dj = $row_money_dj - $tx_money;
                 $new_money = $row_money + $tx_money;

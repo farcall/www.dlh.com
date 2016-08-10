@@ -168,6 +168,12 @@ function drop_image(file_id)
                                 </td>
                             </tr>
                             <tr>
+                                <th>{$lang.region}:</th>
+                                <td>
+                                    <p class="td_block"> <span>{$store.region_name|escape}</span> </span></p>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>{$lang.address}:</th>
                                 <td>
                                     <p class="td_block"><input type="text" name="address" class="text width_normal" id="address" value="{$store.address|escape}" /><span class="field_notice">{$lang.address_info}</span></p>

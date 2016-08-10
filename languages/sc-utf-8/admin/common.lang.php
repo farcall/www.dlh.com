@@ -238,5 +238,11 @@ return array(
     'system_customer' => '平台客服',
     'admin_agree_refund_content_change' => '%s已处理本次退款，处理结果为：商品退款金额为：%s 元，退运费金额: %s 元。<br> %s',
     'admin_agree_refund_order_status_change' => '平台客服处理退款，该订单中的所有商品都处于处理完毕状态，故订单状态自动转为已完成',
+    
+    'offline_order' => '线下订单管理',
+    'adminlogin' => '后台登录',
+    'welcome' => '欢迎界面',
+    'aboutus' => '关于我们',
+    'store_wait_verify' => '店铺审核',
 );
 ?>

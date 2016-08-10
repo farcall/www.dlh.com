@@ -120,6 +120,12 @@ return array(
     'cache_server' => '缓存服务',
     'cache_server_note' => '缓存服务类型，如果选择Memcached，则您的系统需安装配置好Memcached服务，且您的PHP环境需要支持Memcahce扩展',
     'cache_memcached' => 'Memcached服务(for cache)',
-    'cache_memcached_note' => '存储缓存数据的Memcached服务器(如127.0.0.1:11212)'
+    'cache_memcached_note' => '存储缓存数据的Memcached服务器(如127.0.0.1:11212)',
+
+    'baidukey' => '百度地图KEY',
+	'baidukey-server' => '服务端',
+	'baidukey-browser' => '浏览器端',
+	'baidukey_note' => '需要填写KEY才能使用百度地图，申请地址：http://lbsyun.baidu.com/apiconsole/key/create',
+
 );
 ?>
