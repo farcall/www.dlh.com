@@ -30,6 +30,8 @@ class PaycenterApp extends BackendApp
     function __construct()
     {
         ini_set("max_execution_time", "0");
+        set_time_limit(0);
+
         $this->PaycenterApp();
     }
 
@@ -77,10 +79,11 @@ class PaycenterApp extends BackendApp
         $this->assign('members', $epay_members);
         $this->display('paycenter/index.html');
     }
-    /**
- *获取没有进行奖励操作的账号进行处理
- */
-    function goonfanli()
+
+
+
+
+    function todayfanli()
     {
         $operate = $this->_get_last_operate();
 
@@ -122,15 +125,15 @@ class PaycenterApp extends BackendApp
         //todo 检查今天是否已经提交
         
         $power_rate = $_GET['ratio'];
+
         if (!is_numeric($power_rate) or $power_rate <= 0) {
             $this->show_warning('请输入合法汇率');
             return;
         }
 
 
-        //平台积分赠送权的和
         $power_count = $this->_get_integral_power_count();
-        //平台今日赠送额度
+
         $fanli_money = $power_count*$power_rate;
 
 
@@ -163,52 +166,6 @@ class PaycenterApp extends BackendApp
         return;
     }
 
-    /*********************************************************/
-    function callmsg(){
-        set_time_limit(0);
-
-        $page = empty($_GET['page']) ? 1 : intval($_GET['page']); // 当前页
-
-        //每页处理账户个数
-        $page_per = empty($_GET['pagesize']) ? 20 : intval($_GET['pagesize']); // 每页送数量
-
-        $total_count = empty($_GET['total']) ? 0 : intval($_GET['total']);
-        if (!$total_count){
-            //计算全部数量
-            $total_count = $this->_epay_mod->getOne("select count(*) from ecm_epay WHERE total_white>=100000");
-        }
-
-        //计算页码数
-        $totalpage = ceil($total_count / $page_per);
-
-        $start = ($page -1) * $page_per;
-
-        $epay_members = $this->_epay_mod->find(array(
-            'conditions'    => '1=1 ' . 'and total_white>=100000',
-            'limit'         => "{$start},{$page_per}",  //获取当前页的数据
-            'order'         => "total_white DESC",
-            'count'         => true             //允许统计
-        ));
-
-
-
-        foreach ($epay_members as $k => $member){
-            echo $member['user_name'].'<br>';
-
-            //  $this->_member_fanli($member, 1.2, 888);
-
-        }
-
-        if($page < $totalpage) {
-            $tip = "共{$totalpage}页,已完成{$page}页面,进行中，请稍后！";
-
-            $page = $page + 1;
-            $nurl = "index.php?app=paycenter&act=callmsg&total=$total_count&page=$page&page_per=$page_per";
-            $this->ShowMsg($tip, $nurl, 0, 100);
-        } else {
-            $this->ShowMsg("完成所有短信任务！","javascript:;");
-        }
-    }
 
     //给每个会员分配资金
     function _member_fanli($epay, $power_rate, $operate_id)
@@ -258,11 +215,17 @@ class PaycenterApp extends BackendApp
 
         $operate_change_log_mod = &m('operate_change_log');
         $operate_change_log_mod->add($operate_change_log);
+
+
+        //todo 短信提醒
+//        $msgtext = '今日赠送的红积分数量为：' . $red . '，请登录平台查看！';
+//        $to_mobile = trim($member['phone_mob']);
+//        if ($this->mobile_msg->isMobile($to_mobile)) {
+//            $this->mobile_msg->send_msg(0, 'zengsong', $to_mobile, $msgtext);
+//        }
     }
 
-
     function sendmsg(){
-
         $mod_member = &m('member');
         $mod_operate_log = &m('operate_change_log');
 
@@ -275,24 +238,17 @@ class PaycenterApp extends BackendApp
 
         $mod_msglog = &m("msglog");
 
-        $msg_members = $mod_msglog->getAll("select * from ecm_msglog WHERE user_id={$operate_id}");
+        $msg_used_members = $mod_msglog->getAll("select * from ecm_msglog WHERE user_id={$operate_id}");
 
         echo "共需要给".sizeof($members)."个账户发送短信提醒<br>";
-        echo "已发送".sizeof($msg_members)."人<br>";
-        foreach ($members as $key=>$user){
-            foreach ($msg_members as $k2=>$v2)
-            {
-                if ($user['user_name'] == $v2['user_name'])
-                {
-                    unset($members[$key]);
-                }
-            }
-        }
+        echo "已发送".sizeof($msg_used_members)."人<br>";
+
+        $msg_unused_members = $mod_msglog->getAll("SELECT * FROM `ecm_operate_change_log` WHERE `operate_id` = {$operate_id} and `user_name` NOT IN (select  `user_name`  FROM `ecm_msglog` WHERE  `user_id` = {$operate_id})");
+
+        echo "待发送".sizeof($msg_unused_members)."人<br>";
 
 
-        echo "待发送".sizeof($members)."人<br>";
-
-        foreach ($members as $k =>$v){
+        foreach ($msg_unused_members as $k =>$v){
 
             $red = floor($v['change_integral_white']*100)/10000;
 
@@ -390,6 +346,57 @@ class PaycenterApp extends BackendApp
 
         $this->display('paycenter/operate_history.html');
     }
+
+
+    /*********************************************************/
+    function callmsg(){
+        set_time_limit(0);
+
+        $page = empty($_GET['page']) ? 1 : intval($_GET['page']); // 当前页
+
+        //每页处理账户个数
+        $page_per = empty($_GET['pagesize']) ? 20 : intval($_GET['pagesize']); // 每页送数量
+
+        $total_count = empty($_GET['total']) ? 0 : intval($_GET['total']);
+        if (!$total_count){
+            //计算全部数量
+            $total_count = $this->_epay_mod->getOne("select count(*) from ecm_epay WHERE total_white>=100000");
+        }
+
+        //计算页码数
+        $totalpage = ceil($total_count / $page_per);
+
+        $start = ($page -1) * $page_per;
+
+        $epay_members = $this->_epay_mod->find(array(
+            'conditions'    => '1=1 ' . 'and total_white>=100000',
+            'limit'         => "{$start},{$page_per}",  //获取当前页的数据
+            'order'         => "total_white DESC",
+            'count'         => true             //允许统计
+        ));
+
+
+
+        foreach ($epay_members as $k => $member){
+            echo $member['user_name'].'<br>';
+
+          //  $this->_member_fanli($member, 1.2, 888);
+
+        }
+
+        if($page < $totalpage) {
+            $tip = "共{$totalpage}页,已完成{$page}页面,进行中，请稍后！";
+
+            $page = $page + 1;
+            $nurl = "index.php?app=paycenter&act=callmsg&total=$total_count&page=$page&page_per=$page_per";
+            $this->ShowMsg($tip, $nurl, 0, 100);
+        } else {
+            $this->ShowMsg("完成所有短信任务！","javascript:;");
+        }
+    }
+
+
+
 
     function ShowMsg($msg, $gourl, $onlymsg=0, $limittime=0) {
         $htmlhead  = "<html>\r\n<head>\r\n<title>批量提示信息</title>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n";
