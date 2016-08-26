@@ -1,12 +1,12 @@
 <?php echo $this->fetch('header.html'); ?>
 <div id="rightTop">
 <p>
-    您好<b><?php echo $this->_var['admin']['user_name']; ?></b>，欢迎使用 临沂盒子信息科技有限公司。
+    您好<b><?php echo $this->_var['admin']['user_name']; ?></b>，欢迎使用 得来惠系统。
     您上次登录的时间是 <?php echo local_date("Y-m-d H:i:s",$this->_var['admin']['last_login']); ?> ，IP 是 <?php echo $this->_var['admin']['last_ip']; ?>
 </p>
 </div>
 <dl id="rightCon">
-<dt>临沂盒子信息科技有限公司 动态</dt>
+<dt>得来惠系统 动态</dt>
 <dd>
     <ul id="news">
     </ul>

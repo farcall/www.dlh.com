@@ -276,7 +276,6 @@ if ($this->_foreach['fe_gcategory']['total'] > 0):
                                 <div class="float-left btn-type">
                                     <a href="<?php echo url('app=search'); ?>" class="current">搜索商品</a>
                                     <a href="<?php echo url('app=search&act=store'); ?>" style="border-right:0px;">搜索店铺</a>
-                                    <a href="<?php echo url('app=search&act=groupbuy'); ?>">搜索团购</a>
                                 </div>
                                 <?php if (! $this->_var['goods_list_order']): ?><?php echo $this->fetch('page.top.html'); ?><?php endif; ?>
                             </div>	
@@ -336,11 +335,10 @@ if ($this->_foreach['fe_image']['total'] > 0):
                                     <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>
                                 </dd>
                                 <dd class="desc"><a href="<?php echo url('app=goods&id=' . $this->_var['goods']['goods_id']. ''); ?>" target="_blank"><?php echo sub_str(htmlspecialchars($this->_var['goods']['goods_name']),48); ?></a></dd>
-                                <dd class="price twofloat clearfix"><em><?php echo price_format($this->_var['goods']['price']); ?></em><span>最新成交<b><?php echo $this->_var['goods']['sales']; ?></b>笔</span></dd>
+                                <dd class="price twofloat clearfix"><em><?php echo price_format($this->_var['goods']['price']); ?></em>
+                                </dd>
                                 <dd><a href="<?php echo url('app=store&id=' . $this->_var['goods']['store_id']. ''); ?>" target="_blank"><?php echo $this->_var['goods']['store_name']; ?></a></dd>
                                 <dd class="status clearfix">
-                                    <span>成交<em><?php echo htmlspecialchars($this->_var['goods']['sales']); ?>笔</em></span>
-                                    <span>评价<a href="<?php echo url('app=goods&act=comments&id=' . $this->_var['goods']['goods_id']. ''); ?>"><?php echo htmlspecialchars($this->_var['goods']['comments']); ?>笔</a></span>
                                     <?php if ($this->_var['goods']['im_ww']): ?>
                                     <a title="与<?php echo $this->_var['goods']['store_name']; ?>店主交谈" href="http://amos.im.alisoft.com/msg.aw?v=2&uid=<?php echo urlencode($this->_var['goods']['im_ww']); ?>&site=cntaobao&s=2&charset=<?php echo $this->_var['charset']; ?>" target="_blank"><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid=<?php echo urlencode($this->_var['goods']['im_ww']); ?>&site=cntaobao&s=2&charset=<?php echo $this->_var['charset']; ?>" alt="与<?php echo $this->_var['goods']['store_name']; ?>店主交谈" align="absmiddle"/></a>
                                     <?php endif; ?>
@@ -368,7 +366,8 @@ if ($this->_foreach['fe_goods']['total'] > 0):
                 <dl class="mb10">
                     <dt><a href="<?php echo url('app=goods&id=' . $this->_var['goods']['goods_id']. ''); ?>" target="_blank"><img width="170" height="170"  src="<?php echo $this->_var['goods']['default_image']; ?>" /></a></dt>
                     <dd class="desc"><a href="<?php echo url('app=goods&id=' . $this->_var['goods']['goods_id']. ''); ?>" target="_blank"><?php echo sub_str(htmlspecialchars($this->_var['goods']['goods_name']),48); ?></a></dd>
-                    <dd class="price twofloat clearfix"><em><?php echo $this->_var['goods']['price']; ?></em><span>最新成交<?php echo $this->_var['goods']['sales']; ?>笔</span></dd>
+                    <dd class="price twofloat clearfix"><em><?php echo $this->_var['goods']['price']; ?></em>
+                    </dd>
                     <dd class="service"></dd>
                 </dl>
                 <?php endforeach; endif; unset($_from); ?><?php $this->pop_vars();; ?>

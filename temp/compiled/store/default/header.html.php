@@ -33,11 +33,11 @@ $(function(){
 <body>
 
 <div id="head">
-    <h1 title="<?php echo htmlspecialchars($this->_var['site_title']); ?>"><a href="index.php"><img src="<?php echo $this->_var['site_logo']; ?>" alt="临沂盒子信息科技有限公司" /></a></h1>
+    <h1 title="<?php echo htmlspecialchars($this->_var['site_title']); ?>"><a href="index.php"><img src="<?php echo $this->_var['site_logo']; ?>" alt=""/></a></h1>
 
     <div id="subnav">
         <p>
-        喵，欢迎来天猫,<?php echo htmlspecialchars($this->_var['visitor']['user_name']); ?>
+        喵，欢迎来得来惠,<?php echo htmlspecialchars($this->_var['visitor']['user_name']); ?>
         <?php if (! $this->_var['visitor']['user_id']): ?>
         [<a href="<?php echo url('app=member&act=login&ret_url=' . $this->_var['ret_url']. ''); ?>">请登录</a>]
         [<a href="<?php echo url('app=member&act=register&ret_url=' . $this->_var['ret_url']. ''); ?>">注册</a>]

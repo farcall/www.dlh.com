@@ -1,13 +1,13 @@
 <?php
 /**
  *  @Created By  PhpCacheServer
- *  @Time:2016-06-25 10:24:08
+ *  @Time:2016-08-10 03:34:54
  */
 
 if(filemtime(__FILE__) + 86400 < time())return false;
 
 return array (
-  'model_id' => 721546579,
+  'model_id' => 560951704,
   'model_name' => '得来惠快报',
   'articles' => 
   array (
