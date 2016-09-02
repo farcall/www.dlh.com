@@ -27,10 +27,13 @@
         <form name="online_form" action="index.php?app=epay&act=czfs" method="post" ectype="online">
             <ul class="epay_czlist">
                 <li>
-                    <input type="text" class="text" name="cz_money" value="0.01" style="width:100%;">
+                    <input type="text" class="text" name="cz_money" value="100.00" style="width:100%;">
                 </li>
                 <li>
                     <select class="querySelect" name="czfs">
+                        <!--{if $epay_jytrn_enabled}-->
+                        <option value="jytrnpay">金运通实名支付</option>
+                        <!--{/if}-->
                         <!--{if $epay_wxjs_enabled}-->
                         <option value="wxjs">微信充值</option>
                         <!--{/if}-->

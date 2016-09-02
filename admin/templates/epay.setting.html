@@ -64,6 +64,16 @@
                     <input id="epay_jyt_enabled1" type="radio" name="epay_jyt_enabled" {if $setting.epay_jyt_enabled eq 1}checked{/if} value="1" /> <label for="epay_jyt_enabled1">{$lang.open}</label>
                 </td>
             </tr>
+
+            <tr>
+                <th class="paddingT15">{$lang.epay_jytrn_enabled}:</th>
+                <td class="paddingT15 wordSpacing5">
+                    <input id="epay_jytrn_enabled0" type="radio" name="epay_jytrn_enabled" {if $setting.epay_jytrn_enabled eq 0}checked{/if} value="0" /> <label for="epay_jytrn_enabled0">{$lang.close}</label>
+                    <input id="epay_jytrn_enabled1" type="radio" name="epay_jytrn_enabled" {if $setting.epay_jytrn_enabled eq 1}checked{/if} value="1" /> <label for="epay_jytrn_enabled1">{$lang.open}</label>
+                </td>
+            </tr>
+
+
             <tr>
                 <th class="paddingT15">{$lang.epay_alipay_seller_email}:</th>
                 <td class="paddingT15 wordSpacing5">
@@ -97,6 +107,18 @@
                 </td>
             </tr>
 
+            <tr>
+                <th class="paddingT15">金运通实名支付商户号:</th>
+                <td class="paddingT15 wordSpacing5">
+                    <input name="epay_jytrn_merchantId" type="text" value="{$setting.epay_jytrn_merchantId}" size="20">
+                </td>
+            </tr>
+            <tr>
+                <th class="paddingT15">金运通实名支付商户密钥:</th>
+                <td class="paddingT15 wordSpacing5">
+                    <input name="epay_jytrn_key" type="text" value="{$setting.epay_jytrn_key}" size="20">
+                </td>
+            </tr>
 
             <tr>
                 <th class="paddingT15">{$lang.epay_chinabank_mid}:</th>

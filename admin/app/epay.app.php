@@ -266,7 +266,7 @@ class EpayApp extends BackendApp {
         if($_GET['type'] == 10) {
             $conditions = $conditions.' and type=10 and states=40';
         }
-
+        
         $page = $this->_get_page(10);
         $index = $this->mod_epaylog->find(array(
             'conditions' => 'complete=1' . $conditions,
@@ -568,7 +568,12 @@ class EpayApp extends BackendApp {
             $data['epay_wx_mch_id'] = $_POST['epay_wx_mch_id'];
             $data['epay_wx_secret'] = $_POST['epay_wx_secret'];
 
-            
+
+            //金运通实名支付配置
+            $data['epay_jytrn_enabled'] = $_POST['epay_jytrn_enabled'];
+            $data['epay_jytrn_merchantId'] = $_POST['epay_jytrn_merchantId'];
+            $data['epay_jytrn_key'] = $_POST['epay_jytrn_key'];
+
             //线下汇款信息
             $data['epay_offline_info'] = $_POST['epay_offline_info'];
 			

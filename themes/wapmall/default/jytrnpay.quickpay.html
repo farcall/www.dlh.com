@@ -1,0 +1,158 @@
+{include file="header.html"} 
+<script type="text/javascript">
+$(function(){
+	$('.J_GetCode').click(function(){
+		
+		//$('#goto_pay').submit(); return;
+		
+		var tran_code = $('input[name="tran_code"]').val();
+		var bank_code = $('input[name="bank_card_no"]:checked').parent().find('input[name="bank_code"]').val();
+		var bank_card_no = $('input[name="bank_card_no"]').val();
+		var id_card_no = $('input[name="id_card_no"]').val();
+		var name = $('input[name="name"]').val();
+		var mobile = $('input[name="mobile"]').val();
+		//var cust_no = "{$visitor.user_id}";
+		var order_id = "{$order.order_id}";
+		//var money = "{$order.money}";
+		
+		$.ajax({
+             type: "POST",
+             url: "index.php?app=jytrnpay&act=getcode",
+             data: {tran_code:tran_code, bank_card_no:bank_card_no, id_card_no:id_card_no, name:name, mobile:mobile, order_id:order_id},
+             dataType: "json",
+             success: function(data){
+				 $('.J_Status').html(data.remark).css('display', 'inline-block');
+			 }
+		});
+		
+	});
+	
+	$('.J_RelieveCard').click(function(){
+		var bank_card_no = $(this).parent().find('input[name="bank_card_no"]').val();
+		
+		if(confirm('您确定要解除快捷支付绑定吗？')) {
+			$.ajax({
+             type: "POST",
+             url: "index.php?app=jytrnpay&act=relievecard",
+             data: {bank_card_no:bank_card_no},
+             dataType: "json",
+             success: function(data){
+				 alert(data.remark);
+				 window.location.href="index.php?app=jytrnpay&order_id={$order.order_id}&money={$order.money}";
+			 }
+		});
+		}
+	});
+	
+	$('#goto_pay').submit(function(){
+		if($('input[name="verify_code"]').val() == '')
+		{
+			alert('请输入短信验证码');
+			return false;
+		}
+		else $(this).submit();
+	});
+	
+});
+</script>
+<style type="text/css">
+.mall-nav{ display:none}
+.clearfix:after{ content:'\20'; display:block; height:0; width:0; overflow:hidden; clear:both;}
+.hidden{ display:none}
+.paywrap .hd{ font-size:16px; margin-top:20px; }
+.paywrap .hd a{ cursor:pointer; margin-right:3px; border:3px #BCCCEE solid; border-bottom:0; display:inline-block; padding: 5px 15px; background:#BCCCEE; color:#fff;  margin-bottom:-2.5px;}
+.paywrap .hd a.current{background:#fff; color:#333;}
+.paywrap .bd{ border:3px  solid #BCCCEE;}
+.paywrap .bd dl{ margin-bottom:20px; margin-left:0px;}
+.paywrap .bd dl dt, .paywrap .bd dl dd{float:left; height:30px; line-height:30px; font-size:14px}
+.paywrap .bd dt{width:145px; text-align:right;padding-right:10px;}
+.paywrap .bd dl dd input[type="text"]{border:1px #9CF solid; width:300px; height:30px; line-height:30px; text-indent:10px;}
+.paywrap .bd dl dd .getcode, .paywrap .bd dl dd .submit{border:0;float:left; display:inline-block; color:#fff; background:#9CF; padding:2px 10px 1px 10px;}
+.paywrap .bd dl dd .getcode-status{padding:0 10px; line-height:22px; height:22px;margin-top:5px; font-size:12px; float:left; margin-left:5px; border:1px #fa0 solid; background:#FDFBEE;}
+.paywrap .bd dl dd .submit{ padding:5px 10px; cursor:pointer;  background:#f60}
+
+.card-list{padding:20px; background:#f4f6fd; margin:20px;}
+.card-list .icon1{ background:url("{$site_url}/static/images/3KDUuVuxXB.png") 0 -612px; width:100px; height:30px; display:inline-block}
+.card-list .icon2{ background:url("{$site_url}/static/images/3KDUuVuxXB.png") 0px -644px; width:100px; height:30px; display:inline-block}
+.card-list li, .firstUsed h3{float:left; width:280px;border:1px #f60 solid; background:#fff; margin-left:30px; cursor:pointer; margin-right:30px;}
+.card-list li label,.firstUsed h3 label{ display:inline-block; height:30px; line-height:30px;}
+.card-list .cardinfo label{ background:url("{res file=images_bk/10.gif}") no-repeat 10px center;}
+/*.card-list .cardinfo label.cardtype-01020000{background:url("{res file=images_bk/10.gif}") no-repeat 10px center;}*/
+.card-list .cardinfo label.cardtype-01030000{background:url("{res file=images_bk/1.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-01050000{background:url("{res file=images_bk/2.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-01040000{background:url("{res file=images_bk/16.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-01000000{background:url("{res file=images_bk/89.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03080000{background:url("{res file=images_bk/17.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03090000{background:url("{res file=images_bk/27.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03030000{background:url("{res file=images_bk/3.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03060000{background:url("{res file=images_bk/6.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03070000{background:url("{res file=images_bk/18.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03050000{background:url("{res file=images_bk/cmbclogo.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03100000{background:url("{res file=images_bk/9.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03020000{background:url("{res file=images_bk/7.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-04012900{background:url("{res file=images_bk/20.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03010000{background:url("{res file=images_bk/5.gif}") no-repeat 10px center;}
+.card-list .cardinfo label.cardtype-03040000{background:url("{res file=images_bk/22.gif}") no-repeat 10px center;}
+
+.card-list .cardinfo input, .firstUsed h3 input{float:left; margin-top:8px;margin-right:150px;margin-left:-30px;}
+.firstUsed{ background:#fff;margin:0 20px 20px 20px;}
+.firstUsed h3 input{margin-right:30px;}
+.firstUsed h3{ font-weight:normal;}
+.firstUsed h3 label{}
+
+.paywrap .bd .ft{ background:#f4f6fc; border-top:1px solid #e6e8f0;padding:20px 5px 20px 70px;}
+.paywrap .bd .ft .submit{ cursor:pointer; display:inline-block; border:1px #0ae solid; background:#0ae; padding:0 20px; line-height:32px; font-size:14px;color:#fff;}
+
+</style>
+<div id="main" class="w-full">
+  <div id="page-cashier" class="w">
+    <div class="step step3 mt10 clearfix"> <span class="fs14 strong f60">{$lang.ckgwc}</span> <span class="fs14 strong f60">{$lang.qrddxx}</span> <span class="fs14 strong fff">{$lang.fk}</span> <span class="fs14 strong">{$lang.qrsh}</span> <span class="fs14 strong">{$lang.pj}</span> </div>
+    <div class="order-form cashier clearfix">
+      <div class="order_info border mt20 clearfix">
+        <div class="ico"> </div>
+        <div class="text">
+          <p class="fs14">订单提交成功<br />需要支付金额&nbsp;&nbsp;<span class="f60">{$order.money|price}</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="paywrap">
+      <div class="hd"><a href="{url app=jytrnpay&order_id=$smarty.get.order_id&money=$smarty.get.money}" class="current">金运通快捷支付</a><a href="{url app=jytrnpay&act=firstpay&order_id=$smarty.get.order_id&money=$smarty.get.money}">金运通首次支付</a></div>
+      <div class="bd">
+        <form action="{$site_url}/app/jytrnpay/index.php" method="POST" id="goto_pay" enctype="application/x-www-form-urlencoded">
+        <!--<form action="index.php?app=jytrnpay&act=getcode" method="POST" id="goto_pay" enctype="application/x-www-form-urlencoded">-->
+         <!--{if $cardList.card_infos}-->
+          <div class="card-list">
+            <h5><i class="icon1"></i><i class="icon2"></i></h5>
+            <ul class="clearfix">
+              <!--{foreach from=$cardList.card_infos item=card_info name=fe_card_info}-->
+              <li class="cardinfo clearfix">
+                <label class="cardtype-{$card_info.bank_code}">
+                  <input type="hidden" name="bank_code" value="{$card_info.bank_code}" />
+                  <input type="radio" name="bank_card_no" value="{$card_info.bank_card_no}"{if $smarty.foreach.fe_card_info.first} checked="checked"{/if} />
+                  {$card_info.short_bank_card_no}</label>
+                  <span class="mr10 mt5 float-right J_RelieveCard">解除绑定</span>
+              </li>
+              <!--{/foreach}-->
+            </ul>
+          </div>
+          <dl class="clearfix">
+            <dt>短信验证码</dt>
+            <dd class="clearfix">
+              <input type="text" name="verify_code" style="width:100px;float:left;" />
+              <a class="J_GetCode getcode" href="javascript:;">免费获取</a> <span class="J_Status getcode-status hidden"></span> </dd>
+          </dl>
+          
+          <!--{else}-->
+          <div class="padding10"><p>您尚未绑定任何快捷支付卡</p></div>
+          <!--{/if}-->
+          
+          <div class="ft">
+          	<input type="hidden" name="order_id" value="{$order.order_id}" />
+          	<input type="hidden" name="tran_code" value="TD4004" />
+          	<input type="submit" class="submit" value="确认支付" /></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{include file=footer.html}

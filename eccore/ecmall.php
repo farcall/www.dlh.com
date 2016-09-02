@@ -1028,6 +1028,40 @@ function ecm_json_decode($value, $type = 0) {
     return $json->decode($value, $type);
 }
 
+/* CURL发送请求 */
+function ecm_curl($url, $method = 'GET', $post = array(), $cacert_url = '', $input_charset = '')
+{
+    if (trim($input_charset) != '') {
+        $url = $url."_input_charset=".$input_charset;
+    }
+
+    //初始化curl
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    if($cacert_url) {
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);//SSL证书认证
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);//严格认证
+        curl_setopt($ch, CURLOPT_CAINFO, $cacert_url);//证书地址
+    }
+
+    //设置超时
+    //curl_setopt($ch, CURLOP_TIMEOUT, $this->curl_timeout);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    if(strtoupper($method) == 'POST'){
+        curl_setopt($ch, CURLOPT_POST, 1);//post提交方式
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    }
+
+    //运行curl，结果以jason形式返回
+    $res = curl_exec($ch);
+    //var_dump( curl_error($ch) );//如果执行curl过程中出现异常，可打开此开关，以便查看异常内容
+    curl_close($ch);
+    return $res;
+}
+
 /**
  * 返回由对象属性组成的关联数组
  *
