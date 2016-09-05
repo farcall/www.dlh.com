@@ -126,6 +126,7 @@ return array(
 	'baidukey-server' => '服务端',
 	'baidukey-browser' => '浏览器端',
 	'baidukey_note' => '需要填写KEY才能使用百度地图，申请地址：http://lbsyun.baidu.com/apiconsole/key/create',
+	'jiangli_setting' => '分段积分奖',
 
 );
 ?>

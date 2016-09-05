@@ -313,6 +313,27 @@ class SettingApp extends BackendApp {
     }
 
     /**
+     * 奖励分配设置
+     */
+    function jiangli_setting(){
+        $model_setting = &af('settings');
+        $setting = $model_setting->getAll(); //载入系统设置数据
+        if (!IS_POST) {
+            $this->assign('setting', $setting);
+            $this->assign('yes_or_no', array(Lang::get('no'), Lang::get('yes')));
+            $this->display('setting.jiangli_setting.html');
+        } else {
+            $data['jiangli_radio_0_10'] = $_POST['jiangli_radio_0_10'];
+            $data['jiangli_radio_11_20'] = $_POST['jiangli_radio_11_20'];
+            $data['jiangli_radio_21_30'] = $_POST['jiangli_radio_21_30'];
+            $data['jiangli_radio_31_40'] = $_POST['jiangli_radio_31_40'];
+            $data['jiangli_radio_41_100'] = $_POST['jiangli_radio_41_100'];
+            $model_setting->setAll($data);
+            $this->show_message('积分分段奖励配置完成');
+        }
+    }
+
+    /**
      *    上传默认商品图片、默认店铺标志、默认会员头像
      *
      *    @author    Hyber
