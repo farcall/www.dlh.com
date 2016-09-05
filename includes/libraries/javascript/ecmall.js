@@ -208,3 +208,19 @@ function countdown(theDaysBox, theHoursBox, theMinsBox, theSecsBox)
 		}
 	}, 1000);
 }
+
+function time(o, wait) {
+    if (wait == 0) {
+        o.attr("disabled", false);
+        o.val('获取验证码');
+        wait = 120;
+    } else {
+        o.attr("disabled", true);
+        o.val("重新获取(" + wait + "秒后)");
+        wait--;
+        setTimeout(function() {
+                time(o, wait);
+            },
+            1000)
+    }
+}

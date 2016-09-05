@@ -27,7 +27,7 @@ class JytRNPayNotify {
 	  	$mer_pri_file = ROOT_PATH . '/app/jytrnpay/cert/mer_rsa_private.pem';                        // 商户RSA私钥
 	  	$pay_pub_file = ROOT_PATH . '/app/jytrnpay/cert/pay_rsa_public.pem';                         // 平台RSA公钥
 	  	$m = new ENC($pay_pub_file, $mer_pri_file);
-	
+
 	
 	  	/* 1. 组织报文头  */
 	  	$req_param[ 'merchant_id' ] = $this->_config['epay_jytrn_merchantId'];
@@ -45,8 +45,8 @@ class JytRNPayNotify {
 	  	$xml_ori = ArrayToXML::toXml($data);
 	  	/* 4. 组织POST字段  */	
 	  	$req['merchant_id'] = $req_param['merchant_id'];
-	
-	
+
+
 	 	$req['sign' ]  = $m->sign($xml_ori,'hex');
 	  	$key = rand(pow(10,(8-1)), pow(10,8)-1);
 	
@@ -61,18 +61,19 @@ class JytRNPayNotify {
 	  
 	  	/* 6. 正则表达式分解返回报文 */
 	  	//preg_match('/^merchant_id=(.*)&xml_enc=(.*)&key_enc=(.*)&sign=(.*)$/', $snoopy->results, $matches );
-		
+
 		$result = ecm_curl( $this->_gateway , 'POST', $req);
 		preg_match('/^merchant_id=(.*)&xml_enc=(.*)&key_enc=(.*)&sign=(.*)$/', $result, $matches );
-		
 	  	$xml_enc = $matches[2];
 	  	$key_enc = $matches[3];
 	  	$sign = $matches[4];
-	  
-	  	/* 7. 解密并验签返回报文  */  
-	  	$key = $m->decrypt($key_enc,'hex');  
+
+
+	  	/* 7. 解密并验签返回报文  */
+	  	$key = $m->decrypt($key_enc,'hex');
 	  	$xml = $m->desDecrypt($xml_enc,$key);
-	
+
+
 	  	if(!$m->verify($xml,$sign,'hex')) {
 		  
 		   	//echo "--- 验签失败!\n"; 

@@ -102,13 +102,15 @@ class ENC{
      */  
     public function decrypt($data, $code = 'base64', $padding = OPENSSL_PKCS1_PADDING, $rev = false){  
         $ret = false;  
-        $data = $this->_decode($data, $code);  
-        if (!$this->_checkPadding($padding, 'de')) $this->_error('padding error');  
-        if ($data !== false){  
-            if (openssl_private_decrypt($data, $result, $this->priKey, $padding)){  
-                $ret = $rev ? rtrim(strrev($result), "\0") : ''.$result;  
-            }   
-        }  
+        $data = $this->_decode($data, $code);
+        if (!$this->_checkPadding($padding, 'de')) $this->_error('padding error');
+
+
+        if ($data !== false){
+            if (openssl_private_decrypt($data, $result, $this->priKey, $padding)){
+                $ret = $rev ? rtrim(strrev($result), "\0") : ''.$result;
+            }
+        }
         return $ret;  
     }  
 

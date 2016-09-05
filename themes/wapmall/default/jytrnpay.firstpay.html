@@ -14,15 +14,29 @@ $(function(){
 		var order_id = "{$order.order_id}";
 		//var money = "{$order.money}";
 		
+		var o = $(this);
+		o.attr("disabled", true);
+		
 		$.ajax({
              type: "POST",
              url: "index.php?app=jytrnpay&act=getcode",
              data: {tran_code:tran_code, bank_code:bank_code, bank_card_no:bank_card_no, id_card_no:id_card_no, name:name, mobile:mobile, order_id:order_id},
              dataType: "json",
+			 async: false,
+			 timeout: 500,
+			 cache: false,
              success: function(data){
+				 time(o, 60);
 				 $('.J_Status').html(data.remark).css('display', 'inline-block');
+			 },
+			 error: function(data) {
+				o.attr('disabled', false);
+			 	alert('请求失败!');
 			 }
+			 
 		});
+		
+
 		
 	});
 	
@@ -40,23 +54,28 @@ $(function(){
 <style type="text/css">
 .mall-nav{ display:none}
 .clearfix:after{ content:'\20'; display:block; height:0; width:0; overflow:hidden; clear:both;}
+.f60{ font-weight:normal; font-size:16px; color:#f60;}
 .hidden{ display:none}
+.cashier .order_info{border:1px #BBDDAA solid; background:#fff;}
+.cashier .order_info .text{float:left;margin-left:30px; line-height:25px;}
+.cashier .order_info .text span{font-size:20px}
+.cashier .order_info .text a{color:#0033CC; text-decoration:none}
 .paywrap .hd{ font-size:16px; margin-top:20px; }
 .paywrap .hd a{ cursor:pointer; margin-right:3px; border:3px #BCCCEE solid; border-bottom:0; display:inline-block; padding: 5px 15px; background:#BCCCEE; color:#fff;  margin-bottom:-2.5px;}
 .paywrap .hd a.current{background:#fff; color:#333;}
-.paywrap .bd{ border:3px  solid #BCCCEE;}
-.paywrap .bd dl{ margin-bottom:20px; margin-left:0px;}
-.paywrap .bd dl dt, .paywrap .bd dl dd{float:left; height:30px; line-height:30px; font-size:14px}
-.paywrap .bd dt{width:145px; text-align:right;padding-right:10px;}
-.paywrap .bd dl dd input[type="text"]{border:1px #9CF solid; width:300px; height:30px; line-height:30px; text-indent:10px;}
-.paywrap .bd dl dd .getcode, .paywrap .bd dl dd .submit{border:0;float:left; display:inline-block; color:#fff; background:#9CF; padding:2px 10px 1px 10px;}
-.paywrap .bd dl dd .getcode-status{padding:0 10px; line-height:22px; height:22px;margin-top:5px; font-size:12px; float:left; margin-left:5px; border:1px #fa0 solid; background:#FDFBEE;}
+.paywrap .bd{ border:3px  solid #BCCCEE; background:#fff;}
+.paywrap .bd dl{ margin-bottom:20px; margin-left:0px;padding-left:90px;}
+.paywrap .bd dl dt, .paywrap .bd dl dd{float:left;  line-height:30px; font-size:14px}
+.paywrap .bd dt{width:90px; text-align:right;padding-right:10px; margin-left:-90px;}
+.paywrap .bd dl dd input[type="text"]{border:1px #9CF solid; width:200px; height:30px; line-height:30px; text-indent:10px;}
+.paywrap .bd dl dd .getcode, .paywrap .bd dl dd .submit{border:0;float:left; display:inline-block; color:#fff; background:#9CF; padding:1px 10px 1px 10px;height:33px; cursor:pointer}
+.paywrap .bd dl dd .getcode-status{padding:0 10px;width:180px; line-height:22px;margin-top:5px; font-size:12px; border:1px #fa0 solid; background:#FDFBEE;}
 .paywrap .bd dl dd .submit{ padding:5px 10px; cursor:pointer;  background:#f60}
 
 .card-list{padding:20px; background:#f4f6fd; margin:20px;}
 .card-list .icon1{ background:url("{$site_url}/static/images/3KDUuVuxXB.png") 0 -612px; width:100px; height:30px; display:inline-block}
 .card-list .icon2{ background:url("{$site_url}/static/images/3KDUuVuxXB.png") 0px -644px; width:100px; height:30px; display:inline-block}
-.card-list li, .firstUsed h3{float:left; width:280px;border:1px #f60 solid; background:#fff; margin-left:30px; cursor:pointer}
+.card-list li, .firstUsed h3{float:left; width:240px;border:1px #f60 solid; background:#fff; margin-left:30px; cursor:pointer}
 .card-list li label,.firstUsed h3 label{ display:inline-block; height:30px; line-height:30px;}
 .card-list .cardinfo label{ background:url("{res file=images_bk/10.gif}") no-repeat 10px center;}
 .card-list .cardinfo input, .firstUsed h3 input{float:left; margin-top:8px;margin-right:150px;margin-left:-30px;}
@@ -65,13 +84,12 @@ $(function(){
 .firstUsed h3{ font-weight:normal;}
 .firstUsed h3 label{}
 
-.paywrap .bd .ft{ background:#f4f6fc; border-top:1px solid #e6e8f0;padding:20px 5px 20px 70px;}
+.paywrap .bd .ft{ background:#f4f6fc; border-top:1px solid #e6e8f0;padding:20px 5px 20px 100px;}
 .paywrap .bd .ft .submit{ cursor:pointer; display:inline-block; border:1px #0ae solid; background:#0ae; padding:0 20px; line-height:32px; font-size:14px;color:#fff;}
 
 </style>
 <div id="main" class="w-full">
   <div id="page-cashier" class="w">
-    <div class="step step3 mt10 clearfix"> <span class="fs14 strong f60">{$lang.ckgwc}</span> <span class="fs14 strong f60">{$lang.qrddxx}</span> <span class="fs14 strong fff">{$lang.fk}</span> <span class="fs14 strong">{$lang.qrsh}</span> <span class="fs14 strong">{$lang.pj}</span> </div>
     <div class="order-form cashier clearfix">
       <div class="order_info border mt20 clearfix">
         <div class="ico"> </div>
@@ -83,10 +101,11 @@ $(function(){
     <div class="paywrap">
       <div class="hd"><a href="{url app=jytrnpay&order_id=$smarty.get.order_id&money=$smarty.get.money}" >金运通快捷支付</a><a class="current" href="{url app=jytrnpay&act=firstpay&order_id=$smarty.get.order_id&money=$smarty.get.money}">金运通首次支付</a></div>
       <div class="bd">
-        <form action="{$site_url}/app/jytrnpay/index.php" method="POST" id="goto_pay" enctype="application/x-www-form-urlencoded">
+       <form action="{$site_url}/app/jytrnpay/index.php" method="POST" id="goto_pay" enctype="application/x-www-form-urlencoded">
+		 <!--<form action="index.php?app=jytrnpay&act=getcode" method="POST" id="goto_pay" enctype="application/x-www-form-urlencoded" >-->
           <div class="firstUsedbox mt20"> 
-            <!--<form action="index.php?app=jytrnpay&act=getcode" method="POST" id="goto_pay" >-->
-            <dl class="clearfix">
+            
+            <dl class="clearfix" style="margin-top:20px;">
               <dt>银行名称</dt>
               <dd>
                 <select name="bank_code">
@@ -128,7 +147,7 @@ $(function(){
               </dd>
             </dl>
             <dl class="clearfix">
-              <dt>银行卡绑定手机号</dt>
+              <dt>绑定手机号</dt>
               <dd>
                 <input type="text" name="mobile" />
               </dd>
@@ -137,7 +156,7 @@ $(function(){
               <dt>短信验证码</dt>
               <dd class="clearfix">
                 <input type="text" name="verify_code" style="width:100px;float:left;" />
-                <a class="J_GetCode getcode" href="javascript:;">免费获取</a> <span class="J_Status getcode-status hidden"></span> </dd>
+                <input type="button" class="J_GetCode getcode" value="免费获取" /> <span class="J_Status getcode-status hidden"></span> </dd>
             </dl>
           </div>
           <div class="ft">
