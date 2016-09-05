@@ -52,10 +52,11 @@ class Integral_redApp extends MallbaseApp
             //红积分减少
             //税费资金增加=红积分*10%
             //现金余额增加=红积分*90%
+            //2016年09月06日00:36:42从5%的税费提升到10%
             $data = array(
                 'integral_red' => $epay_data['integral_red'] - $red,
-                'money_tax' => $epay_data['money_tax'] + $red * 0.05,
-                'money' => $epay_data['money'] + $red * 0.95,
+                'money_tax' => $epay_data['money_tax'] + $red * 0.1,
+                'money' => $epay_data['money'] + $red * 0.9,
             );
 
             $this->_epay_mod->edit($epay_data['id'], $data);
